@@ -1,0 +1,17 @@
+pt-BR:
+  bombeadores:
+    new:
+      titulo: "Adicionar Bombeador"
+    create:
+      sucesso: "O Bombeador %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Bombeador, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Bombeador"
+    update:
+      titulo: "Bombeador"
+      sucesso: "O Bombeador %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Bombeador, verifique os dados e tente novamente!"
+    index:
+      titulo: "Bombeadores"
+    destroy:
+      sucesso: "O Bombeador foi apagado com Sucesso!"

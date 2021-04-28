@@ -1,0 +1,32 @@
+<h2>
+	Visualizar Foto
+	<%= link_to "#{casein_show_icon "th-list"}Listar Foto".html_safe, casein_fotos_path, class: "pull-right" if can? :index, Foto %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_foto_path(@foto), class: "pull-right" if can? :edit, Foto %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+	  	<div class="panel-heading">
+				<h3 class="panel-title">Dados</h3>
+		  	</div>
+			<div class="panel-body">
+				<p><strong>Código da Foto:</strong> <%= @foto.id %></p>
+				<p><strong>Cliente:</strong> <%= @foto.poco.try(:nome_intuitivo) %></p>
+				<p><strong>Observações:</strong> <%= @foto.observacao %></p>
+				<p><strong>Nome:</strong> <%= @foto.nome %></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Foto</h3>
+		  </div>
+			<div class="panel-body" align="center">
+				<%= link_to(image_tag(@foto.foto.url(:media), class: "img-responsive"), @foto.foto.url(:grande), target: :_blank) %>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<h2>
+	Cadastrar Aprofundamento
+	<%= link_to "#{casein_show_icon "th-list"}Listar Aprofundamentos".html_safe, casein_aprofundamentos_path, class: "pull-right" %>
+</h2>
+
+<%= form_for @aprofundamento, :url => casein_aprofundamentos_path do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/aprofundamentos/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+		<%= f.submit "Avançar", name: :avancar, :class => "btn btn-mini btn-primary" %>
+	</p>
+<% end %>

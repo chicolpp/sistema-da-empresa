@@ -1,0 +1,19 @@
+<h2>
+	Editar Manutenção <%= @manutencao.poco.nome_intuitivo %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Manutenções".html_safe, casein_manutencaos_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "zoom-in"}Visualizar".html_safe, casein_manutencao_path(@manutencao), class: "pull-right" %>
+</h2>
+
+<%= form_for @manutencao, :url => casein_manutencao_path(@manutencao) do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/manutencaos/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>
+
+<% if @instalacao.try(:instalacao_poco_equipamentos) %>
+	<%= render "casein/instalacao_poco_equipamentos/form_equipamentos" %>
+<% end %>

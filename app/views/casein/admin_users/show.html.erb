@@ -1,0 +1,34 @@
+<h2>
+	Visualizar Usuário: <%= @casein_admin_user.login %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Usuários".html_safe, casein_admin_users_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_admin_user_path(@casein_admin_user), class: "pull-right" %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Dados Básicos</h3>
+		  </div>
+			<div class="panel-body">
+				<p><strong>Código:</strong> <%= @casein_admin_user.id %></p>
+				<p><strong>Nome de Usuário:</strong> <%= @casein_admin_user.login %></p>
+				<p><strong>E-mail:</strong> <%= @casein_admin_user.email %></p>
+				<p><strong>Pós Venda:</strong> <%= @casein_admin_user.pos_venda ? "Sim" : "Não" %></p>
+				<p><strong>Perfil de Acesso:</strong> <%= @casein_admin_user.access_level == 0 ? "Admin" : "Usuário" %></p>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Cidades</h3>
+		  </div>
+			<div class="panel-body">
+				<% @casein_admin_user.usuario_cidades.each do |usuario_cidade| %>
+					<p><%= usuario_cidade.cidade.get_nome_completo %></p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

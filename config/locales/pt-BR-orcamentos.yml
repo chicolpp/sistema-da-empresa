@@ -1,0 +1,17 @@
+pt-BR:
+  orcamentos:
+    new:
+      titulo: "Adicionar Orçamento"
+    create:
+      sucesso: "O Orçamento %{nome} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Orçamento, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Orçamento"
+    update:
+      titulo: "Orçamento"
+      sucesso: "O Orçamento %{nome} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Orçamento, verifique os dados e tente novamente!"
+    index:
+      titulo: "Orçamentos"
+    destroy:
+      sucesso: "O Orçamento foi apagado com Sucesso!"

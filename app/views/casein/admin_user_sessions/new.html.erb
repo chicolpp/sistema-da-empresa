@@ -1,0 +1,76 @@
+<%= form_for @admin_user_session, :url => casein_admin_user_session_path do |f| %>
+	<% if @admin_user_session.errors.any? %>
+		<div id="error_messages" class="alert alert-danger">
+			<% @admin_user_session.errors.keys.each do |key| %>
+				<%= (key.to_s.humanize + " ") unless key == :base %>
+				<%=  @admin_user_session.errors[key].first %>
+			<% end %>
+		</div>
+	<% end %>
+
+	<% if flash[:warning] %>
+    <div id="error" class="alert alert-danger">
+      <%= flash[:warning] %>
+    </div>
+  <% end %>
+  <% if flash[:notice] %>
+    <div id="notice" class="alert alert-success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>
+
+  <h3>Acesso Restrito</h3>
+	
+	<div class="form-group">
+		<%= f.text_field :login, :placeholder => "Usuário", :class => "form-control" %>
+	</div>
+	<div class="form-group">
+		<%= f.password_field :password, :placeholder => "Senha", :class => "form-control" %>
+	</div>
+
+	<div class="form-group">
+		<%= f.submit "Entrar", :class => "btn btn-success btn-block btn-login" %>
+	</div>
+	<div class="form-group">
+		<button type="button" class="btn btn-primary btn-block btn-info" data-toggle="modal" data-target="#enviarFoto">
+		  Enviar Foto
+		</button>
+	</div>
+<% end %>
+
+<%= form_for Foto.new, :url => casein_fotos_path, html: {:multipart => true} do |f| %>
+	<div class="modal fade" id="enviarFoto" tabindex="-1" role="dialog" aria-labelledby="enviarFotoLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="titulo-modal modal-title" id="enviarFotoLabel">Foto</h4>
+	        <h5 class="titulo-modal" id="enviarFotoLabel">Para enviar mais que uma foto pressione o CTRL e clica na foto desejada!</h5>
+	      </div>
+	      <div class="modal-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="input-group">
+							  <span class="input-group-addon" id="addon-foto">Nome *</span>
+								<%= f.text_field :nome, class: "form-control", required: true, "aria-describedby" => "addon-foto" %>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="input-group">
+							  <span class="input-group-addon" id="addon-foto">Foto *</span>
+							  <%= hidden_field_tag :nao_logado, "sim" %>
+								<%= file_field_tag :foto, class: "form-control #{f.object.errors[:foto].first ? 'input-error' : ''}", "aria-describedby" => "addon-foto", required: true, multiple: true, name: 'foto[foto][]' %>
+							</div>
+						</div>
+					</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+	        <button type="submit" class="btn btn-primary">Enviar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<% end %>

@@ -1,0 +1,16 @@
+pt-BR:
+  bitolas:
+    new:
+      titulo: "Adicionar Bitola"
+    create:
+      sucesso: "A Bitola %{descricao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Bitola, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Bitola"
+    update:
+      sucesso: "A Bitola %{descricao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Bitola, verifique os dados e tente novamente!"
+    index:
+      titulo: "Bitolas"
+    destroy:
+      sucesso: "A Bitola foi apagada com Sucesso!"

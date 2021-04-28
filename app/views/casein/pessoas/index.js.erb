@@ -1,0 +1,7 @@
+<% unless @valida.blank? %>
+	$("#modal-valida-pessoa").modal();
+	$("#valida-pessoa-ir-para").on("click", function() {
+		window.location.replace("<%= casein_pessoa_url(@valida.pessoa_id) %>");
+	});
+	//$("input[name*='[pessoa_attributes][nome]']").val("<%= @valida.nome %>");
+<% end %>

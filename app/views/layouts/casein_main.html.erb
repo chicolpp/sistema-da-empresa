@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  	<title><%= casein_generate_page_title %></title>
+  	<% casein_config_stylesheet_includes.each do |stylesheet| %>
+  		<%= stylesheet_link_tag(stylesheet) %>
+  	<% end %>
+
+  	<% casein_config_javascript_includes.each do |javascript| %>
+  		<%= javascript_include_tag(javascript) %>
+  	<% end %>
+
+  	<%= csrf_meta_tag %>
+
+    <%#= google_webfonts_link_tag :Ubuntu => [300, 400, 600] %>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <%= javascript_include_tag("casein/html5shiv") %>
+    <![endif]-->
+
+    <script type="text/javascript">
+      var current_controller = "<%= controller_name %>";
+    </script>
+  </head>
+
+  <body class="inner-app">
+
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to(image_tag("materiaguas.png"), root_url, class: "navbar-brand") %>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <%= render :partial => '/casein/layouts/tab_navigation' %>
+          </ul>
+          <ul class="nav navbar-right hidden-xs hidden-sm hidden-md">
+            <li>
+              <%= link_to(image_tag("selo.png"), root_url, class: "navbar-brand-right") %>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div id="content">
+        <% @alertas = Alerta.where("exibir_ate > NOW()").order("exibir_ate ASC") %>
+        <% unless @alertas.blank? %>
+          <div class="row">
+            <div class="col-xs-12">
+              <p class="marquee">
+                <span>
+                  <% @alertas.each_with_index do |alerta, i| %>
+                    <%= link_to(alerta.titulo, casein_alerta_path(alerta)) %> <% if i+1 < @alertas.count %>-<% end %>
+                  <% end %>
+                </span>
+              </p>
+            </div>
+          </div>
+        <% end %>
+        <div class="row">
+          <% if content_for?(:sidebar) %>
+             <div id="right-column" class="col-md-2">
+                <ul class="nav nav-pills nav-stacked content-bottom-padding">
+                  <%= yield :sidebar %>
+                </ul>
+            </div>
+            <div id="left-column" class="col-md-10 content-bottom-padding">
+          <% else %>
+            <div class="col-lg-12 content-bottom-padding">
+          <% end %>
+
+            <%= render "layouts/application/alertas" %>
+
+            <%= yield %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+           <hr />
+           <footer>
+              <p>Desenvolvido por <%= link_to("www.twoweb.com.br", "http://www.twoweb.com.br", target: "_blank") %></p>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

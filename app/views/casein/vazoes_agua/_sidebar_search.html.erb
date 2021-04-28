@@ -1,0 +1,57 @@
+<legend>Filtros</legend>
+
+<div class="form-group">
+  <%= label_tag :cliente_id, "Cliente" %>
+  <%= select_tag(:cliente_id, options_from_collection_for_select(Cliente.select("clientes.id, pessoas.nome").joins(:pessoa).all, 'id', 'nome', params[:cliente_id]), {:include_blank => "Selecione o Cliente", :class => "form-control"}) %>
+</div>
+
+<button type="button" id="botao-filtrar" class="btn btn-primary" data-toggle="modal" data-target="#filtro">
+  Filtrar
+</button>
+
+<div class="modal fade" id="filtro" tabindex="-1" role="dialog" aria-labelledby="filtroLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="filtroLabel">Filtro de Perfuração</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="tabela">
+	      	<% @vazoes_agua = VazaoAgua.all %>
+		      <%= render partial: "table", locals: { vazoes_agua: @vazoes_agua } %>
+				</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+		$("#botao-filtrar").click(function(event) {
+			var cliente_id = $("#cliente_id").val();
+			$(".loading").show();
+
+			$.ajax({
+				url: '<%= casein_vazao_agua_filtro_ajax_path(1) %>',
+				type: 'GET',
+				dataType: 'script',
+				data: {
+					cliente_id: cliente_id,
+				}
+			})
+			.done(function() {
+				$(".loading").show();
+			})
+			.fail(function() {
+
+			})
+			.always(function() {
+				$(".loading").hide();
+			});
+		});
+	});
+</script>

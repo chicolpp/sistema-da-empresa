@@ -1,0 +1,62 @@
+<li><%= link_to "#{casein_show_icon "th"}Início".html_safe, casein_dashboard_path %></li>
+<li><%= link_to "#{casein_show_icon "star"}Clientes".html_safe, casein_clientes_path %></li>
+<li class="dropdown">
+	<%= link_to("#", :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+		<%= casein_show_icon("th-list") %> Cadastros <b class="caret"></b>
+	<% end %>
+	<ul class="dropdown-menu">
+		<% if current_user.is_admin? %>
+			<li><%= link_to "#{casein_show_icon "cog"}Perfurações".html_safe, casein_pocos_path %></li>
+			<li><%= link_to "#{casein_show_icon "check"}Testes de Vazão".html_safe, casein_vazoes_agua_path %></li>
+			<li><%= link_to "#{casein_show_icon "wrench"}Instalações".html_safe, casein_instalacoes_path %></li>
+			<li><%= link_to "#{casein_show_icon "sort-by-attributes"}Aprofundamentos".html_safe, casein_aprofundamentos_path %></li>
+		<% end %>
+		<li><%= link_to "#{casein_show_icon "folder-close"}Manutenções".html_safe, casein_manutencaos_path %></li>
+		<% if current_user.is_admin? %>
+			<li><%= link_to "#{casein_show_icon "tags"}Ordens de Serviço".html_safe, casein_ordem_servicos_path %></li>
+		<% end %>
+	</ul>
+</li>
+<li class="dropdown">
+	<%= link_to("#", :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+		<%= casein_show_icon("inbox") %> Relatórios <b class="caret"></b>
+	<% end %>
+	<ul class="dropdown-menu">
+		<li><%= link_to "#{casein_show_icon "list"}Relatório Completo".html_safe, casein_poco_filtro_relatorio_path("filtrar") %></li>
+		<% if current_user.is_admin? %>
+			<li><%= link_to "#{casein_show_icon "list-alt"}Relatório de Processos".html_safe, casein_relatorio_processos_path %></li>
+			<li><%= link_to "#{casein_show_icon "calendar"}Aniversariantes".html_safe, casein_pessoa_aniversariantes_path("filtrar") %></li>
+			<li><%= link_to "#{casein_show_icon "tasks"}Relatório de Assistências".html_safe, casein_poco_relatorio_assistencias_path("relatorio") %></li>
+		<% end %>
+		<li><%= link_to "#{casein_show_icon "picture"}Relatório de Fotos".html_safe, casein_fotos_path %></li>
+	</ul>
+</li>
+<% if current_user.is_admin? %>
+	<li class="dropdown">
+		<%= link_to("#", :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+			<%= casein_show_icon("cog") %> Configurações <b class="caret"></b>
+		<% end %>
+		<ul class="dropdown-menu">
+			<% if current_user.access_level == 0 %>
+				<li><%= link_to "#{casein_show_icon "user"}Usuários".html_safe, casein_admin_users_path %></li>
+			<% end %>
+			<li><%= link_to "#{casein_show_icon "star-empty"}Funcionários".html_safe, casein_funcionarios_path %></li>
+			<li><%= link_to "#{casein_show_icon "th"}Cargos".html_safe, casein_cargos_path %></li>
+			<li><%= link_to "#{casein_show_icon "font"}Alertas".html_safe, casein_alertas_path %></li>
+			<hr>
+			<li><%= link_to "#{casein_show_icon "list"}Modelos de Bombas".html_safe, casein_modelo_bombas_path %></li>
+			<li><%= link_to "#{casein_show_icon "list"}Motores".html_safe, casein_motores_path %></li>
+			<li><%= link_to "#{casein_show_icon "list"}Estágios".html_safe, casein_estagios_path %></li>
+			<li><%= link_to "#{casein_show_icon "flash"}Energia".html_safe, casein_energias_path %></li>
+			<li><%= link_to "#{casein_show_icon "th"}Máquinas".html_safe, casein_maquinas_path %></li>
+			<li><%= link_to "#{casein_show_icon "th"}Bitolas".html_safe, casein_bitolas_path %></li>
+			<li><%= link_to "#{casein_show_icon "th"}Tipos de Revestimentos".html_safe, casein_tipo_revestimentos_path %></li>
+			<li><%= link_to "#{casein_show_icon "wrench"}Serviços".html_safe, casein_servicos_path %></li>
+			<li><%= link_to "#{casein_show_icon "list-alt"}Produtos".html_safe, casein_produtos_path %></li>
+			<!-- <li><%#= link_to "#{casein_show_icon "tag"}Marcas".html_safe, casein_marcas_path %></li> -->
+			<li><%= link_to "#{casein_show_icon "tint"}Unidades de Medida".html_safe, casein_unidades_medidas_path %></li>
+		</ul>
+	</li>
+<% end %>
+
+<li><%= link_to "#{casein_show_icon "log-out"}Sair".html_safe, casein_admin_user_session_path, :method => :delete %></li>

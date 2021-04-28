@@ -1,0 +1,17 @@
+pt-BR:
+  motores:
+    new:
+      titulo: "Adicionar Motor"
+    create:
+      sucesso: "O Motor %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Motor, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Motor"
+    update:
+      titulo: "Motor"
+      sucesso: "O Motor %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Motor, verifique os dados e tente novamente!"
+    index:
+      titulo: "Motores"
+    destroy:
+      sucesso: "O Motor foi apagado com Sucesso!"

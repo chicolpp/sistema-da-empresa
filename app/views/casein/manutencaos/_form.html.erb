@@ -1,0 +1,127 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-poco-id">Poço *</span>
+
+			<% if params[:poco].present? || @manutencao.poco_id.to_i > 0 %>
+				<% disabled = true %>
+			<% else %>
+				<% disabled = false %>
+			<% end %>
+
+			<%= f.collection_select :poco_id, Poco.select("pocos.id, CONCAT(pessoas.nome, '-', pocos.linha_endereco, '-', pocos.apelido_endereco) as nome").joins(cliente: [:pessoa]).order("CONCAT(pessoas.nome, '-', pocos.linha_endereco, '-', pocos.apelido_endereco)").all, :id, :nome, {include_blank: true, selected: @manutencao.poco_id || params[:poco]}, {class: "form-control #{f.object.errors[:poco_id].first ? 'input-error' : ''} select_padrao", "aria-describedby" => "addon-poco-id", disabled: disabled} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-servico-id">Serviço *</span>
+			<%= f.collection_select :servico_id, Servico.select("servicos.id, servicos.descricao").order(:descricao).all, :id, :descricao, {include_blank: true}, {class: "form-control #{f.object.errors[:servico_id].first ? 'input-error' : ''} select_padrao", "aria-describedby" => "addon-servico-id"} %>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-numero-processo">Número Processo</span>
+			<%= f.text_field :numero_processo, class: "form-control #{f.object.errors[:numero_processo].first ? 'input-error' : ''}", "aria-describedby" => "addon-numero-processo" %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-4">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-pessoa-contato">Contato *</span>
+			<%= f.text_field :pessoa_contato, class: "form-control #{f.object.errors[:pessoa_contato].first ? 'input-error' : ''}", "aria-describedby" => "addon-pessoa-contato" %>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-telefone">Telefone</span>
+			<%= f.text_field :telefone, class: "form-control #{f.object.errors[:telefone].first ? 'input-error' : ''} masc-telefone", "aria-describedby" => "addon-telefone" %>
+		</div>
+	</div>
+	<div class="col-lg-5">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-email">E-mail</span>
+			<%= f.email_field :email, class: "form-control #{f.object.errors[:email].first ? 'input-error' : ''}", "aria-describedby" => "addon-email" %>
+		</div>
+	</div>
+	<div class="col-lg-5">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-vendedor_id">Vendedor</span>
+			<%= f.collection_select :vendedor_id, Casein::AdminUser.where(pos_venda: true).order(:login), :id, :login, {include_blank: true}, {class: "form-control #{f.object.errors[:vendedor_id].first ? 'input-error' : ''} select_padrao", "aria-describedby" => "addon-vendedor-id"} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div id="dados_arquivos">
+		<div class="col-lg-12">
+			<h2>
+				Serviços Realizados
+				<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Serviço".html_safe, f, :manutencao_servicos, "pull-right", "Adicionar um Novo Serviço", "manutencao_servicos" %>
+			</h2>
+		</div>
+		<div class="col-xs-12">
+			<div id="manutencao_servicos">
+				<%= f.fields_for :manutencao_servicos do |manutencao_servico| %>
+				  <%= render "casein/manutencao_servicos/form", f: manutencao_servico %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% unless @instalacao.blank? %>
+	<div class="row">
+		<div id="dados_manutencao_produtos">
+			<div class="col-lg-12">
+				<h2>
+					Equipamentos Utilizados
+					<%= link_to "#{casein_show_icon "plus-sign"}Incluir Equipamento".html_safe, "#modal-incluir-equipamento", class: "pull-right", data: {toggle: :modal} %>
+				</h2>
+			</div>
+			<div id="equipamentos-utilizados" class="col-xs-12">
+				<%= render "casein/instalacao_poco_equipamentos/table" %>
+			</div>
+		</div>
+	</div>
+<% end %>
+
+<div class="row">
+	<div id="dados_arquivos">
+		<div class="col-lg-12">
+			<h2>
+				Adicionar Fotos/Documentos
+				<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Arquivo".html_safe, f, :arquivos, "pull-right", "Adicionar um Novo Arquivo", "arquivos" %>
+			</h2>
+		</div>
+		<div class="col-xs-12">
+			<div id="arquivos">
+				<%= f.fields_for :arquivos do |arquivo|%>
+				  <%= render "casein/arquivos/form", f: arquivo %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div id="dados_checklist">
+		<div class="col-lg-12">
+			<h2>
+				Adicionar Serviços Necessários
+				<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Serviço".html_safe, f, :manutencao_checklists, "pull-right", "Adicionar um Novo Checklist", "manutencao_checklists" %>
+			</h2>
+		</div>
+		<div class="col-xs-12">
+			<div id="manutencao_checklists">
+				<%= f.fields_for :manutencao_checklists do |manutencao_checklist|%>
+				  <%= render "casein/manutencao_checklists/form", f: manutencao_checklist %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

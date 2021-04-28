@@ -1,0 +1,14 @@
+<h2>
+	Cadastrar Funcionário
+	<%= link_to "#{casein_show_icon "th-list"}Listar Funcionários".html_safe, casein_funcionarios_path, class: "pull-right" %>
+</h2>
+
+<%= form_for @funcionario, :url => casein_funcionarios_path do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/funcionarios/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

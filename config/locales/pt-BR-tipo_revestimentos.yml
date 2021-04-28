@@ -1,0 +1,17 @@
+pt-BR:
+  tipo_revestimentos:
+    new:
+      titulo: "Adicionar Tipo de Revestimento"
+    create:
+      sucesso: "O Tipo de Revestimento %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Tipo de Revestimento, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Tipo de Revestimento"
+    update:
+      titulo: "Tipo de Revestimento"
+      sucesso: "O Tipo de Revestimento %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Tipo de Revestimento, verifique os dados e tente novamente!"
+    index:
+      titulo: "Tipo de Revestimentos"
+    destroy:
+      sucesso: "O Tipo de Revestimento foi apagado com Sucesso!"

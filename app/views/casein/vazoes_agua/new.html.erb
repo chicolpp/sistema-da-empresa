@@ -1,0 +1,16 @@
+<h2>
+	Cadastrar Teste de Vazão
+	<%= link_to "#{casein_show_icon "th-list"}Listar Testes de Vazão".html_safe, casein_vazoes_agua_path, class: "pull-right" %>
+</h2>
+
+<%= form_for @vazao_agua, :url => casein_vazoes_agua_path do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/vazoes_agua/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= link_to "Voltar", edit_casein_poco_path(id: params[:poco], voltar: "voltar"), class: "btn btn-warning" if params[:poco].present? %>
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+		<%= f.submit "Avançar", name: "avancar", :class => "btn btn-mini btn-primary", :title => "Salva os dados e avança para próxima etapa." %>
+	</p>
+<% end %>

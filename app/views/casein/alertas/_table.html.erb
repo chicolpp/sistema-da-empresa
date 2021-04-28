@@ -1,0 +1,23 @@
+<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
+	<thead>
+		<tr>
+			<th>Título</th>
+			<th>Exibir Até</th>
+			<th data-orderable="false">&nbsp;</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<% alertas.each do |alerta| %>
+			<tr>
+				<td><%= casein_table_cell_link alerta.titulo, casein_alerta_path(alerta) %></td>
+				<td><%= casein_table_cell_link l(alerta.exibir_ate), casein_alerta_path(alerta) %></td>
+				<td>
+					<%= link_to(casein_show_row_icon("zoom-in"), casein_alerta_path(alerta), class: "icon-table") %>
+					<%= link_to(casein_show_row_icon("edit"), edit_casein_alerta_path(alerta), class: "icon-table") %>
+					<%= link_to(casein_show_row_icon("trash"), casein_alerta_path(alerta), class: "icon-table", :method => :delete, :data => { :confirm => "Você tem certeza que deseja apagar este registro?" }) %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

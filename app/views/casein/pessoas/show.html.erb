@@ -1,0 +1,94 @@
+<h2>
+	Visualizar <%= @pessoa.nome %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Clientes".html_safe, casein_clientes_path, class: "pull-right" if can? :index, @pessoa.cliente %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_pessoa_path(@pessoa), class: "pull-right" if can? :edit, @pessoa %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Dados Básicos</h3>
+		  </div>
+			<div class="panel-body">
+				<p><strong>Código:</strong>	<%= @pessoa.id %></p>
+				<p><strong>Tipo:</strong> <%= @pessoa.tipo ? "Jurídica" : "Física" %></p>
+				<p><strong>Nome:</strong> <%= @pessoa.nome %></p>
+				<p><strong>E-mail Contato:</strong> <%= @pessoa.email_contato %></p>
+				<p><strong>E-mail XML:</strong> <%= @pessoa.email_xml %></p>
+				<p><strong>Telefone Principal:</strong> <%= @pessoa.telefone_principal %></p>
+			</div>
+		</div>
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Dados de Pessoa <%= @pessoa.tipo ? "Jurídica" : "Física" %></h3>
+		  </div>
+			<div class="panel-body">
+				<% if @pessoa.tipo %>
+					<% if @pessoa.pessoa_juridica.blank? %>
+						<p>Dados de Pessoa Jurídica não informados.</p>
+						<p><%= link_to "Clique Aqui", edit_casein_pessoa_path(@pessoa) %> para preencher agora.</p>
+					<% else %>
+						<p><strong>Nome Fantasia:</strong>	<%= @pessoa.pessoa_juridica.nome_fantasia %></p>
+						<p><strong>CNPJ:</strong>	<%= @pessoa.pessoa_juridica.cnpj %></p>
+						<p><strong>Inscrição Estadual:</strong>	<%= @pessoa.pessoa_juridica.ie %></p>
+					<% end %>
+				<% else %>
+					<% if @pessoa.pessoa_fisica.blank? %>
+						<p>Dados de Pessoa Física não informados.</p>
+						<p><%= link_to "Clique Aqui", edit_casein_pessoa_path(@pessoa) %> para preencher agora.</p>
+					<% else %>
+						<p><strong>CPF:</strong>	<%= @pessoa.pessoa_fisica.cpf %></p>
+						<p><strong>RG:</strong>	<%= @pessoa.pessoa_fisica.rg %></p>
+						<p><strong>Data Nascimento:</strong>	<%= l(@pessoa.pessoa_fisica.data_nascimento) unless @pessoa.pessoa_fisica.data_nascimento.blank? %></p>
+						<p><strong>Telefone Auxiliar 1:</strong> <%= @pessoa.pessoa_fisica.telefone_auxiliar_1 %></p>
+						<p><strong>Telefone Auxiliar 2:</strong> <%= @pessoa.pessoa_fisica.telefone_auxiliar_2 %></p>
+						<p><strong>Telefone Auxiliar 3:</strong> <%= @pessoa.pessoa_fisica.telefone_auxiliar_3 %></p>
+					<% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Endereço</h3>
+		  </div>
+			<div class="panel-body">
+				<% if @pessoa.pessoa_endereco.blank? %>
+					<p>O Endereço não foi informado.</p>
+					<p><%= link_to "Clique Aqui", edit_casein_pessoa_path(@pessoa) %> para preencher agora.</p>
+				<% else %>
+					<p><strong>Tipo:</strong>	<%= get_tipo_endereco(@pessoa.pessoa_endereco.tipo_endereco) %></p>
+					<p><strong>CEP:</strong>	<%= @pessoa.pessoa_endereco.cep %></p>
+					<p><strong>Endereço:</strong>	<%= @pessoa.pessoa_endereco.endereco %></p>
+					<p><strong>Número:</strong>	<%= @pessoa.pessoa_endereco.numero %></p>
+					<p><strong>Complemento:</strong>	<%= @pessoa.pessoa_endereco.complemento %></p>
+					<p><strong>Bairro:</strong>	<%= @pessoa.pessoa_endereco.bairro %></p>
+					<p><strong>Cidade/UF:</strong>	<%= @pessoa.pessoa_endereco.cidade.nome unless @pessoa.pessoa_endereco.cidade_id.blank? %> - <%= @pessoa.pessoa_endereco.cidade.estado.sigla unless @pessoa.pessoa_endereco.cidade_id.blank? %></p>
+				<% end %>
+			</div>
+		</div>
+		<% if @pessoa.tipo %>
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+					<h3 class="panel-title">Contatos</h3>
+			  </div>
+				<div class="panel-body">
+					<% if @pessoa.pessoas_contatos.blank? %>
+						<p>Os contatos desta empresa não foram informados.</p>
+						<p><%= link_to "Clique Aqui", edit_casein_pessoa_path(@pessoa) %> para preencher agora.</p>
+					<% else %>
+						<% @pessoa.pessoas_contatos.each do |pessoa_contato| %>
+							<p><strong>Nome:</strong>	<%= pessoa_contato.nome_contato %></p>
+							<p><strong>E-mail:</strong>	<%= pessoa_contato.email_contato %></p>
+							<p><strong>Data Nascimento:</strong>	<%= l(pessoa_contato.data_nascimento_contato) unless pessoa_contato.data_nascimento_contato.blank? %></p>
+							<p><strong>Telefone:</strong>	<%= pessoa_contato.telefone_contato %></p>
+							<hr>
+						<% end %>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>

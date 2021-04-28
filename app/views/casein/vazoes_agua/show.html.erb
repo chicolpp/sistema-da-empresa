@@ -1,0 +1,66 @@
+<h2>
+	Visualizar Teste de Vazão
+	<%= link_to "#{casein_show_icon "th-list"}Listar Testes de Vazão".html_safe, casein_vazoes_agua_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_vazao_agua_path(@vazao_agua), class: "pull-right" %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Dados Técnicos</h3>
+		  </div>
+			<div class="panel-body">
+				<p><strong>Código do Poço:</strong>	<%= @vazao_agua.poco_id %></p>
+				<% unless @vazao_agua.data_teste.blank? %>
+					<p><strong>Data do Teste:</strong> <%= l(@vazao_agua.data_teste) %></p>
+				<% end %>
+				<p><strong>Nome do Poço:</strong> <%= @vazao_agua.poco.try(:nome_intuitivo) %></p>
+				<p><strong>Vazão de Teste (l/h):</strong>	<%= @vazao_agua.vazao_teste %></p>
+				<p><strong>Profundidade da Bomba:</strong>	<%= @vazao_agua.profundidade_bomba %></p>
+				<p><strong>Nível Dinâmico:</strong>	<%= @vazao_agua.vazao_dinamico %></p>
+				<p><strong>Nível Estático:</strong>	<%= @vazao_agua.nivel_estatico %></p>
+				<% unless @vazao_agua.observacao.blank? %>
+					<p><strong>Observação:</strong>	<%= @vazao_agua.observacao %></p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Equipe de Teste de Vazão</h3>
+				  </div>
+					<div class="panel-body">
+						<% @vazao_agua.vazao_agua_funcionarios.each_with_index do |item, i| %>
+							<p><strong><%= i+1 %>:</strong>	<%= item.funcionario.pessoa.nome %></p>
+						<% end %>
+
+						<% if @vazao_agua.vazao_agua_funcionarios.blank? %>
+							<p>Não foram informados funcionários para este registro.</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Documentos/Arquivos</h3>
+				  </div>
+					<div class="panel-body">
+						<% @vazao_agua.arquivos.each_with_index do |item, i| %>
+							<p><strong><%= i+1 %>:</strong>	<%= link_to(item.upload_file_name, item.upload.url, target: :_blank) %></p>
+						<% end %>
+						
+						<% if @vazao_agua.arquivos.blank? %>
+							<p>Não existem arquivos ou documentos para este registro.</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

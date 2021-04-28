@@ -1,0 +1,15 @@
+<h2>
+	Editar Usuário <%= @casein_admin_user.login %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Usuários".html_safe, casein_admin_users_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "zoom-in"}Visualizar".html_safe, casein_admin_user_path(@casein_admin_user), class: "pull-right" %>
+</h2>
+
+<%= form_for @casein_admin_user, :url => casein_admin_user_path(@casein_admin_user) do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/admin_users/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

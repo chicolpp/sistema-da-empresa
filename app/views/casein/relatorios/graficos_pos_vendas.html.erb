@@ -1,0 +1,476 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="row dashboard">
+  <% @pos_vendas_perfuracao = PerfuracaoPosvenda.all %>
+  <% if @pos_vendas_perfuracao.present? %>
+    <div class="col-xs-12 col-md-6" style="margin-bottom: 30px;">
+      <h2>PESQUISA DE SATISFAÇÃO DOS CONSUMIDORES - PERFURAÇÃO</h2>
+      
+      <div class="row">
+        <div id="columnchart1" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart3" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart4" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart5" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart6" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart7" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart8" style="width:33%;height:250px;float:left;"></div>
+      </div>
+    </div>
+    <% unless @pos_vendas_perfuracao.where(pergunta1: [0, 1, 2, 3, 4, 5, 10]).blank? %>
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Internet',     <%= @pos_vendas_perfuracao.where(pergunta1: 0).count %>],
+            ['Rádio',        <%= @pos_vendas_perfuracao.where(pergunta1: 1).count %>],
+            ['Jornais',      <%= @pos_vendas_perfuracao.where(pergunta1: 2).count %>],
+            ['TV',           <%= @pos_vendas_perfuracao.where(pergunta1: 3).count %>],
+            ['Outdoor',      <%= @pos_vendas_perfuracao.where(pergunta1: 4).count %>],
+            ['Indicação',    <%= @pos_vendas_perfuracao.where(pergunta1: 5).count %>],
+            ['Outros',       <%= @pos_vendas_perfuracao.where(pergunta1: 10).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Como Conheceu?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart1'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta2: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',       <%= @pos_vendas_perfuracao.where(pergunta2: 0).count %>],
+            ['Não',       <%= @pos_vendas_perfuracao.where(pergunta2: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Satisfação'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta3: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',       <%= @pos_vendas_perfuracao.where(pergunta3: 0).count %>],
+            ['Não',       <%= @pos_vendas_perfuracao.where(pergunta3: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Recebeu Documentação?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart3'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta4: [1, 2, 3, 4, 5]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Ótimo',     <%= @pos_vendas_perfuracao.where(pergunta4: 5).count %>],
+            ['Bom',       <%= @pos_vendas_perfuracao.where(pergunta4: 4).count %>],
+            ['Regular',   <%= @pos_vendas_perfuracao.where(pergunta4: 3).count %>],
+            ['Ruim',      <%= @pos_vendas_perfuracao.where(pergunta4: 2).count %>],
+            ['Péssimo',   <%= @pos_vendas_perfuracao.where(pergunta4: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Atendimento na Obra'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart4'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta5: [1, 2, 3, 4, 5]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Ótimo',     <%= @pos_vendas_perfuracao.where(pergunta5: 5).count %>],
+            ['Bom',       <%= @pos_vendas_perfuracao.where(pergunta5: 4).count %>],
+            ['Regular',   <%= @pos_vendas_perfuracao.where(pergunta5: 3).count %>],
+            ['Ruim',      <%= @pos_vendas_perfuracao.where(pergunta5: 2).count %>],
+            ['Péssimo',   <%= @pos_vendas_perfuracao.where(pergunta5: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Atendimento Vendedor'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart5'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta6: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',       <%= @pos_vendas_perfuracao.where(pergunta6: 0).count %>],
+            ['Não',       <%= @pos_vendas_perfuracao.where(pergunta6: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Orientado sobre Preventiva?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart6'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta7: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',       <%= @pos_vendas_perfuracao.where(pergunta7: 0).count %>],
+            ['Não',       <%= @pos_vendas_perfuracao.where(pergunta7: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Recebeu Telefone do 24 horas?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart7'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_perfuracao.where(pergunta8: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',       <%= @pos_vendas_perfuracao.where(pergunta8: 0).count %>],
+            ['Não',       <%= @pos_vendas_perfuracao.where(pergunta8: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#2f3590'],
+            title: 'Contrataria Novamente?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart8'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+  
+  <% else %>
+    <div class="col-xs-12 col-md-6" style="margin-bottom: 30px;">
+      <h2>PESQUISA DE SATISFAÇÃO DOS CONSUMIDORES - PERFURAÇÃO</h2>
+      <p>Não existem registros de pesquisas para este vendedor.</p>
+    </div>
+  <% end %>
+
+  <% @pos_vendas_assistencia = AssistenciaPosvenda.all %>
+  <% if @pos_vendas_assistencia.present? %>
+    <div class="col-xs-12 col-md-6" style="margin-bottom: 30px;">
+      <h2>PESQUISA DE SATISFAÇÃO DOS CONSUMIDORES - ASSISTENCIA TÉCNICA</h2>
+      <div class="row">
+        <div id="columnchart1-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart2-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart3-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart4-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart5-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart6-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart7-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart8-V2" style="width:33%;height:250px;float:left;"></div>
+        <div id="columnchart9-V2" style="width:33%;height:250px;float:left;"></div>
+      </div>
+    </div>
+    <% unless @pos_vendas_assistencia.where(pergunta1: [0, 1, 2, 3, 4, 5, 10]).blank? %>
+      <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Internet',     <%= @pos_vendas_assistencia.where(pergunta1: 0).count %>],
+            ['Rádio',        <%= @pos_vendas_assistencia.where(pergunta1: 1).count %>],
+            ['Jornais',      <%= @pos_vendas_assistencia.where(pergunta1: 2).count %>],
+            ['TV',           <%= @pos_vendas_assistencia.where(pergunta1: 3).count %>],
+            ['Outdoor',      <%= @pos_vendas_assistencia.where(pergunta1: 4).count %>],
+            ['Indicação',    <%= @pos_vendas_assistencia.where(pergunta1: 5).count %>],
+            ['Outros',       <%= @pos_vendas_assistencia.where(pergunta1: 10).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Como Conheceu?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart1-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta2: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',     <%= @pos_vendas_assistencia.where(pergunta2: 0).count %>],
+            ['Não',     <%= @pos_vendas_assistencia.where(pergunta2: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Satisfação'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart2-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta3: [1, 2, 3, 4, 5]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Ótimo',     <%= @pos_vendas_assistencia.where(pergunta3: 5).count %>],
+            ['Bom',       <%= @pos_vendas_assistencia.where(pergunta3: 4).count %>],
+            ['Regular',   <%= @pos_vendas_assistencia.where(pergunta3: 3).count %>],
+            ['Ruim',      <%= @pos_vendas_assistencia.where(pergunta3: 2).count %>],
+            ['Péssimo',   <%= @pos_vendas_assistencia.where(pergunta3: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Importância da Preventiva?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart3-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta4: [1, 2, 3, 4, 5]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Ótimo',     <%= @pos_vendas_assistencia.where(pergunta4: 5).count %>],
+            ['Bom',       <%= @pos_vendas_assistencia.where(pergunta4: 4).count %>],
+            ['Regular',   <%= @pos_vendas_assistencia.where(pergunta4: 3).count %>],
+            ['Ruim',      <%= @pos_vendas_assistencia.where(pergunta4: 2).count %>],
+            ['Péssimo',   <%= @pos_vendas_assistencia.where(pergunta4: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Rapidez no Atendimento'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart4-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta5: [1, 2, 3, 4, 5]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Ótimo',     <%= @pos_vendas_assistencia.where(pergunta5: 5).count %>],
+            ['Bom',       <%= @pos_vendas_assistencia.where(pergunta5: 4).count %>],
+            ['Regular',   <%= @pos_vendas_assistencia.where(pergunta5: 3).count %>],
+            ['Ruim',      <%= @pos_vendas_assistencia.where(pergunta5: 2).count %>],
+            ['Péssimo',   <%= @pos_vendas_assistencia.where(pergunta5: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Atendimento na Obra'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart5-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta6: [1, 2, 3, 4, 5]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Ótimo',     <%= @pos_vendas_assistencia.where(pergunta6: 5).count %>],
+            ['Bom',       <%= @pos_vendas_assistencia.where(pergunta6: 4).count %>],
+            ['Regular',   <%= @pos_vendas_assistencia.where(pergunta6: 3).count %>],
+            ['Ruim',      <%= @pos_vendas_assistencia.where(pergunta6: 2).count %>],
+            ['Péssimo',   <%= @pos_vendas_assistencia.where(pergunta6: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Atendimento Vendedor'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart6-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta7: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',     <%= @pos_vendas_assistencia.where(pergunta7: 0).count %>],
+            ['Não',     <%= @pos_vendas_assistencia.where(pergunta7: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Orientado sobre Preventiva?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart7-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta8: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',       <%= @pos_vendas_assistencia.where(pergunta8: 0).count %>],
+            ['Não',       <%= @pos_vendas_assistencia.where(pergunta8: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Recebeu Telefone do 24 horas?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart8-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+
+    <% unless @pos_vendas_assistencia.where(pergunta9: [0, 1]).blank? %>
+      <script type="text/javascript">
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ['Descrição', 'Quantidade'],
+            ['Sim',     <%= @pos_vendas_assistencia.where(pergunta9: 0).count %>],
+            ['Não',     <%= @pos_vendas_assistencia.where(pergunta9: 1).count %>]
+          ]);
+
+          var options = {
+            legend: {position: 'none'},
+            colors: ['#337ab7'],
+            title: 'Contrataria Novamente?'
+          };
+
+          var chart = new google.visualization.ColumnChart(document.getElementById('columnchart9-V2'));
+
+          chart.draw(data, options);
+        }
+      </script>
+    <% end %>
+  <% else %>
+    <div class="col-xs-12 col-md-6" style="margin-bottom: 30px;">
+      <h2>PESQUISA DE SATISFAÇÃO DOS CONSUMIDORES - ASSISTENCIA TÉCNICA</h2>
+      <p>Não existem registros de pesquisas para este vendedor.</p>
+    </div>
+  <% end %>
+</div>
+<br>
+
+<% @pos_vendas_perfuracao = PerfuracaoPosvenda.all %>
+<% @pos_vendas_assistencia = AssistenciaPosvenda.all %>
+
+<%= render 'casein/dashboard/user_scripts_graficos', pos_vendas: @pos_vendas_perfuracao, type: "perfuracao" %>
+<%= render 'casein/dashboard/user_scripts2_graficos', pos_vendas: @pos_vendas_assistencia, type: "assistencia-tecnica" %>

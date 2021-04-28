@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bem Vindo(a) à <%= casein_config_website_name %></title>
+    <%= stylesheet_link_tag "casein/login" %>
+    <%= stylesheet_link_tag "casein/custom" %>
+		<%= javascript_include_tag "casein/casein" %>
+		<%= csrf_meta_tag %>
+
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <%= javascript_include_tag("casein/html5shiv") %>
+    <![endif]-->
+  </head>
+
+  <body class="login-body">
+  	<nav class="navbar navbar-default" role="navigation" style="border-bottom: none !important;min-height: 30px !important">
+  		<div class="container">
+  			<!-- Brand and toggle get grouped for better mobile display -->
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+					<%= link_to(image_tag(casein_config_logo, :alt => casein_config_website_name, class: "navbar-brand"), "https://www.materiaguas.com.br", target: :_blank) %>
+  			</div>
+  			<div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-right hidden-xs hidden-sm hidden-md">
+            <li>
+              <%= link_to(image_tag("selo.png"), "https://www.materiaguas.com.br", class: "navbar-brand-right", target: :_blank) %>
+            </li>
+          </ul>
+        </div>
+  		</div>
+  	</nav>
+		<div id="carousel-login" class="carousel slide" data-ride="carousel" style="background-image: url('<%= image_path('slide.jpg') %>');">
+			<div class="item active" align="right">
+				<div class="container">
+					<div class="carousel-caption">
+						<div class="jumbotron">
+							<%= yield %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    <footer class="container-fluid author">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Desenvolvido por <%= link_to("www.twoweb.com.br", "http://www.twoweb.com.br", target: "_blank") %></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

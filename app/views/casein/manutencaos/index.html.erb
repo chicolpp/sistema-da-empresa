@@ -1,0 +1,6 @@
+<h2>
+	<%= @casein_page_title %>
+	<%= link_to "#{casein_show_icon "plus-sign"}Nova Manutenção".html_safe, new_casein_manutencao_path, class: "pull-right" if can? :new, Manutencao %>
+</h2>
+
+<%= render :partial => 'casein/manutencaos/table' %>

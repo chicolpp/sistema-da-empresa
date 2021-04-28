@@ -1,0 +1,15 @@
+<h2>
+	Cadastrar Instalação
+	<%= link_to "#{casein_show_icon "th-list"}Listar Instalações".html_safe, casein_instalacoes_path, class: "pull-right" %>
+</h2>
+
+<%= form_for @instalacao, :url => casein_instalacoes_path do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/instalacoes/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= link_to "Voltar", edit_casein_vazao_agua_path(id: params[:vazao_agua]), :class => "btn btn-warning" if params[:vazao_agua].present? %>
+		<%= f.submit "Finalizar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

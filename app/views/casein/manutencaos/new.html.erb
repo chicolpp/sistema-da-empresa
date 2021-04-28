@@ -1,0 +1,14 @@
+<h2>
+	Cadastrar Manutenção
+	<%= link_to "#{casein_show_icon "th-list"}Listar Perfurações".html_safe, casein_manutencaos_path, class: "pull-right" if can? :index, Manutencao %>
+</h2>
+
+<%= form_for @manutencao, :url => casein_manutencaos_path do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/manutencaos/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

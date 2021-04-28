@@ -1,0 +1,3 @@
+$("#produto_id").select2("val", '');
+$("#produto_id").focus();
+$(".tabela").html("<%= escape_javascript(render partial: 'casein/manutencao_produtos/table', locals: { manutencao_produtos: @manutencao.manutencao_produtos } ) %>");

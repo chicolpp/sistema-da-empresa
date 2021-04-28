@@ -1,0 +1,6 @@
+$("<%= @target %>").empty();
+// $("<%= @target %>").append("<option></option>");
+
+<% @cidades.each do |item|  %>
+  $("<%= @target %>").append("<option value=<%= item.id %> > <%= j item.nome %> </option>");
+<% end %>

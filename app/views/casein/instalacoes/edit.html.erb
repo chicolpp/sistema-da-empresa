@@ -1,0 +1,16 @@
+<h2>
+	Editar Instalação
+	<%= link_to "#{casein_show_icon "th-list"}Listar Instalação".html_safe, casein_instalacoes_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "zoom-in"}Visualizar".html_safe, casein_instalacao_path(@instalacao), class: "pull-right" %>
+</h2>
+
+<%= form_for @instalacao, :url => casein_instalacao_path(@instalacao) do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/instalacoes/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= link_to "Voltar", edit_casein_vazao_agua_path(params[:vazao_agua]), :class => "btn btn-warning" if params[:vazao_agua].present? %>
+		<%= f.submit "Salvar Alterações", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

@@ -1,0 +1,33 @@
+<div class="div-tabela-total col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="div-titulo col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+      <%= image_tag("materiaguas.png", :class => "img-responsive") %>
+    </div>
+    <div class="div-titulo-topo col-xs-12 col-sm-12 col-md-8 col-lg-8" align="center">
+      <p class="titulo"><%= ENV['COMPANY_NAME'] %></p>
+      <p class="desc">BOMBAS SUBMERSAS - ASSISTENCIA TÉCNICA - SONDAGENS DE SOLO</p>
+      <p class="subtitulo">FONE/FAX - <%= ENV['COMPANY_CITY'] %>, <%= ENV['CONTACT_PHONE'] %></p>
+      <p class="subtitulo">CNPJ: <%= ENV['COMPANY_CNPJ'] %></p>
+    </div>
+  </div>
+  <div class="div-solicitacao-total col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+    <p class="subtitulo">RELATORIO POR INSTALAÇÃO</p>
+  </div>
+  <div class="div-table col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <% @instalacoes.each do |instalacao| %>
+      <p>Cliente: <b></b><%= instalacao.try(:poco).try(:cliente).try(:pessoa).try(:nome) %></p>
+      <p>Acesso ao Poço: <b></b><%= instalacao.acesso ? "Sim" : "Não" %></p>
+      <p>Guincho Manual: <b></b><%= instalacao.guincho ? "Sim" : "Não" %></p>
+      <p>Profundidade da Bomba: <b></b><%= instalacao.profundidade_bomba %></p>
+      <p>Vazão da Bomba<b></b><%= instalacao.vazao_bomba %></p>
+      <p>Nivel Dinâmico: <b></b><%= instalacao.nivel_dinamico %></p>
+      <p>Perca de Carga: <b></b><%= instalacao.perca_carga %></p>
+      <p>Altura Nanométrica: <b></b><%= instalacao.altura_nanometrica %></p>
+      <p>Desnível: <b></b><%= instalacao.desnivel %></p>
+      <p>Nível Estático: <b></b><%= instalacao.nivel_estatico %></p>
+      <p>Distância do Poço até a Caixa: <b></b><%= instalacao.distancia_poco_caixa %></p>
+      <p>Possui Instalação: <b></b><%= instalacao.possui_instalacao ? "Sim" : "Não" %></p>
+      <hr>
+    <% end %>
+  </div>
+</div>

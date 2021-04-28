@@ -1,0 +1,150 @@
+$minXS: 1px
+$maxXS: 767px
+
+$minSM: 768px
+$maxSM: 991px
+
+$minMD: 992px
+$maxMD: 1199px
+
+$minLG: 1200px
+
+@mixin backgroundImagem($path)
+	background-image: asset-url($path) !important
+	background-size: 100% !important
+	background-repeat: no-repeat
+
+
+// Arredondar Bordas
+@mixin setBorderRadius($radius)
+	-webkit-box-sizing: $radius
+	-moz-box-sizing: $radius
+	box-sizing: $radius
+	border-radius: $radius
+
+//Animação
+@mixin setAnimation($vlr)
+	animation: $vlr
+	-webkit-animation: $vlr
+	-moz-animation: $vlr
+	-o-animation: $vlr
+	-ms-animation: $vlr
+	-khtml-animation: $vlr
+
+
+// Transformação
+@mixin setTransform($vlr)
+	-webkit-transform: $vlr
+	-moz-transform: $vlr
+	-ms-transform: $vlr
+	-o-transform: $vlr
+	transform: $vlr
+
+
+// Transição
+@mixin setTransition($time)
+	-khtml-transition:  $time !important
+	-moz-transition:  $time !important
+	-ms-transition:  $time !important
+	-o-transition:  $time !important
+	transition: $time !important
+	-webkit-transition:  $time !important
+
+
+// Sombra em Objetos
+@mixin setBoxShadow($content)
+	box-shadow: $content !important
+	-moz-box-shadow: $content !important
+	-webkit-box-shadow: $content !important
+
+// Sombra no Texto
+@mixin setTextShadow($content)
+	text-shadow: $content !important
+	-moz-text-shadow: $content !important
+	-webkit-text-shadow: $content !important
+
+
+/* ZERAR-PADDING */
+@mixin zerar-padding-all
+	padding: 0px
+
+@mixin zerar-padding-top
+	padding-top: 0px
+
+@mixin zerar-padding-left
+	padding-left: 0px
+
+@mixin zerar-padding-right
+	padding-right: 0px
+
+@mixin zerar-padding-bottom
+	padding-bottom: 0px
+
+
+/* ZERAR-MARGIN */
+@mixin zerar-margin-all
+	margin: 0px
+
+@mixin zerar-margin-top
+	margin-top: 0px
+
+@mixin zerar-margin-left
+	margin-left: 0px
+
+@mixin zerar-margin-right
+	margin-right: 0px
+
+@mixin zerar-margin-bottom
+	margin-bottom: 0px
+
+
+//funções de layouts
+@mixin ajusteEfeito($valor,$tam,$img)
+	padding: 0
+	margin: 0
+	height: $tam
+	position: relative
+	top: $valor
+	z-index: 99999
+	background: url($img) no-repeat
+
+
+@mixin efeitosMenu($cor)
+	.circle-navtab
+		padding-left: 10px
+		color: $cor
+	.nav-tabs
+		margin-bottom: 30px
+		border: 0
+		li
+			padding: 0
+			display: block !important
+			width: 100%
+			text-align: left
+			/* border-left: 2px solid $branco */
+			background: transparent
+			color: $amareloFraco
+
+			a
+				display: block !important
+				text-align: left
+				font-size: 21px
+				font-weight: 700
+				border: 0 !important
+				background: transparent
+				color: $amareloFraco
+				@include fontePadrao
+
+				&:hover
+					color: $laranja
+		.active
+			a
+				color: $laranja !important
+
+				.circle-navtab
+					color: $laranja
+					font-size: 15px
+
+	.iframe-facebook
+		margin-top: 20px
+		background: $branco !important

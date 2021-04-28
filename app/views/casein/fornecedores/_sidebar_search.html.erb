@@ -1,0 +1,10 @@
+<%= form_tag(casein_fornecedores_path, method: :get, role: :form) do %>
+	<legend>Filtros</legend>
+
+	<div class="form-group">
+		<%= label_tag :nome, "Nome", class: "control-label" %>
+		<%= text_field_tag :nome, params[:nome], class: "form-control", autofocus: true %>
+	</div>
+
+	<%= submit_tag "Filtrar", class: "btn btn-primary" %>
+<% end -%>

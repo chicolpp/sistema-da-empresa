@@ -1,0 +1,17 @@
+pt-BR:
+  clientes:
+    new:
+      titulo: "Adicionar Cliente"
+    create:
+      sucesso: "O Cliente %{nome} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Cliente, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Cliente"
+    update:
+      titulo: "Cliente"
+      sucesso: "O Cliente %{nome} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Cliente, verifique os dados e tente novamente!"
+    index:
+      titulo: "Cadastro de Clientes"
+    destroy:
+      sucesso: "O Cliente foi apagado com Sucesso!"

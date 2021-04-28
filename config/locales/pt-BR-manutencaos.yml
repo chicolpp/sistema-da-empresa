@@ -1,0 +1,19 @@
+pt-BR:
+  manutencaos:
+    new:
+      titulo: "Adicionar Manutenção"
+    create:
+      sucesso: "A Manutenção no poço %{id} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Manutenção, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Manutenção"
+    update:
+      sucesso: "A Manutenção no poço %{id} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Manutenção, verifique os dados e tente novamente!"
+    index:
+      titulo: "Manutenções"
+    destroy:
+      sucesso: "A Manutenção foi apagada com Sucesso!"
+    alerta_email_vendedor:
+      sucesso: "Email enviado com sucesso!"
+      alerta: "Nenhum vendedor vinculado a esse poço!"

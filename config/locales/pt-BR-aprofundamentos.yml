@@ -1,0 +1,17 @@
+pt-BR:
+  aprofundamentos:
+    new:
+      titulo: "Adicionar Aprofundamento"
+    create:
+      sucesso: "O Aprofundamento da data %{data_inicio} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Aprofundamento, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Aprofundamento"
+    update:
+      titulo: "Aprofundamento"
+      sucesso: "O Aprofundamento da data %{data_inicio} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Aprofundamento, verifique os dados e tente novamente!"
+    index:
+      titulo: "Aprofundamentos"
+    destroy:
+      sucesso: "O Aprofundamento foi apagado com Sucesso!"

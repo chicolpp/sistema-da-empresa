@@ -1,0 +1,91 @@
+<table class="table table-striped table-bordered datatable" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome do Poço</th>
+      <th>Linha</th>
+      <th>Apelido</th>
+      <th>Tipo</th>
+      <th>Último Serviço</th>
+      <th>Data</th>
+      <th>Arquivos</th>
+      <th data-orderable="false">&nbsp;</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% manutencaos.each do |manutencao| %>
+      <tr>
+        <td><%= casein_table_cell_link manutencao.id, casein_manutencao_path(manutencao) %></td>
+        <td><%= casein_table_cell_link manutencao.poco.cliente.pessoa.nome, casein_manutencao_path(manutencao) %></td>
+        <td><%= casein_table_cell_link manutencao.poco.linha_endereco, casein_manutencao_path(manutencao) %></td>
+        <td><%= casein_table_cell_link manutencao.poco.apelido_endereco, casein_manutencao_path(manutencao) %></td>
+        <td><%= casein_table_cell_link manutencao.servico.descricao, casein_manutencao_path(manutencao) %></td>
+        <td><%= casein_table_cell_link manutencao.manutencao_servicos.last.try(:tipo).blank? ? "" : get_tipo_manutencao_servico(manutencao.manutencao_servicos.last.try(:tipo)).to_s + ": " + manutencao.manutencao_servicos.last.try(:descricao).to_s.truncate(50), casein_manutencao_path(manutencao) %></td>
+        <td><%= casein_table_cell_link manutencao.manutencao_servicos.last.try(:data_servico).blank? ? "" : l(manutencao.manutencao_servicos.last.try(:data_servico)), casein_manutencao_path(manutencao) %></td>
+        <td>
+          <a data-toggle="modal" data-target="#manutencao-<%=manutencao.id%>">
+            Ver/Enviar
+          </a>
+        </td>
+        <td>
+          <%= link_to(casein_show_row_icon("check"), casein_atualizar_status_path(manutencao_id: manutencao.id), class: "icon-table") %>
+          <%= link_to(casein_show_row_icon("zoom-in"), casein_manutencao_path(manutencao), class: "icon-table") %>
+          <%= link_to(casein_show_row_icon("edit"), edit_casein_manutencao_path(manutencao), class: "icon-table") %>
+          <%= link_to(casein_show_row_icon("trash"), casein_manutencao_path(manutencao), class: "icon-table", :method => :delete, :data => { :confirm => "Você tem certeza que deseja apagar este registro?" }) %>
+        </td>
+      </tr>
+
+    <% end %>
+  </tbody>
+</table>
+
+<% manutencaos.each do |manutencao| %>
+
+  <div class="modal fade" id="manutencao-<%=manutencao.id%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="margin-left: -20%;width: 140%;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Em Andamento <%= manutencao.id %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <%= form_for '', url: casein_new_arquivo_path, remote: true, multipart: true do |f| %>
+            <%= hidden_field_tag :id, manutencao.id %>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-addon" id="addon-upload">Arquivo</span>
+                  <%= f.file_field :upload, class: "form-control", "aria-describedby" => "addon-upload" %>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-addon" id="addon-upload">Nome</span>
+                  <%= f.text_field :nome, class: "form-control", "aria-describedby" => "addon-upload" %>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="margin-top: 30px">
+              <% manutencao.arquivos.each_with_index do |item, i| %>
+                <% if item.upload_content_type.to_s != "image/png" && item.upload_content_type.to_s != "image/jpeg" && item.upload_content_type.to_s != "image/jpg" %>
+                  <div class="col-lg-2">
+                    <div class="input-group">
+                      <span style="border: 1px solid #cccccc !important;" class="input-group-addon" id="addon-upload"><%= link_to item.nome.present? ? item.nome : item.upload_file_name, item.upload.url, target: :_blank %></span>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

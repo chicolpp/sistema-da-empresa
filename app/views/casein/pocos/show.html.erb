@@ -1,0 +1,178 @@
+<h2>
+	Visualizar Poço: <%= @poco.nome_intuitivo %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Poços".html_safe, casein_pocos_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_poco_path(@poco), class: "pull-right" %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Dados Básicos</h3>
+				  </div>
+					<div class="panel-body">
+						<p><strong>Código:</strong>	<%= @poco.id %></p>
+						<p><strong>Número do Processo:</strong>	<%= @poco.numero_processo %></p>
+						<p><strong>Poço Produtivo?</strong>	<%= @poco.poco_produtivo ? "Sim" : "Não" %></p>
+						<p><strong>Perfuração Materiáguas?</strong>	<%= @poco.perfuracao_leao ? "Sim" : "Não" %></p>
+						<p><strong>Cliente:</strong>	<%= link_to @poco.cliente.pessoa.nome, casein_pessoa_path(@poco.cliente), target: :_blank %></p>
+						<p><strong>Linha:</strong>	<%= @poco.linha_endereco %></p>
+						<p><strong>Apelido:</strong>	<%= @poco.apelido_endereco %></p>
+						<p><strong>Cidade - UF:</strong>	<%= @poco.cidade.get_nome_completo %></p>
+            <% unless @poco.periodo_manutencao.blank? %>
+              <p><strong>Período de Manutenção:</strong> A cada <%= @poco.periodo_manutencao %> anos</p>
+            <% end %>
+						<% unless @poco.observacao.blank? %>
+							<p><strong>Observação:</strong>	<%= @poco.observacao %></p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Revestimentos do Poço</h3>
+				  </div>
+					<div class="panel-body">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Quantidade</th>
+									<th>Tipo de Revestimento</th>
+									<th>Polegadas</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% @poco.revestimento_pocos.each do |item| %>
+									<tr>
+										<td style="padding:8px !important;"><%= item.quantidade %></td>
+										<td style="padding:8px !important;"><%= item.tipo_revestimento.try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.polegadas %></td>
+									</tr>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Entradas de Água</h3>
+				  </div>
+					<div class="panel-body">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>É um Aprofundamento?</th>
+									<th>Metragem</th>
+									<th>Vazão Aproximada</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% vazao_total = 0 %>
+								<% @poco.entradas_agua.each do |item| %>
+									<% vazao_total += item.vazao_aproximada.gsub(".", "").gsub(",", ".").to_f %>
+									<tr>
+										<td style="padding:8px !important;"><%= item.aprofundamento.blank? ? "Não" : "Sim" %></td>
+										<td style="padding:8px !important;"><%= number_with_precision(item.metragem, precision: 2) %></td>
+										<td style="padding:8px !important;"><%= number_with_precision(item.vazao_aproximada, precision: 2) %></td>
+									</tr>
+								<% end %>
+								<tr style="background: gray;color:white;">
+									<td style="padding:8px !important;font-weight: bold;">TOTAL</td>
+									<td style="padding:8px !important;font-weight: bold;"></td>
+									<td style="padding:8px !important;font-weight: bold;"><%= number_with_precision(vazao_total, precision: 2) %></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Documentos/Arquivos</h3>
+				  </div>
+					<div class="panel-body">
+						<% @poco.arquivos.each_with_index do |item, i| %>
+							<p><strong><%= i+1 %>:</strong>	<%= link_to(item.upload_file_name, item.upload.url, target: :_blank) %></p>
+						<% end %>
+
+						<% if @poco.arquivos.blank? %>
+							<p>Não existem arquivos ou documentos para este registro.</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Dados da Perfuração</h3>
+				  </div>
+					<div class="panel-body">
+						<% if @poco.perfuracao.blank? %>
+							<p><strong>Profundidade:</strong>	<%= @poco.profundidade %></p>
+						<% end %>
+						<% unless @poco.perfuracao.blank? %>
+							<p><strong>Data Perfuração - Início:</strong>	<%= l(@poco.perfuracao.try(:data_perfuracao_inicio)) %></p>
+							<p><strong>Data Perfuração - Fim:</strong>	<%= l(@poco.perfuracao.try(:data_perfuracao_fim)) %></p>
+							<p><strong>Profundidade:</strong>	<%= @poco.perfuracao.try(:profundidade) %></p>
+							<p><strong>Máquina:</strong>	<%= @poco.perfuracao.maquina.try(:descricao) %></p>
+							<p><strong>Bitola:</strong>	<%= @poco.perfuracao.bitola.try(:descricao) %></p>
+						<% end %>
+						<% unless @poco.coordenada.blank? %>
+							<p><strong>Ponto A - Latitude:</strong> <%= @poco.coordenada.try(:latitude) %></p>
+							<p><strong>Ponto A - Longitude:</strong> <%= @poco.coordenada.try(:longitude) %></p>
+							<p><strong>Zona:</strong>	<%= @poco.coordenada.try(:zona) %></p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Equipe de Perfuração</h3>
+				  </div>
+					<div class="panel-body">
+						<% unless @poco.perfuracao.blank? %>
+							<% @poco.perfuracao.perfuracao_funcionarios.each_with_index do |item, i| %>
+								<p><strong><%= i+1 %>:</strong>	<%= item.funcionario.pessoa.nome %></p>
+							<% end %>
+							<% if @poco.perfuracao.perfuracao_funcionarios.blank? %>
+								<p>Não foram informados funcionários para a equipe de perfuração.</p>
+							<% end %>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Mapa do Local</h3>
+				  </div>
+					<div class="panel-body">
+						<% if @poco.coordenada.try(:latitude) %>
+							<%= link_to "Exibir Rota até o Local (#{@poco.coordenada.latitude},#{@poco.coordenada.longitude})","https://www.google.com/maps/dir/#{ENV['GOOGLE_MAPS_ORIGIN']}/#{@poco.coordenada.try(:latitude)},#{@poco.coordenada.try(:longitude)}",class: "icon-table pull-left",target: :_blank %>
+							<iframe
+								src="https://www.google.com/maps/embed/v1/directions?key=<%= ENV['GOOGLE_MAPS_KEY'] %>&origin=<%= ENV['GOOGLE_MAPS_ORIGIN'] %>&destination=<%= @poco.coordenada.try(:latitude) %>,<%= @poco.coordenada.try(:longitude) %>"
+								width="100%" height="300"
+								frameborder="0"
+								style="border:0;margin-top:10px;"
+								allowfullscreen>
+							</iframe>
+						<% else %>
+          		<p>Você precisa informar a latitude/longitude para exibir o mapa.</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

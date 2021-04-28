@@ -1,0 +1,17 @@
+pt-BR:
+  servicos:
+    new:
+      titulo: "Adicionar Serviço"
+    create:
+      sucesso: "O Serviço %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Serviço, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Serviço"
+    update:
+      titulo: "Serviço"
+      sucesso: "O Serviço %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Serviço, verifique os dados e tente novamente!"
+    index:
+      titulo: "Serviços"
+    destroy:
+      sucesso: "O Serviço foi apagado com Sucesso!"

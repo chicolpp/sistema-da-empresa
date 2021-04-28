@@ -1,0 +1,16 @@
+pt-BR:
+  unidades_medidas:
+    new:
+      titulo: "Adicionar Unidade de Medida"
+    create:
+      sucesso: "A Unidade de Medida %{descricao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Unidade de Medida, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Unidade de Medida"
+    update:
+      sucesso: "A Unidade de Medida %{descricao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Unidade de Medida, verifique os dados e tente novamente!"
+    index:
+      titulo: "Unidades de Medidas"
+    destroy:
+      sucesso: "A Unidade de Medida foi apagada com Sucesso!"

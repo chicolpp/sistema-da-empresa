@@ -1,0 +1,16 @@
+pt-BR:
+  pessoas:
+    new:
+      titulo: "Adicionar Pessoa"
+    create:
+      sucesso: "A Pessoa %{nome} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Pessoa, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Pessoa"
+    update:
+      sucesso: "A Pessoa %{nome} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Pessoa, verifique os dados e tente novamente!"
+    index:
+      titulo: "Pessoas"
+    destroy:
+      sucesso: "A Pessoa foi apagada com Sucesso!"

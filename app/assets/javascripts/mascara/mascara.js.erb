@@ -1,0 +1,186 @@
+var TwMask = {
+	setup: function(){
+		jQuery("[data-masker=true]").not('.mask-applied').each(function(index, el) {
+			var $el = jQuery(el);
+			var type = $el.data('type');
+			var size = parseFloat($el.data('size'));
+			var addon = $el.data('addon');
+			var addin = $el.data('addin');
+			var old_id = $el.attr('id');
+			var new_id = old_id+$.now().toString();
+			// é necessário mudar o id dos elementos, pois em alguns casos de duplicação
+			// de valores, o id fica o mesmo, então pode ocorrer conflito de mascara se não mudar os IDS
+			jQuery("label[for='"+old_id+"']:first").attr('for', new_id);
+			$el.attr('id', new_id);
+			$el.addClass('mask-applied');
+			TwMask.apply($el, type, size, addon, addin)
+		});
+	},
+	apply: function(el, type, size, addon, addin){
+		var $el = $(el);
+		if(addon){
+			TwMask.applyAddon($el, addon);
+		}
+
+		if(addin){
+			TwMask.applyAddin($el, addin);
+		}
+
+		switch (type) {
+			case "f":
+				size > 0 ? TwMask.applyFloat($el, size) : TwMask.applyFloatNotSize($el);
+			break;
+			case "i":
+				TwMask.applyInt($el, size);
+			break;
+			case "d":
+				TwMask.applyDate($el);
+			break;
+			case "dh":
+				TwMask.applyDate($el);
+			break;
+			case "h":
+				TwMask.applyHour($el);
+			break;
+			case "regex":
+				TwMask.applyRegex($el);
+			break;
+			default:
+				TwMask.remove($el);
+			break;
+		}
+	},
+	applyRegex: function(el){
+		var regex = el.data('regex'),
+		placeholder = el.data('placeholder') || '',
+		opt_regex = el.data('optregex') || {
+			reverse: false,
+			'translation': {
+				A: {pattern: /[A-Za-z0-9]/},
+				S: {pattern: /[A-Za-z]/},
+				N: {pattern: /[0-9]/}
+			}
+		};
+		el.mask(regex, opt_regex);
+		el.attr('placeholder',placeholder);
+
+	},
+	applyAddon: function(el, addon){
+		var $el = jQuery(el);
+		if($($el).parent().attr('class') != 'input-group'){
+			$($el).wrap( "<div class='input-group'></div>" );
+			$($el).parents('.input-group:first').append(' <span class="input-group-addon">'+addon+'</span>');
+		}
+	},
+	applyAddin: function(el, addin){
+		var $el = jQuery(el);
+		if($($el).parent().attr('class') != 'input-group'){
+			$($el).wrap( "<div class='input-group'></div>" );
+			$($el).parents('.input-group:first').prepend(' <span class="input-group-addon">'+addin+'</span>');
+		}
+	},
+	applyFloat: function(el, size){
+		var placeholder = el.attr('placeholder') || false;
+		if(size){
+			var val_decimal = ''; var i = 0;
+			do{val_decimal = val_decimal+''+i+'';	i++;}while(i<size);
+			var t = parseInt(size);
+			el.maskMoney({prefix:'', allowZero: true, allowNegative: true, thousands: cfg_glob_delimiter , decimal: cfg_glob_separator, affixesStay: false, precision: t});
+			placeholder = placeholder || 'Ex: 1'+cfg_glob_delimiter+'569'+cfg_glob_separator+val_decimal;
+			el.attr('placeholder',placeholder);
+		}else{
+			TwConfig.datepicker.destroy(el);
+			placeholder = placeholder || 'Ex: 999'+cfg_glob_delimiter+'999'+cfg_glob_separator+'99*';
+			el.attr('placeholder',placeholder);
+			if(el.data('mask')){
+				el.data('mask').remove();
+			}
+			el.keyup(function(){
+				var tamanho = $(this).val().length - 1
+				var str = $(this).val().toString();
+				var vetor = str.split(cfg_glob_separator);
+				if(vetor.length > 2){
+					$(this).val(str.substring(0,tamanho));
+				}else if(vetor.length > 1 && str.charAt(tamanho) == cfg_glob_delimiter){
+					$(this).val(str.substring(0,tamanho));
+				}else{
+					$(this).val($(this).val().replace(/[^\d.,]/g, ''));
+				}
+			});
+		}
+	},
+	applyInt: function(el){
+		var placeholder = el.attr('placeholder') || 'Ex: 5';
+		el.maskMoney({prefix:'', allowZero: true, allowNegative: true, thousands:"", affixesStay: false, precision: 0});
+		el.attr('placeholder',placeholder);
+	},
+	applyHour: function(el){
+		var placeholder = el.attr('placeholder') || 'Ex: 23:59:59';
+		opt_regex = {
+			reverse: false,
+			'translation': {
+				A: {pattern: /[A-Za-z0-9]/},
+				S: {pattern: /[A-Za-z]/},
+				N: {pattern: /[0-9]/}
+			}
+		};
+		el.mask('NN:NN', opt_regex);
+		//attr('placeholder',placeholder);
+		//el.timepicker();
+	},
+	applyDate: function(el){
+		var $el = jQuery(el);
+		if($($el).parent().attr('class') != 'input-group'){
+			$($el).wrap( "<div class='input-group'></div>" );
+			$($el).parents('.input-group:first').append(' <span class="input-group-addon btn"><i class="fa fa-calendar"></i></span>');
+		}
+		TwConfig.datepicker.apply($el);
+	},
+	applyFloatNotSize: function(el){
+		TwConfig.datepicker.destroy(el);
+
+		var placeholder = el.attr('placeholder') || 'Ex: 999'+cfg_glob_delimiter+'999'+cfg_glob_separator+'99*';
+		el.attr('placeholder',placeholder);
+		if(el.data('mask')){
+			el.data('mask').remove();
+		}
+		el.keyup(function(){
+			var tamanho = $(this).val().length - 1
+			var str = $(this).val().toString();
+			var vetor = str.split(cfg_glob_separator);
+			if(vetor.length > 2){
+				$(this).val(str.substring(0,tamanho));
+			}else if(vetor.length > 1 && str.charAt(tamanho) == cfg_glob_delimiter){
+				$(this).val(str.substring(0,tamanho));
+			}else{
+				$(this).val($(this).val().replace(/[^\d.,]/g, ''));
+			}
+		});
+	},
+
+	setaTipoCheckbox: function(tag, tipo){
+		var campo_alvo = $('input[tag_id='+tag+']');
+		TwConfig.datepicker.destroy(campo_alvo);
+
+		if(tipo=='h' || tipo=='d' || tipo=='dh' || tipo=='b'){
+			campo_alvo.attr('type', 'checkbox');
+			campo_alvo.removeClass('form-control input-sm');
+			campo_alvo.val('1');
+		}else{
+			campo_alvo.attr('type', 'text');
+			campo_alvo.addClass('form-control input-sm');
+			campo_alvo.val('');
+		};
+	},
+	remove: function(elemento){
+		$el = $(elemento);
+		$el.maskMoney('destroy');
+		if($el.data('mask')){
+			$el.data('mask','');
+		}
+		$el.attr('placeholder','');
+		TwConfig.datepicker.destroy($el);
+		$el.unbind("keyup");
+		$el.removeClass('mask-applied');
+	}
+};

@@ -1,0 +1,9 @@
+#Dados do Cliente
+CLIENT_NAME: "Materiáguas Bahia Poços Artesianos - Sistema"
+CLIENT_DOMAIN_NAME: "sistema.materiaguas.com.br"
+
+#Token Secreto da Aplicação
+SECRET_TOKEN: "dac3da6b8cf9c61e2418de91fe8c1821841d300502058fa22597b45bd2890d973c0456d126225d6e74eab4e4fc9676a2821fc94ed8ad5c6e3d7d745383b475ba"
+
+#Cookies de Sessão da Aplicação
+SESSION_STORE: "_sistema_materiaguas_session"

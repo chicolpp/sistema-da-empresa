@@ -1,0 +1,16 @@
+pt-BR:
+  perfuracoes:
+    new:
+      titulo: "Adicionar Perfuração"
+    create:
+      sucesso: "A Perfuração %{data_perfuracao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Perfuração, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Perfuração"
+    update:
+      sucesso: "A Perfuração %{data_perfuracao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Perfuração, verifique os dados e tente novamente!"
+    index:
+      titulo: "Perfurações"
+    destroy:
+      sucesso: "A Perfuração foi apagada com Sucesso!"

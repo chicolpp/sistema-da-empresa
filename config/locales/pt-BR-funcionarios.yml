@@ -1,0 +1,17 @@
+pt-BR:
+  funcionarios:
+    new:
+      titulo: "Adicionar Funcionário"
+    create:
+      sucesso: "O Funcionário %{nome} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Funcionário, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Funcionário"
+    update:
+      titulo: "Funcionário"
+      sucesso: "O Funcionário %{nome} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Funcionário, verifique os dados e tente novamente!"
+    index:
+      titulo: "Funcionários"
+    destroy:
+      sucesso: "O Funcionário foi apagado com Sucesso!"

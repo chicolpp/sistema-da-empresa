@@ -1,0 +1,17 @@
+pt-BR:
+  modelo_bombas:
+    new:
+      titulo: "Adicionar Modelo de Bomba"
+    create:
+      sucesso: "O Modelo de Bomba %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Modelo de Bomba, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Modelo de Bomba"
+    update:
+      titulo: "Modelo de Bomba"
+      sucesso: "O Modelo de Bomba %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Modelo de Bomba, verifique os dados e tente novamente!"
+    index:
+      titulo: "Modelo de Bombas"
+    destroy:
+      sucesso: "O Modelo de Bomba foi apagado com Sucesso!"

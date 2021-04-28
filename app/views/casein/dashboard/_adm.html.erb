@@ -1,0 +1,221 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['bar']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Mês', 'Quantidade'],
+      <% @pocos_admin.select("count(id) as quantidade, MONTH(created_at) as mes, YEAR(created_at) as ano ").group("MONTH(created_at)").order("YEAR(created_at), MONTH(created_at)").each_with_index do |poco, i| %>
+        <% if @pocos_admin.select("count(id) as quantidade, MONTH(created_at) as mes, YEAR(created_at) as ano ").group("MONTH(created_at)").order("YEAR(created_at), MONTH(created_at)").last.mes == poco.mes %>
+          ['<%= poco.mes %>/<%= poco.ano %>', <%= poco.quantidade %>]
+        <% else %>
+          ['<%= poco.mes %>/<%= poco.ano %>', <%= poco.quantidade %>],
+        <% end %>
+      <% end %>
+    ]);
+    var options = {
+      legend: {position: 'none'},
+      chart: {
+        title: 'Todos',
+      },
+      bars: 'horizontal',
+      series: {
+            0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+            1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+          }
+    };
+    var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+    var data_assistencia = google.visualization.arrayToDataTable([
+      ['Mês', 'Quantidade'],
+      <% @assistencias_admin.select("count(id) as quantidade, MONTH(created_at) as mes, YEAR(created_at) as ano ").group("MONTH(created_at)").order("YEAR(created_at), MONTH(created_at)").each_with_index do |poco, i| %>
+        <% if @assistencias_admin.select("count(id) as quantidade, MONTH(created_at) as mes, YEAR(created_at) as ano ").group("MONTH(created_at)").order("YEAR(created_at), MONTH(created_at)").last.mes == poco.mes %>
+          ['<%= poco.mes %>/<%= poco.ano %>', <%= poco.quantidade %>]
+        <% else %>
+          ['<%= poco.mes %>/<%= poco.ano %>', <%= poco.quantidade %>],
+        <% end %>
+      <% end %>
+    ]);
+
+    var chart_assistencia = new google.charts.Bar(document.getElementById('barchart_assistencia'));
+    chart_assistencia.draw(data_assistencia, google.charts.Bar.convertOptions(options));
+  }
+</script>
+
+<div class="row">
+  <div class="col-xs-12" style="margin-top: 5px;">
+  <%= form_tag(casein_poco_filtro_relatorio_path(0), method: :post, role: :form, class: "form-inline") do |f| %>
+      <div class="form-group">
+        <%= label_tag :coringa, "Pesquisa:" %>
+        <%= text_field_tag :coringa, params[:coringa], class: "form-control input-sm tamanho-minimo-input", placeholder: "buscar no Relatório Completo" %>
+      </div>
+      <%= submit_tag "Filtrar", class: "btn btn-primary btn-sm" %>
+    <% end -%>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12" style="margin-top: 5px;">
+    <div class="row">
+      <div class="col-xs-12 col-md-5">
+        <h3 style="border-bottom: 2px solid #2A5C8C;margin-bottom: 30px;">Poços/Lançados <span style="font-size: 11px;">Últimos 6 meses</span></h3>
+        <div id="barchart_material" style="width: 100%; height: 300px;"></div>
+      </div>
+      <div class="col-xs-12 col-md-5">
+        <h3 style="border-bottom: 2px solid #2A5C8C;margin-bottom: 30px;">Assistências Técnicas/Lançadas <span style="font-size: 11px;">Últimos 6 meses</span></h3>
+        <div id="barchart_assistencia" style="width: 100%; height: 300px;"></div>
+      </div>
+      <div class="col-xs-12 col-md-2">
+        <h3 style="border-bottom: 2px solid #2A5C8C;margin-bottom: 30px;">Fotos Do Dia</h3>
+        <% if @fotos_admin.blank? %>
+          <h4>Nenhuma foto de hoje</h4>
+        <% else %>
+          <% @fotos_admin.each do |foto| %>
+            <div class="col-xs-6">
+              <%= link_to foto.foto.url(:grande), "data-lightbox" => "galeria-empresa", "data-title" => "#{foto.nome}", target: :_blank do %>
+                <%= image_tag foto.foto.url(:dashboard), class: "img-responsive" %>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xs-12" style="margin-top: 5px;" >
+    <div class="row">
+      <div class="col-xs-8" >
+        <h3 style="border-bottom: 2px solid #2A5C8C;margin-bottom: 30px;">Poços para manutenção</h3>
+        <% if @pocos_manutencao_admin.blank? %>
+          <div class="col-xs-12">
+            <div class="panel" style="border: none;">
+              <p>Não existem poços para fazer manutenção.</p>
+            </div>
+          </div>
+        <% else %>
+          <div class="col-xs-12" style="padding: 0px">
+            <div class="panel" style="border: none; height: 420px; overflow-x: hidden; overflow-y: scroll;">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Poço</th>
+                    <th>Última Manut.</th>
+                    <th>Próx Manut.</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @pocos_manutencao_admin_data_atual.each do |poco_manutencao| %>
+                    <tr>
+                      <td><%= poco_manutencao.nome_intuitivo %></td>
+                      <td><%= l(poco_manutencao.data_servico) unless poco_manutencao.data_servico.blank? %></td>
+                      <td><%= poco_manutencao.manutencao_contatos.blank? ? "-" : poco_manutencao.manutencao_contatos.last.nova_data.present? ? l(poco_manutencao.manutencao_contatos.last.try(:nova_data)) : " - " %></td>
+                      <td>
+                        <button type="button" class="btn btn-primary add-contato" data-toggle="modal" data-target="#modalContatar" data-poco="<%= poco_manutencao.id %>">
+                          Contatar
+                        </button>
+                      </td>
+                    </tr>
+                  <% end %>
+                  <% @pocos_manutencao_admin.each do |poco_manutencao| %>
+                    <% if poco_manutencao.manutencao_contatos.blank? %>
+                      <tr>
+                        <td><%= poco_manutencao.nome_intuitivo %></td>
+                        <td><%= l(poco_manutencao.data_servico) unless poco_manutencao.data_servico.blank? %></td>
+                        <td><%= poco_manutencao.manutencao_contatos.blank? ? "-" : poco_manutencao.manutencao_contatos.last.nova_data.present? ? l(poco_manutencao.manutencao_contatos.last.try(:nova_data)) : " - " %></td>
+                        <td>
+                          <button type="button" class="btn btn-primary add-contato" data-toggle="modal" data-target="#modalContatar" data-poco="<%= poco_manutencao.id %>">
+                            Contatar
+                          </button>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-xs-4">
+        <h3 style="border-bottom: 2px solid #2A5C8C;margin-bottom: 30px;">Cidades com mais Poços</h3>
+        <div class="col-xs-12" style="padding: 0px">
+          <div class="panel" style="border: none;">
+            <table class="table table-striped table-hover ">
+              <thead>
+                <tr>
+                  <th>Cidade/UF</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @cidades_admin.order("count(pocos.id) DESC").limit(10).each do |cidade| %>
+                  <tr>
+                    <td><%= cidade.get_nome_completo %></td>
+                    <td><%= Poco.where(cidade: cidade).count %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= form_for(ManutencaoContato.new, url: casein_manutencao_contatos_path) do |f| %>
+    <div class="modal fade" id="modalContatar" tabindex="-1" role="dialog" aria-labelledby="modalContatarLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalContatarLabel">Contatar</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12">
+                <label>Nova Data</label>
+                <%= f.text_field :nova_data, class: "form-control input-data", "aria-describedby" => "addon-data", data: {masker: true, type: :d} %>
+              </div>
+              <div class="col-xs-12">
+                <%= f.hidden_field :poco_id, class: "input-poco" %>
+                <label>Observação</label>
+                <%= f.text_area :observacao, class: "form-control input-obs" %>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <%= link_to("Ver Histórico", "", class: "btn btn-warning btn-link-historico") %>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  // Adiciona valores para o formulário de notas no editar
+  $('.add-contato').on('click', function(){
+    var poco_id = $(this).data('poco');
+    $('.input-poco').val(poco_id);
+    $('.btn-link-historico').attr("href", "/casein/manutencao_contatos?poco_id="+poco_id);
+  });
+</script>
+
+
+<script type="text/javascript">
+  $('#estado_id').change(function(){
+    $.ajax({
+      url: '<%= carregar_cidades_path %>',
+      data: {
+        estado_id: $(this).val(),
+        target: $(this).data("target")
+      }
+    });
+  });
+</script>

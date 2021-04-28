@@ -1,0 +1,16 @@
+pt-BR:
+  marcas:
+    new:
+      titulo: "Adicionar Marca"
+    create:
+      sucesso: "A Marca %{descricao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Marca, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Marca"
+    update:
+      sucesso: "A Marca %{descricao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Marca, verifique os dados e tente novamente!"
+    index:
+      titulo: "Marcas"
+    destroy:
+      sucesso: "A Marca foi apagada com Sucesso!"

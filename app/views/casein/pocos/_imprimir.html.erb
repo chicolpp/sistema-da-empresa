@@ -1,0 +1,583 @@
+<div class="div-tabela-total col-xs-12">
+  <div class="div-titulo col-xs-12">
+    <div class="col-xs-2" align="center">
+      <%= wicked_pdf_image_tag("materiaguas.png", :class => "img-responsive", style: "margin-top: 10px;") %>
+    </div>
+    <div class="col-xs-7" align="center">
+      <div class="div-titulo-topo col-xs-12 col-sm-12 col-md-8 col-lg-8" align="center">
+      <p class="titulo"><%= ENV['COMPANY_NAME'] %></p>
+      <p class="desc">BOMBAS SUBMERSAS - ASSISTENCIA TÉCNICA - SONDAGENS DE SOLO</p>
+      <p class="subtitulo">FONE/FAX - <%= ENV['COMPANY_CITY'] %>, <%= ENV['CONTACT_PHONE'] %></p>
+      <p class="subtitulo">CNPJ: <%= ENV['COMPANY_CNPJ'] %></p>
+    </div>
+    </div>
+    <div class="col-xs-2" align="center">
+      <%= wicked_pdf_image_tag("selo.png", :class => "img-responsive", style: "margin-top: 5px;") %>
+    </div>
+  </div>
+  <div class="div-solicitacao-total col-xs-12" align="center">
+    <p class="subtitulo">CONSULTA GERAL/CLIENTE</p>
+  </div>
+  <div class="div-table col-xs-12">
+    <div class="row">
+      <div class="col-xs-11">
+        <h3>Dados do Cliente</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <p><b>Cliente:</b> <%= @poco.cliente.pessoa.nome %></p>
+      </div>
+      <div class="col-xs-4">
+        <p><b>Cidade/UF:</b> <%= @poco.cidade.get_nome_completo %></p>
+      </div>
+      <div class="col-xs-3">
+        <p><b>Telefone:</b> <%= @poco.cliente.pessoa.telefone_principal %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <p><b>E-mail:</b> <%= @poco.cliente.pessoa.email_contato %></p>
+      </div>
+      <div class="col-xs-4">
+        <p><b>E-mail XML:</b> <%= @poco.cliente.pessoa.email_xml %></p>
+      </div>
+      <div class="col-xs-3">
+        <p><b><%= @poco.cliente.pessoa.tipo ? "CNPJ" : "CPF" %>:</b> <%= @poco.cliente.pessoa.tipo ? @poco.cliente.pessoa.try(:pessoa_juridica).try(:cnpj) : @poco.cliente.pessoa.try(:pessoa_fisica).try(:cpf) %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-table col-xs-12" style="border-top:1px solid black;">
+    <div class="row">
+      <div class="col-xs-11">
+        <h3>Perfuração do Poço</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">
+        <p><strong>Poço Produtivo?</strong> <%= @poco.poco_produtivo ? "Sim" : "Não" %></p>
+      </div>
+      <div class="col-xs-3">
+        <p><strong>Perfuração Materiáguas?</strong> <%= @poco.perfuracao_leao ? "Sim" : "Não" %></p>
+      </div>
+      <div class="col-xs-5">
+        <p><strong>Linha:</strong> <%= @poco.linha_endereco %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <p><strong>Apelido:</strong> <%= @poco.apelido_endereco %></p>
+      </div>
+      <div class="col-xs-4">
+        <p><strong>Data Perfuração - Início:</strong> <%= l(@poco.perfuracao.try(:data_perfuracao_inicio)) unless @poco.perfuracao.blank? %></p>
+      </div>
+      <div class="col-xs-3">
+        <p><strong>Data Perfuração - Fim:</strong> <%= l(@poco.perfuracao.try(:data_perfuracao_fim)) unless @poco.perfuracao.blank? %></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        <p><strong>Profundidade do Poço:</strong> <%= @poco.perfuracao.try(:profundidade) ? @poco.perfuracao.try(:profundidade) : @poco.profundidade %></p>
+      </div>
+      <div class="col-xs-4">
+        <p><strong>Máquina:</strong> <%= @poco.perfuracao.try(:maquina).try(:descricao) %></p>
+      </div>
+      <div class="col-xs-3">
+        <p><strong>Bitola Final (mm):</strong> <%= @poco.perfuracao.try(:bitola).try(:descricao) %></p>
+      </div>
+      <div class="col-xs-3">
+        <% unless @poco.periodo_manutencao.blank? %>
+          <p><strong>Período de Manutenção:</strong> A cada <%= @poco.periodo_manutencao %> anos</p>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-11">
+        <% unless @poco.observacao.blank? %>
+          <p><strong>Observação:</strong> <%= @poco.observacao %></p>
+        <% end %>
+      </div>
+    </div>
+    <% unless @poco.perfuracao.blank? %>
+      <div class="row">
+        <div class="col-xs-11">
+          <p><strong>Equipe de Perfuração:</strong>
+            <% @poco.perfuracao.perfuracao_funcionarios.each_with_index do |item, i| %>
+              <%= item.funcionario.pessoa.nome %><% if @poco.perfuracao.perfuracao_funcionarios.count > i+1 %>, <% end %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% unless @poco.revestimento_pocos.blank? %>
+    <div class="div-table col-xs-12" style="border-top:1px solid black;">
+      <div class="row">
+        <div class="col-xs-11">
+          <h3>Revestimento do Poço</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-11">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Quantidade</th>
+                <th>Tipo de Revestimento</th>
+                <th>Polegadas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @poco.revestimento_pocos.each do |item| %>
+                <tr>
+                  <td><%= item.quantidade %></td>
+                  <td><%= item.tipo_revestimento.try(:descricao) %></td>
+                  <td><%= item.polegadas %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% unless @poco.entradas_agua.blank? %>
+    <div class="div-table col-xs-12" style="border-top:1px solid black;">
+      <div class="row">
+        <div class="col-xs-11">
+          <h3>Entrada de Água</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-11">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>É um Aprofundamento?</th>
+                <th>Metragem</th>
+                <th>Vazão Aproximada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% vazao_total = 0 %>
+              <% @poco.entradas_agua.each do |item| %>
+                <% vazao_total += item.vazao_aproximada.gsub(".", "").gsub(",", ".").to_f %>
+                <tr>
+                  <td><%= item.aprofundamento.blank? ? "Não" : "Sim" %></td>
+                  <td><%= number_with_precision(item.metragem, precision: 2) %></td>
+                  <td><%= number_with_precision(item.vazao_aproximada, precision: 2) %></td>
+                </tr>
+              <% end %>
+              <tr>
+                <td style="font-weight: bold;">TOTAL</td>
+                <td style="font-weight: bold;"></td>
+                <td style="font-weight: bold;"><%= number_with_precision(vazao_total, precision: 2) %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% @vazao_agua = VazaoAgua.where(poco_id: @poco.id).last %>
+  <% unless @vazao_agua.blank? %>
+    <% if !@vazao_agua.vazao_teste.blank? || !@vazao_agua.vazao_dinamico.blank? || !@vazao_agua.nivel_estatico.blank? || !@vazao_agua.profundidade_bomba.blank? || !@vazao_agua.observacao.blank? || !@vazao_agua.vazao_agua_funcionarios.blank? %>
+      <div class="div-table col-xs-12" style="border-top:1px solid black;">
+        <div class="row">
+          <div class="col-xs-11">
+            <h3>Teste de Vazão</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-3">
+            <p><strong>Vazão de Teste (l/h):</strong> <%= @vazao_agua.vazao_teste %></p>
+          </div>
+          <div class="col-xs-3">
+            <p><strong>Nível Dinâmico:</strong> <%= @vazao_agua.vazao_dinamico %></p>
+          </div>
+          <div class="col-xs-3">
+            <p><strong>Nível Estático:</strong> <%= @vazao_agua.nivel_estatico %></p>
+          </div>
+          <div class="col-xs-3">
+            <p><strong>Profundidade da Bomba:</strong> <%= @vazao_agua.profundidade_bomba %></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-11">
+            <p><strong>Observação:</strong> <%= @vazao_agua.try(:observacao) %></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-11">
+            <p><strong>Equipe de Teste:</strong>
+              <% @vazao_agua.vazao_agua_funcionarios.each_with_index do |item, i| %>
+                <%= item.funcionario.pessoa.nome %><% if @vazao_agua.vazao_agua_funcionarios.count > i+1 %>, <% end %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% @instalacao = Instalacao.where(poco_id: @poco.id).last %>
+  <% unless @instalacao.blank? %>
+    <div class="div-table col-xs-12" style="border-top:1px solid black;">
+      <div class="row">
+        <div class="col-xs-11">
+          <h3>Instalação de Poço</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <p><strong>Acesso ao poço:</strong> <%= get_acesso_poco(@instalacao.acesso) %></p>
+        </div>
+        <div class="col-xs-4">
+          <p><strong>Necessita de Guincho Manual?</strong> <%= @instalacao.guincho ? "Sim" : "Não" %></p>
+        </div>
+        <div class="col-xs-3">
+          <% unless @instalacao.try(:poco).try(:periodo_manutencao).blank? %>
+            <p><strong>Período de Manutenção:</strong> A cada <%= @instalacao.poco.periodo_manutencao %> anos</p>
+          <% end %>
+        </div>
+        <div class="col-xs-3">
+            <% unless @instalacao.data_instalacao_inicio.blank? %>
+              <p><strong>Data Instalação:</strong> <%= l(@instalacao.data_instalacao_inicio) %></p>
+            <% end %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <p><strong>Profundidade da Bomba:</strong> <%= @instalacao.profundidade_bomba %></p>
+        </div>
+        <div class="col-xs-4">
+          <p><strong>Vazão da Bomba:</strong> <%= @instalacao.vazao_bomba %></p>
+        </div>
+        <div class="col-xs-3">
+          <p><strong>Nível Dinâmico:</strong> <%= @instalacao.nivel_dinamico %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <p><strong>Nível Estático:</strong> <%= @instalacao.nivel_estatico %></p>
+        </div>
+        <div class="col-xs-4">
+          <p><strong>Perca de Carga:</strong> <%= @instalacao.perca_carga %></p>
+        </div>
+        <div class="col-xs-3">
+          <p><strong>Desnível:</strong> <%= @instalacao.desnivel %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4">
+          <p><strong>Altura Manométrica:</strong> <%= @instalacao.altura_nanometrica %></p>
+        </div>
+        <div class="col-xs-4">
+          <p><strong>Distância do poço até a caixa:</strong>  <%= @instalacao.distancia_poco_caixa %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-11">
+          <p><strong>Bomba:</strong> <%= @instalacao.bomba.try(:modelo_bomba).try(:descricao) %> <%= @instalacao.bomba.try(:estagio).try(:descricao) %> <%= @instalacao.bomba.try(:motor).try(:descricao) %> <%= @instalacao.bomba.try(:energia).try(:descricao) %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-11">
+          <p><strong>Observação sobre a Bomba:</strong> <%= @instalacao.bomba.try(:observacao) %></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-11">
+          <p><strong>Equipe de Instalação:</strong>
+            <% @instalacao.instalacao_funcionarios.each_with_index do |item, i| %>
+              <%= item.funcionario.pessoa.nome %><% if @instalacao.instalacao_funcionarios.count > i+1 %>, <% end %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <% unless @instalacao.instalacao_poco_equipamentos.blank? %>
+      <div class="div-table col-xs-12" style="border-top:1px solid black;">
+        <div class="row">
+          <div class="col-xs-11">
+            <h3>Equipamentos Utilizados na Instalação do Poço</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-11">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Unidade de Medida</th>
+                  <th>Quantidade</th>
+                  <th>Observações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @instalacao.instalacao_poco_equipamentos.each do |item| %>
+                  <tr>
+                    <td><%= item.produto.try(:descricao) %></td>
+                    <td><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+                    <td><%= item.quantidade %></td>
+                    <td><%= item.observacao %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% unless @instalacao.instalacao_adutora_equipamentos.blank? %>
+      <div class="div-table col-xs-12" style="border-top:1px solid black;">
+        <div class="row">
+          <div class="col-xs-11">
+            <h3>Equipamentos Utilizados na Instalação da Rede Adutora</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-11">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Unidade de Medida</th>
+                  <th>Quantidade</th>
+                  <th>Observações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @instalacao.instalacao_adutora_equipamentos.each do |item| %>
+                  <tr>
+                    <td><%= item.produto.try(:descricao) %></td>
+                    <td><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+                    <td><%= item.quantidade %></td>
+                    <td><%= item.observacao %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% unless @instalacao.instalacao_distribuicao_equipamentos.blank? %>
+      <div class="div-table col-xs-12" style="border-top:1px solid black;">
+        <div class="row">
+          <div class="col-xs-11">
+            <h3>Equipamentos Utilizados na Instalação da Rede de Distribuição</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-11">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Unidade de Medida</th>
+                  <th>Quantidade</th>
+                  <th>Observações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @instalacao.instalacao_distribuicao_equipamentos.each do |item| %>
+                  <tr>
+                    <td><%= item.produto.try(:descricao) %></td>
+                    <td><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+                    <td><%= item.quantidade %></td>
+                    <td><%= item.observacao %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% @manutencoes = Manutencao.where(poco_id: @poco.id) %>
+  <% unless @manutencoes.blank? %>
+    <% @manutencoes.joins("LEFT JOIN manutencao_servicos ON manutencao_servicos.manutencao_id = manutencaos.id").order("manutencao_servicos.data_servico DESC").group(:manutencao_id).each_with_index do |manutencao, i| %>
+      <div class="div-table col-xs-12" style="border-top:1px solid black;">
+        <div class="row">
+          <div class="col-xs-11">
+            <h3>Manutenção: <%= manutencao.servico.try(:descricao) %></h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-11">
+            <p><strong>Nº do Processo:</strong> <%= manutencao.numero_processo %></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <p><strong>Tipo:</strong> <%= manutencao.servico.try(:descricao) %></p>
+          </div>
+          <div class="col-xs-7">
+            <p><strong>Pessoa de Contato:</strong> <%= manutencao.pessoa_contato %></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4">
+            <p><strong>Telefone:</strong> <%= manutencao.telefone %></p>
+          </div>
+          <div class="col-xs-7">
+            <p><strong>E-mail:</strong> <%= manutencao.email %></p>
+          </div>
+        </div>
+      </div>
+
+      <% unless manutencao.manutencao_produtos.blank? %>
+        <div class="div-table col-xs-12" style="border-top:1px solid black;">
+          <div class="row">
+            <div class="col-xs-11">
+              <h3>Equipamentos Utilizados na Manutenção - <%= i + 1 %></h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-11">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Unidade de Medida</th>
+                    <th>Quantidade</th>
+                    <th>Observações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% manutencao.manutencao_produtos.each do |item| %>
+                    <tr>
+                      <td><%= item.produto.try(:descricao) %></td>
+                      <td><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+                      <td><%= item.quantidade %></td>
+                      <td><%= item.observacao %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% unless manutencao.manutencao_servicos.blank? %>
+        <div class="div-table col-xs-12">
+          <div class="row">
+            <div class="col-xs-11">
+              <h3>Serviços Realizados - <%= i + 1 %></h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-11">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Tipo</th>
+                    <th>Descrição</th>
+                    <th>Data</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% manutencao.manutencao_servicos.each do |item| %>
+                    <tr style="border-top:2px solid gray;border-bottom:2px solid gray;">
+                      <td><%= get_tipo_manutencao_servico(item.tipo) %></td>
+                      <td><%= item.descricao %></td>
+                      <td><%= l(item.data_servico) unless item.data_servico.blank? %></td>
+                    </tr>
+
+                    <tr style="border-bottom: 1px solid black;">
+                      <td colspan="3">
+                        <div class="row">
+                          <div class="col-xs-5">
+                            <div class="row">
+                              <div class="col-xs-8">
+                                <b>Produto Utilizado</b>
+                              </div>
+                              <div class="col-xs-2">
+                                <b>Qtd</b>
+                              </div>
+                            </div>
+                            <hr style="margin-top:5px;margin-bottom:5px;">
+                            <% item.manutencao_servico_itens.each do |subitem| %>
+                              <div class="row">
+                                <div class="col-xs-8">
+                                  <%= subitem.produto.try(:descricao) %>
+                                </div>
+                                <div class="col-xs-2">
+                                  <%= subitem.quantidade %>
+                                </div>
+                              </div>
+                            <% end %>
+                          </div>
+                          <div class="col-xs-6">
+                            <div class="row">
+                              <div class="col-xs-11">
+                                <b>Funcionário</b>
+                              </div>
+                            </div>
+                            <hr style="margin-top:5px;margin-bottom:5px;">
+                            <% item.manutencao_funcionarios.each do |subitem| %>
+                              <div class="row">
+                                <div class="col-xs-11">
+                                  <%= subitem.funcionario.try(:pessoa).try(:nome) %>
+                                </div>
+                              </div>
+                            <% end %>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% @aprofundamento = Aprofundamento.where(poco_id: @poco.id).last %>
+  <% unless @aprofundamento.blank? %>
+    <div class="div-table col-xs-12" style="border-top:1px solid black;">
+      <div class="row">
+        <div class="col-xs-11">
+          <h3>Aprofundamentos</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-5">
+          <p><strong>Código do Poço:</strong> <%= @aprofundamento.poco_id %></p>
+          <p><strong>Poço:</strong> <%= @aprofundamento.poco.try(:nome_intuitivo) %></p>
+          <p><strong>Data de Início:</strong> <%= l(@aprofundamento.data_inicio) unless @aprofundamento.data_inicio.blank? %></p>
+          <p><strong>Data de Fim:</strong>  <%= l(@aprofundamento.data_fim) unless @aprofundamento.data_fim.blank? %></p>
+          <p><strong>Profundidade:</strong> <%= @aprofundamento.profundidade_nova %></p>
+        </div>
+        <div class="col-xs-6">
+          <p><strong>Máquina:</strong>  <%= @aprofundamento.maquina.try(:descricao) %></p>
+          <p><strong>Bitola:</strong> <%= @aprofundamento.bitola.try(:descricao) %></p>
+          <p><strong>Observação:</strong> <%= @aprofundamento.observacao %></p>
+          <p><strong>Equipe:</strong>
+            <% @aprofundamento.aprofundamento_funcionarios.each_with_index do |item, i| %>
+              <%= item.funcionario.pessoa.nome %><% if @aprofundamento.aprofundamento_funcionarios.count > i+1 %>, <% end %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-xs-12" style="border-top: 1px solid black;" align="center">
+    Impresso por <%= @session_user.name %> (<%= @session_user.login %>) <%= l(Time.now) %>
+  </div>
+</div>

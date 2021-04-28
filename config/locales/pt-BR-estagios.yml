@@ -1,0 +1,17 @@
+pt-BR:
+  estagios:
+    new:
+      titulo: "Adicionar Estágio"
+    create:
+      sucesso: "O Estágio %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Estágio, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Estágio"
+    update:
+      titulo: "Estágio"
+      sucesso: "O Estágio %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Estágio, verifique os dados e tente novamente!"
+    index:
+      titulo: "Estágios"
+    destroy:
+      sucesso: "O Estágio foi apagado com Sucesso!"

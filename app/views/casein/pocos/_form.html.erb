@@ -1,0 +1,220 @@
+<% if params[:estado_id].blank? %>
+	<% params[:estado_id] = @poco.cidade.try(:estado_id) %>
+<% end %>
+<% if params[:cliente_id].present? %>
+	<% f.object.cliente_id = params[:cliente_id] %>
+<% end %>
+
+<h2>Dados do Poço</h2>
+
+<div class="row">
+	<div class="col-lg-9">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-cliente-id">Cliente *</span>
+
+			<% if params[:cliente_id].present? || @poco.cliente_id.to_i > 0 %>
+				<% disabled = true %>
+			<% else %>
+				<% disabled = false %>
+			<% end %>
+
+			<%= f.collection_select :cliente_id, Cliente.select("clientes.id, CONCAT(pessoas.nome, ' / ', cidades.nome, '-', estados.sigla, ' / ', IFNULL(pessoas_juridicas.cnpj, pessoas_fisicas.cpf)) as nome").joins(pessoa: [pessoa_endereco: [cidade: :estado]]).joins("LEFT JOIN pessoas_juridicas ON pessoas_juridicas.pessoa_id = pessoas.id LEFT JOIN pessoas_fisicas ON pessoas_fisicas.pessoa_id = pessoas.id").order("pessoas.nome ASC").all, :id, :nome, {include_blank: true, selected: @poco.cliente_id || params[:cliente_id]}, {class: "form-control #{f.object.errors[:cliente_id].first ? 'input-error' : ''} select_padrao", "aria-describedby" => "addon-cliente-id", disabled: disabled} %>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-numero-processo">Número Processo</span>
+			<%= f.text_field :numero_processo, class: "form-control #{f.object.errors[:numero_processo].first ? 'input-error' : ''}", "aria-describedby" => "addon-numero-processo" %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-5">
+		<div class="input-group">
+	  	<span class="input-group-addon" id="addon-linha-endereco">Local do Poço - Linha *</span>
+			<%= f.text_field :linha_endereco, class: "form-control #{f.object.errors[:linha_endereco].first ? 'input-error' : ''}", "aria-describedby" => "addon-linha-endereco" %>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="input-group">
+	  	<span class="input-group-addon" id="addon-cidade-id">Cidade *</span>
+			<%= f.hidden_field :cidade_id, data: {s2ajax: true, url: "#{get_cidades_url}", name: f.object.cidade ? f.object.cidade.get_nome_completo : ''}, class: "form-control #{f.object.errors[:cidade_id].first ? 'input-error' : ''} input-sm nao_aplicar_select_2", "aria-describedby" => "addon-cidade-id" %>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-apelido-endereco">Apelido *</span>
+			<%= f.select :apelido_endereco, ["Poço 1", "Poço 2", "Poço 3", "Poço 4", "Poço 5", "Poço 6", "Poço 7", "Poço 8", "Poço 9", "Poço 10"], {include_blank: true}, {class: "form-control #{f.object.errors[:apelido_endereco].first ? 'input-error' : ''}", "aria-describedby" => "addon-apelido-endereco"} %>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-poco-produtivo">Poço Produtivo? *</span>
+			<%= f.select :poco_produtivo, [["Sim", true], ["Não", false]], {include_blank: true}, {class: "checkbox_poco_produtivo form-control #{f.object.errors[:poco_produtivo].first ? 'input-error' : ''}", "aria-describedby" => "addon-poco-produtivo"} %>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-perfuracao-leao">Perfurado pela Materiáguas? *</span>
+			<%= f.select :perfuracao_leao, [["Sim", true], ["Não", false]], {include_blank: true}, {class: "checkbox_perfuracao_leao form-control #{f.object.errors[:perfuracao_leao].first ? 'input-error' : ''}", "aria-describedby" => "addon-perfuracao-leao"} %>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="row" id="dados" style="display: <%= 'none' if @poco.perfuracao_leao.to_s != "false" %>;">
+		  <div class="col-lg-6">
+		    <div class="input-group">
+		      <span class="input-group-addon">
+		        <%= radio_button_tag :dados, true, @poco.perfuracao ? true : false %>
+		      </span>
+					<%= label_tag :dados_true, "Sem Dados", :class => "form-control" %>
+		    </div>
+		  </div>
+		  <div class="col-lg-6">
+		    <div class="input-group">
+		      <span class="input-group-addon">
+		        <%= radio_button_tag :dados, false, @poco.perfuracao ? false : true %>
+		      </span>
+					<%= label_tag :dados_false, "Com Dados", :class => "form-control" %>
+		    </div>
+		  </div>
+		</div>
+  </div>
+</div>
+
+<div class="row">
+	<div id="profundidadeSemDados" class="col-lg-4" style="display:<%= @poco.perfuracao && !@poco.perfuracao_leao ? 'block' : 'none' %>;">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-profundidade">Profundidade</span>
+			<%= f.text_field :profundidade, class: "form-control #{f.object.errors[:profundidade].first ? 'input-error' : ''} masc-decimal", "aria-describedby" => "addon-profundidade" %>
+		</div>
+	</div>
+	<div class="col-lg-8">
+		<div class="input-group">
+		  <span class="input-group-addon" id="addon-observacao">Observação</span>
+			<%= f.text_area :observacao, class: "form-control #{f.object.errors[:observacao].first ? 'input-error' : ''}", "aria-describedby" => "addon-observacao" %>
+		</div>
+	</div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div id="dados_perfuracao" style="display: <%= 'none' if !@poco.perfuracao_leao && params[:dados].to_s == "true" %>;">
+			<h2>Dados da Perfuração</h2>
+			<%= f.fields_for :perfuracao, @poco.perfuracao do |perfuracao|%>
+				<%= render "casein/perfuracoes/form", f: perfuracao %>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<br>
+<h2>Coordenadas</h2>
+<%= f.fields_for :coordenada, @poco.coordenada do |coordenada|%>
+	<%= render "casein/coordenadas/form", f: coordenada %>
+<% end %>
+
+<br>
+<div id="dados_revestimento_pocos" style="display: <%= 'none' if !@poco.perfuracao_leao && params[:dados].to_s == "true" %>;">
+	<div class="row">
+		<div class="col-lg-12">
+			<h2>
+				Revestimentos do Poço
+				<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Revestimento".html_safe, f, :revestimento_pocos, "pull-right", "Adicionar um Novo Revestimento do Poço", "revestimento_pocos" %>
+			</h2>
+		</div>
+	</div>
+	<div id="revestimento_pocos">
+		<%= f.fields_for :revestimento_pocos do |revestimento_poco|%>
+		  <%= render "casein/revestimento_pocos/form", f: revestimento_poco %>
+		<% end %>
+	</div>
+</div>
+
+<br>
+<div id="dados_entradas_agua" style="display: <%= 'none' if @poco.poco_produtivo.to_s != "true" %>">
+	<div class="row">
+		<div class="col-lg-12">
+			<h2>
+				Entradas de Água
+				<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Entrada".html_safe, f, :entradas_agua, "pull-right", "Adicionar um Nova Entrada de Água", "entradas_agua" %>
+			</h2>
+		</div>
+	</div>
+	<div id="entradas_agua">
+			<%= f.fields_for :entradas_agua do |entrada_agua|%>
+		  <%= render "casein/entradas_agua/form", f: entrada_agua %>
+		<% end %>
+	</div>
+
+	<% unless @vazao_total.blank? %>
+		<h4>Vazão Total: <%= @vazao_total %></h4>
+		<br>
+		<p>Nova Vazão Total:<h4 class="vazao_total"></h4></p>
+	<% else %>
+		<h4>Vazão Total:</h4>
+		<h4 class="vazao_total"></h4>
+	<% end %>
+</div>
+
+<div class="row">
+	<div id="dados_arquivos">
+		<div class="col-lg-12">
+			<h2>
+				Adicionar Fotos/Documentos
+				<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Arquivo".html_safe, f, :arquivos, "pull-right", "Adicionar um Novo Arquivo", "arquivos" %>
+			</h2>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div id="arquivos">
+				<%= f.fields_for :arquivos do |arquivo|%>
+				  <%= render "casein/arquivos/form", f: arquivo %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(".checkbox_poco_produtivo").on('change', function(){
+		if ($(this).val() == "true"){
+			$(".caracteristica_id").show();
+			$("#dados_entradas_agua").show();
+		} else {
+			$(".caracteristica_id").hide();
+			$("#dados_entradas_agua").hide();
+		}
+	});
+
+	$(".checkbox_perfuracao_leao").on('change', function(){
+		if ($(this).val() == "true"){
+			$("#dados").hide();
+			$("#dados_revestimento_pocos").show();
+			$("#dados_perfuracao").show();
+			$("#dados_true").prop('checked', false);
+			$("#profundidadeSemDados").hide();
+		} else {
+			$("#dados").show();
+			$("#dados_revestimento_pocos").hide();
+			$("#dados_perfuracao").hide();
+			$("#dados_true").prop('checked', true);
+			$("#profundidadeSemDados").show();
+		}
+	});
+
+	$("input[name='dados']").change(function(event) {
+		if($(this).val() == "true") {
+			$("#dados_revestimento_pocos").hide();
+			$("#dados_perfuracao").hide();
+			$("#profundidadeSemDados").show();
+		} else {
+			$("#dados_revestimento_pocos").show();
+			$("#dados_perfuracao").show();
+			// $("#poco_profundidade").val("");
+			$("#profundidadeSemDados").hide();
+		}
+	});
+</script>

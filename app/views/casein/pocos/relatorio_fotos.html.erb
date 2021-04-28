@@ -1,0 +1,17 @@
+<h2>
+	Visualizar Poço: <%= @poco.nome_intuitivo %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Poços".html_safe, casein_pocos_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_poco_path(@poco), class: "pull-right" %>
+</h2>
+
+<div class="row">
+	<% @poco.arquivos.each_with_index do |item, i| %>
+		<div class="col-xs-12 col-sm-4">
+			<%= image_tag(item.upload.url, class: "img-responsive") %></p>
+		</div>
+	<% end %>
+	
+	<% if @poco.arquivos.blank? %>
+		<p>Não existem arquivos ou documentos para este registro.</p>
+	<% end %>
+</div>

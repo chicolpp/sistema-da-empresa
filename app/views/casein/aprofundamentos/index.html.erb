@@ -1,0 +1,6 @@
+<h2>
+	<%= @casein_page_title %>
+	<%= link_to "#{casein_show_icon "plus-sign"}Novo Aprofundamento".html_safe, new_casein_aprofundamento_path, class: "pull-right" %>
+</h2>
+
+<%= render :partial => 'casein/aprofundamentos/table' %>

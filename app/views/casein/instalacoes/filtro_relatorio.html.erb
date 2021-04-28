@@ -1,0 +1,70 @@
+<div class="panel panel-info">
+  <div class="panel-body">
+    Gerar Relatórios por Instalação
+  </div>
+  <div class="panel-footer">
+		<%= form_tag(casein_instalacao_filtro_relatorio_path, method: :post, role: :form, id: "instalacao") do %>
+			<legend>Filtros</legend>
+
+			<div class="form-group">
+				<%= label_tag :acesso, "Acesso ao poço", class: "control-label" %>
+				<%= select_tag :acesso, options_for_select([["Ótimo", 0], ["Bom", 1], ["Satisfatório", 2], ["Ruim", 3], ["Pessimo", 4]], params[:acesso]), include_blank: "Mostrar Todos", class: "form-control" %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :guincho, "Necessita de Guincho", class: "control-label" %>
+				<%= select_tag :guincho, options_for_select([["Sim", 1], ["Não", 0]], params[:guincho]), include_blank: "Mostrar Todos", class: "form-control" %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :funcionario_id, "Funcionário" %>
+				<%= select_tag(:funcionario_id, options_from_collection_for_select(Funcionario.select("funcionarios.id, pessoas.nome").joins(:pessoa).all, 'id', 'nome', params[:funcionario_id]), {:include_blank => "Selecione o funcionário", :class => "form-control"}) %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :energia_id, "Energia" %>
+				<%= select_tag(:energia_id, options_from_collection_for_select(Energia.all, 'id', 'descricao', params[:energia_id]), {:include_blank => "Selecione a energia", :class => "form-control"}) %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :profundidade_inicial, "Profundidade da Bomba", class: "control-label" %>
+				<% params[:profundidade] ||= {} %>
+				<%= text_field_tag 'profundidade[profundidade_inicial]', params[:profundidade][:profundidade_inicial], class: "form-control", placeholder: "Inicial" %>
+				<%= text_field_tag 'profundidade[profundidade_final]',   params[:profundidade][:profundidade_final], class: "form-control", placeholder: "Final" %>
+			</div>
+			<div class="form-group">
+				<%= label_tag :vazao_inicial, "Vazão da Bomba", class: "control-label" %>
+				<% params[:vazao] ||= {} %>
+				<%= text_field_tag 'vazao[vazao_inicial]', params[:vazao][:vazao_inicial], class: "form-control", placeholder: "Inicial" %>
+				<%= text_field_tag 'vazao[vazao_final]',   params[:vazao][:vazao_final], class: "form-control", placeholder: "Final" %>
+			</div>
+			<%= submit_tag "Filtrar", class: "btn btn-primary" %>
+		<% end -%>
+  </div>
+</div>
+
+<table class="table table-striped table-hover table-condensed">
+	<thead>
+		<tr>
+			<th>Cliente</th>
+			<th>Profundidade</th>
+		</tr>
+	</thead>
+	<% unless @instalacoes.blank? %>
+		<% @instalacoes.each do |instalacao| %>
+			<tr>
+				<td><%= instalacao.try(:poco).try(:cliente).try(:pessoa).try(:nome)%></td>
+				<td><%= instalacao.profundidade_bomba %></td>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+
+<% unless @instalacoes.blank? %>
+	<%= link_to "Imprimir PDF", "javascript:;", data: {url: casein_instalacao_filtro_relatorio_path(:format => :pdf), form: "#instalacao", target: "_blank"}, :class => "btn btn-mini btn-primary pull-left form_change_url" %>
+<% end %>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+    $("#profundidade_profundidade_inicial").inputmask("decimal", { radixPoint: ",", digits: 2, autoGroup: true, groupSeparator: ".", groupSize: 3 });
+    $("#profundidade_profundidade_final").inputmask("decimal", { radixPoint: ",", digits: 2, autoGroup: true, groupSeparator: ".", groupSize: 3 });
+    $("#vazao_vazao_inicial").inputmask("decimal", { radixPoint: ",", digits: 2, autoGroup: true, groupSeparator: ".", groupSize: 3 });
+    $("#vazao_vazao_final").inputmask("decimal", { radixPoint: ",", digits: 2, autoGroup: true, groupSeparator: ".", groupSize: 3 });
+	});
+</script>

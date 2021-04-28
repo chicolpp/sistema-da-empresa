@@ -1,0 +1,170 @@
+<h2>
+	Visualizar Instalação
+	<%= link_to "#{casein_show_icon "th-list"}Listar Instalações".html_safe, casein_instalacoes_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_instalacao_path(@instalacao), class: "pull-right" %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Dados Técnicos</h3>
+				  </div>
+					<div class="panel-body">
+						<p><strong>Código do Poço:</strong>	<%= @instalacao.id %></p>
+						<p><strong>Poço:</strong>	<%= @instalacao.poco.try(:nome_intuitivo) %></p>
+						<p><strong>Acesso ao poço:</strong>	<%= get_acesso_poco(@instalacao.acesso) %></p>
+						<% unless @instalacao.poco.periodo_manutencao.blank? %>
+							<p><strong>Período de Manutenção:</strong>	A cada <%= @instalacao.poco.periodo_manutencao %> anos</p>
+						<% end %>
+						<p><strong>Necessita de Guincho Manual?</strong>	<%= @instalacao.guincho ? "Sim" : "Não" %></p>
+						<p><strong>Profundidade da Bomba:</strong>	<%= @instalacao.profundidade_bomba %></p>
+						<p><strong>Vazão da Bomba:</strong>	<%= @instalacao.vazao_bomba %></p>
+						<p><strong>Nível Dinâmico:</strong>	<%= @instalacao.nivel_dinamico %></p>
+						<p><strong>Nível Estático:</strong>	<%= @instalacao.nivel_estatico %></p>
+						<p><strong>Perca de Carga:</strong>	<%= @instalacao.perca_carga %></p>
+						<p><strong>Desnível:</strong>	<%= @instalacao.desnivel %></p>
+						<p><strong>Altura Manométrica:</strong>	<%= @instalacao.altura_nanometrica %></p>
+						<p><strong>Distância do poço até a caixa:</strong>	<%= @instalacao.distancia_poco_caixa %></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Dados da Bomba</h3>
+				  </div>
+					<div class="panel-body">
+						<p><strong>Modelo:</strong>	<%= @instalacao.bomba.try(:modelo_bomba).try(:descricao) %></p>
+						<p><strong>Estágio:</strong>	<%= @instalacao.bomba.try(:estagio).try(:descricao) %></p>
+						<p><strong>Motor/HP:</strong>	<%= @instalacao.bomba.try(:motor).try(:descricao) %></p>
+						<p><strong>Energia:</strong>	<%= @instalacao.bomba.try(:energia).try(:descricao) %></p>
+						<p><strong>Observação:</strong>	<%= @instalacao.bomba.try(:observacao) %></p>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Equipe de Instalação</h3>
+				  </div>
+					<div class="panel-body">
+						<% @instalacao.instalacao_funcionarios.each_with_index do |item, i| %>
+							<p><strong><%= i+1 %>:</strong>	<%= item.funcionario.pessoa.nome %></p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Documentos/Arquivos</h3>
+				  </div>
+					<div class="panel-body">
+						<% @instalacao.arquivos.each_with_index do |item, i| %>
+							<p><strong><%= i+1 %>:</strong>	<%= link_to(item.upload_file_name, item.upload.url, target: :_blank) %></p>
+						<% end %>
+
+						<% if @instalacao.arquivos.blank? %>
+							<p>Não existem arquivos ou documentos para este registro.</p>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Equipamentos Utilizados na Instalação do Poço</h3>
+				  </div>
+					<div class="panel-body">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>U.M.</th>
+									<th>Qtde</th>
+									<th>Observações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% @instalacao.instalacao_poco_equipamentos.each do |item| %>
+									<tr>
+										<td style="padding:8px !important;"><%= item.produto.try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.quantidade %></td>
+										<td style="padding:8px !important;"><%= item.observacao %></td>
+									</tr>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Equipamentos Utilizados na Instalação da Rede Adutora</h3>
+				  </div>
+					<div class="panel-body">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>U.M.</th>
+									<th>Qtde</th>
+									<th>Observações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% @instalacao.instalacao_adutora_equipamentos.each do |item| %>
+									<tr>
+										<td style="padding:8px !important;"><%= item.produto.try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.quantidade %></td>
+										<td style="padding:8px !important;"><%= item.observacao %></td>
+									</tr>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+						<h3 class="panel-title">Equipamentos Utilizados na Instalação da Rede de Distribuição</h3>
+				  </div>
+					<div class="panel-body">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>U.M.</th>
+									<th>Qtde</th>
+									<th>Observações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% @instalacao.instalacao_distribuicao_equipamentos.each do |item| %>
+									<tr>
+										<td style="padding:8px !important;"><%= item.produto.try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+										<td style="padding:8px !important;"><%= item.quantidade %></td>
+										<td style="padding:8px !important;"><%= item.observacao %></td>
+									</tr>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,22 @@
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Nome</th>
+			<th>U.M.</th>
+			<th>Qtde</th>
+			<th>Observações</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @instalacao.instalacao_poco_equipamentos.each do |item| %>
+			<tr>
+				<td style="padding:8px !important;"><%= item.produto.try(:descricao) %></td>
+				<td style="padding:8px !important;"><%= item.produto.try(:unidade_medida).try(:descricao) %></td>
+				<td style="padding:8px !important;"><%= item.quantidade %></td>
+				<td style="padding:8px !important;"><%= item.observacao %></td>
+				<td style="padding:8px !important;"><%= link_to(casein_show_row_icon("trash"), casein_instalacao_poco_equipamento_path(item), :method => :delete, :data => { remote: true, confirm: "Are you sure you want to delete this manutencao servico?" }) %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>

@@ -1,0 +1,15 @@
+<h2>
+	Editar Foto
+	<%= link_to "#{casein_show_icon "th-list"}Listar Fotos".html_safe, casein_fotos_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "zoom-in"}Visualizar".html_safe, casein_foto_path(@foto), class: "pull-right" %>
+</h2>
+
+<%= form_for @foto, :url => casein_foto_path(@foto) do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/fotos/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

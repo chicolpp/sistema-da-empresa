@@ -1,0 +1,16 @@
+pt-BR:
+  energias:
+    new:
+      titulo: "Adicionar Energia"
+    create:
+      sucesso: "A Energia %{descricao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Energia, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Energia"
+    update:
+      sucesso: "A Energia %{descricao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Energia, verifique os dados e tente novamente!"
+    index:
+      titulo: "Energias"
+    destroy:
+      sucesso: "A Energia foi apagada com Sucesso!"

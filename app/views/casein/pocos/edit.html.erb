@@ -1,0 +1,16 @@
+<h2>
+	Editar Poço <%= @poco.nome_intuitivo unless @poco.cliente.pessoa.blank? %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Poços".html_safe, casein_pocos_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "zoom-in"}Visualizar".html_safe, casein_poco_path(@poco), class: "pull-right" %>
+</h2>
+
+<%= form_for @poco, :url => casein_poco_path(@poco) do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/pocos/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+		<%= f.submit "Avançar", name: :avancar, :class => "btn btn-mini btn-primary" %>
+	</p>
+<% end %>

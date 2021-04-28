@@ -1,0 +1,39 @@
+<h2>
+	Visualizar Alerta
+	<%= link_to "#{casein_show_icon "th-list"}Listar Alertas".html_safe, casein_alertas_path, class: "pull-right" if can? :index, Alerta %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_alerta_path(@alerta), class: "pull-right" if can? :edit, Alerta %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title"><%= @alerta.titulo %></h3>
+		  </div>
+			<div class="panel-body">
+				<% if @session_user.is_admin? %>
+					<p><strong>Código:</strong> <%= @alerta.id %></p>
+					<p><strong>Exibir Até:</strong> <%= l(@alerta.exibir_ate) %></p>
+				<% end %>
+				<p><%= @alerta.descricao.html_safe %></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Fotos e Arquivos</h3>
+		  </div>
+			<div class="panel-body">
+				<% @alerta.arquivos.each_with_index do |item, i| %>
+					<p><strong><%= i+1 %>:</strong>	<%= link_to(item.upload_file_name, item.upload.url, target: :_blank) %></p>
+				<% end %>
+				
+				<% if @alerta.arquivos.blank? %>
+					<p>Não existem arquivos ou documentos para este registro.</p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

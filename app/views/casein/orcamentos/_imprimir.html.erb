@@ -1,0 +1,71 @@
+<div class="div-tabela-total col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  <div class="div-titulo col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+      <%= image_tag("materiaguas.png", :class => "img-responsive") %>
+    </div>
+    <div class="div-titulo-topo col-xs-12 col-sm-12 col-md-8 col-lg-8" align="center">
+      <p class="titulo"><%= ENV['COMPANY_NAME'] %></p>
+      <p class="desc">BOMBAS SUBMERSAS - ASSISTENCIA TÉCNICA - SONDAGENS DE SOLO</p>
+      <p class="subtitulo">FONE/FAX - <%= ENV['COMPANY_CITY'] %>, <%= ENV['CONTACT_PHONE'] %></p>
+      <p class="subtitulo">CNPJ: <%= ENV['COMPANY_CNPJ'] %></p>
+    </div>
+  </div>
+  <div class="div-vigencia-total col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+    <p class="subtitulo">CLIENTE</p>
+  </div>
+  <div class="div-unidade-venda col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <p class="desc"><b>NOME: </b><%= @orcamento.cliente.pessoa.try(:nome) %>, <b>TELEFONE: </b><%= %></p>
+    <p class="desc"><b>CIDADE: </b><%= %>, <b>CEP: </b><%= %></p>
+    <p class="desc"><b>CPF/CNPJ: </b><%= %></p>
+  </div>
+  <div class="div-solicitacao-total col-xs-12 col-sm-12 col-md-12 col-lg-12" align="center">
+    <p class="subtitulo">ORCAMENTO DE MANUTENÇÃO PREVENTIVA DE CJTO MOTO BOMBA</p>
+  </div>
+  <div class="div-table col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <table class="table table-custom">
+      <tr>
+        <th>Quantidade</th>
+        <th>Unidade</th>
+        <th>Descriminação</th>
+        <th>Preço Unitário</th>
+        <th>Preço Total</th>
+     </tr>
+
+      <% @orcamento.orcamento_itens.each do |item| %>
+        <tr>
+          <td><%= item.quantidade %></td>
+          <td><%= item.unidade %></td>
+          <td><%= item.descricao %></td>
+          <td><%= item.preco_unitario %></td>
+          <td><%= item.preco_total %></td>
+        </tr>
+        <% @total = (@total.to_f + item.preco_total.to_f) %>
+      <% end %>
+    </table>
+    <p class="subtitulo" style="padding-left: 370px;">Total R$: <%= @total %></p>
+    <p class="subtitulo">1 - Validade da proposta: <%= @orcamento.validade_proposta %></p>
+    <p class="subtitulo">2 - Prazo para inicio: <%= @orcamento.prazo_inicio %></p>
+    <p class="subtitulo">3 - Prazo para execução: <%= @orcamento.prazo_execucao %></p>
+    <p class="subtitulo">4 - Condições de pagamento: <%= @orcamento.condicao_pagamento %></p>
+    <br>
+    <p class="desc"><%= @orcamento.descricao %></p>
+    <br>
+    <p class="desc"><%= @orcamento.cidade_data %></p>
+      <br>
+    <div class="col-md-5 col-lg-5">
+      <hr style="border-top: 1px solid #000000;">
+      <p class="subtitulo" align="center"><%= ENV['COMPANY_NAME'] %></p>
+      <p class="subtitulo" align="center"><%= @orcamento.casein_admin_user.name %> - <%= @orcamento.casein_admin_user.cargo %>.</p>
+      <p class="subtitulo" align="center"><%= @orcamento.casein_admin_user.telefone1 %>; <%= @orcamento.casein_admin_user.telefone2 %></p>
+    </div>
+    <div class="col-md-2 col-lg-2">
+    </div>
+    <div class="col-md-5 col-lg-5">
+      <hr style="border-top: 1px solid #000000;">
+      <p class="desc" align="center">Autorizo(amos) a execução dos serviços e ou</p>
+      <p class="desc" align="center">fornecimento de materiais acima discriminados</p>
+      <p class="desc" align="center">de acordo com o orçamento.</p>
+      <br>
+    </div>
+  </div>
+</div>

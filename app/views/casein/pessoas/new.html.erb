@@ -1,0 +1,14 @@
+<h2>
+	Cadastrar Pessoa
+	<%= link_to "#{casein_show_icon "th-list"}Listar Clientes".html_safe, casein_clientes_path, class: "pull-right" if can? :index, @pessoa.cliente %>
+</h2>
+
+<%= form_for @pessoa, :url => casein_pessoas_path do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/pessoas/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

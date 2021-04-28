@@ -1,0 +1,81 @@
+<legend>Filtros</legend>
+
+<div class="form-group">
+	<%= label_tag :cliente_id, "Cliente" %>
+	<%= select_tag(:cliente_id, options_from_collection_for_select(Cliente.select("clientes.id, pessoas.nome").joins(:pessoa).all, 'id', 'nome', params[:cliente_id]), {:include_blank => "Selecione o Cliente", :class => "form-control select_padrao"}) %>
+</div>
+<div class="form-group">
+	<%= label_tag :estado_id, "Estado" %>
+	<%= select_tag(:estado_id, options_from_collection_for_select(Estado.all, 'id', 'nome', params[:estado_id]), {:include_blank => "Selecione o Estado", :class => "form-control estado_id", data: {target: ".cidade_id_filtro"}}) %>
+</div>
+<div class="form-group">
+	<%= label_tag :cidade_id, "Cidade" %>
+	<%= select_tag(:cidade_id, options_from_collection_for_select(Cidade.where(estado_id: params[:estado_id]).all, 'id', 'nome', params[:cidade_id]), {:include_blank => "Selecione a Cidade", :class => "form-control cidade_id_filtro"}) %>
+</div>
+
+<button type="button" id="botao-filtrar" class="btn btn-primary" data-toggle="modal" data-target="#filtro">
+  Filtrar
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="filtro" tabindex="-1" role="dialog" aria-labelledby="filtroLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="filtroLabel">Filtro de Perfuração</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="tabela">
+        	<%= @pocos = acesso_por_cidade(Poco, "poco_produtivo", "pocos", "") %>    
+		      <%= render partial: "table", locals: { pocos: @pocos } %>
+				</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	$('#estado_id').change(function(){
+    $.ajax({
+      url: '<%= carregar_cidades_path %>',
+      data: {
+        estado_id: $(this).val(),
+        target: $(this).data("target")
+      }
+    });
+  });
+
+
+  jQuery(document).ready(function($) {
+		$("#botao-filtrar").click(function(event) {
+			var cliente_id = $("#cliente_id").val();
+			var estado_id = $("#estado_id").val();
+			var cidade_id = $("#cidade_id").val();
+			$(".loading").show();
+
+			$.ajax({
+				url: '<%= casein_poco_filtro_ajax_path(1) %>',
+				type: 'GET',
+				dataType: 'script',
+				data: {
+					cliente_id: cliente_id,
+					estado_id: estado_id,
+					cidade_id: cidade_id,
+				}
+			})
+			.done(function() {
+				$(".loading").show();
+			})
+			.fail(function() {
+
+			})
+			.always(function() {
+				$(".loading").hide();
+			});
+		});
+	});
+</script>

@@ -1,0 +1,15 @@
+<h2>
+	Editar Poço <%= @aprofundamento.poco.nome_intuitivo %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Aprofundamentos".html_safe, casein_aprofundamentos_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "zoom-in"}Visualizar".html_safe, casein_aprofundamento_path(@aprofundamento), class: "pull-right" %>
+</h2>
+
+<%= form_for @aprofundamento, :url => casein_aprofundamento_path(@aprofundamento) do |f| %>
+	<div class="tab-content">
+		<%= render :partial => 'casein/aprofundamentos/form', :locals => { :f => f } %>
+	</div>
+
+	<p class="submits">
+		<%= f.submit "Salvar", :class => "btn btn-mini btn-success" %>
+	</p>
+<% end %>

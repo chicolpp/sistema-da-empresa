@@ -1,0 +1,26 @@
+<h2>Contatos Realizados para Manutenção deste Poço</h2>
+
+<p><strong>Código:</strong>	<%= link_to @poco.id, casein_poco_path(@poco) %></p>
+<p><strong>Número do Processo:</strong>	<%= @poco.numero_processo %></p>
+<p><strong>Poço Produtivo?</strong>	<%= @poco.poco_produtivo ? "Sim" : "Não" %></p>
+<p><strong>Perfuração Materiáguas?</strong>	<%= @poco.perfuracao_leao ? "Sim" : "Não" %></p>
+<p><strong>Cliente:</strong>	<%= link_to @poco.cliente.pessoa.nome, casein_pessoa_path(@poco.cliente), target: :_blank %></p>
+<p><strong>Linha:</strong>	<%= @poco.linha_endereco %></p>
+<p><strong>Apelido:</strong>	<%= @poco.apelido_endereco %></p>
+<p><strong>Cidade - UF:</strong>	<%= @poco.cidade.get_nome_completo %></p>
+
+<% @manutencao_contatos.each do |manutencao_contato| %>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="well">
+				<h5><b>Alterado para:</b> <%= l(manutencao_contato.nova_data) if manutencao_contato.nova_data.present? %></h5>
+				<% unless manutencao_contato.manutencao_servico.blank? %>
+					<p><b>Serviço:</b> <%= manutencao_contato.manutencao_servico %></p>
+				<% end %>
+				<% unless manutencao_contato.observacao.blank? %>
+					<p><b>Observações:</b> <%= manutencao_contato.observacao %></p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+<% end %>

@@ -1,0 +1,55 @@
+<div class="modal fade" id="modal-incluir-equipamento">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Incluir Equipamento</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="input-group">
+						  <span class="input-group-addon" id="addon-produto-id">Produto *</span>
+							<%= select_tag "instalacao_poco_equipamento[produto_id]", options_from_collection_for_select(Produto.select("produtos.id, produtos.descricao").order(:descricao).all, :id, :descricao), include_blank: true, class: "form-control", "aria-describedby" => "addon-produto-id" %>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="input-group">
+						  <span class="input-group-addon" id="addon-quantidade">Quantidade *</span>
+							<%= text_field_tag "instalacao_poco_equipamento[quantidade]", "", class: "form-control masc-decimal", "aria-describedby" => "addon-quantidade" %>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="input-group">
+						  <span class="input-group-addon" id="addon-observacao">Observação</span>
+							<%= text_field_tag "instalacao_poco_equipamento[observacao]", "", class: "form-control", "aria-describedby" => "addon-observacao" %>
+						</div>
+					</div>
+				</div>
+				<!-- Aqui teria o end que esta ali depois do btn salvar -->
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				<button id="gravar-equipamento-modal" class="btn btn-primary">Salvar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$('#gravar-equipamento-modal').click(function(event) {
+		$.ajax({
+			url: '<%= casein_instalacao_poco_equipamentos_path %>',
+			type: 'POST',
+		  dataType: 'script',
+			data: {
+				instalacao_poco_equipamento: {
+					instalacao_id: <%= @instalacao.id %>,
+					produto_id: $('#instalacao_poco_equipamento_produto_id').val(),
+					quantidade: $('#instalacao_poco_equipamento_quantidade').val(),
+					observacao: $('#instalacao_poco_equipamento_observacao').val()
+				}
+			}
+		});
+	});
+</script>

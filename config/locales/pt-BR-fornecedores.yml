@@ -1,0 +1,17 @@
+pt-BR:
+  fornecedores:
+    new:
+      titulo: "Adicionar Fornecedor"
+    create:
+      sucesso: "O Fornecedor %{nome} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Fornecedor, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Fornecedor"
+    update:
+      titulo: "Fornecedor"
+      sucesso: "O Fornecedor %{nome} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Fornecedor, verifique os dados e tente novamente!"
+    index:
+      titulo: "Fornecedores"
+    destroy:
+      sucesso: "O Fornecedor foi apagado com Sucesso!"

@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8
+  pool: <%= ENV.fetch("DB_POOL") { 5 } %>
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  port: <%= ENV['DB_PORT'] %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") { 'materiaguas_development' } %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") { 'materiaguas_test' } %>
+
+production:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") { 'materiaguas_production' } %>

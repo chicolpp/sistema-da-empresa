@@ -1,0 +1,37 @@
+<div class="panel panel-info">
+  <div class="panel-body">
+    Gerar Relatórios por Manutenção
+  </div>
+  <div class="panel-footer">
+		<%= form_tag(casein_manutencao_filtro_relatorio_path, method: :post, role: :form, id: "manutencao") do %>
+			<legend>Filtros</legend>
+
+			<div class="form-group">
+				<%= label_tag :descricao_servico, "Serviço", class: "control-label" %>
+				<%= text_field_tag :descricao_servico, params[:descricao_servico], class: "form-control", autofocus: true %>
+			</div>
+			<%= submit_tag "Filtrar", class: "btn btn-primary" %>
+		<% end -%>
+  </div>
+</div>
+
+<table class="table table-striped table-hover table-condensed">
+	<thead>
+		<tr>
+			<th>Cliente</th>
+			<th>Descrição do Serviço</th>
+		</tr>
+	</thead>
+	<% unless @manutencaos.blank? %>
+		<% @manutencaos.each do |manutencao| %>
+			<tr>
+				<td><%= manutencao.try(:poco).try(:cliente).try(:pessoa).try(:nome)%></td>
+				<td><%= manutencao.descricao_servico %></td>
+			</tr>
+		<% end %>
+	<% end %>
+</table>
+
+<% unless @manutencaos.blank? %>
+	<%= link_to "Imprimir PDF", "javascript:;", data: {url: casein_manutencao_filtro_relatorio_path(:format => :pdf), form: "#manutencao", target: "_blank"}, :class => "btn btn-mini btn-primary pull-left form_change_url" %>
+<% end %>

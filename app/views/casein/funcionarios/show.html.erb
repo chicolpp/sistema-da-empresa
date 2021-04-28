@@ -1,0 +1,26 @@
+<h2>
+	Visualizar <%= @funcionario.pessoa.nome %>
+	<%= link_to "#{casein_show_icon "th-list"}Listar Funcionários".html_safe, casein_funcionarios_path, class: "pull-right" %>
+	<%= link_to "#{casein_show_icon "edit"}Editar".html_safe, edit_casein_funcionario_path(@funcionario), class: "pull-right" %>
+</h2>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+				<h3 class="panel-title">Dados Básicos</h3>
+		  </div>
+			<div class="panel-body">
+				<p><strong>Código:</strong>	<%= @funcionario.id %></p>
+				<p><strong>Nome:</strong> <%= @funcionario.pessoa.nome %></p>
+				<p><strong>Cargo:</strong> <%= @funcionario.cargo.try(:nome) %></p>
+				<p><strong>Carteira Profissional:</strong> <%= @funcionario.carteira_profissional %></p>
+				<p><strong>Data Admissão:</strong> <%= l(@funcionario.data_admissao) unless @funcionario.data_admissao.blank? %></p>
+				<p><strong>Data Demissão:</strong> <%= l(@funcionario.data_demissao) unless @funcionario.data_demissao.blank? %></p>
+				<p><strong>Currículo:</strong> <%= @funcionario.curriculo %></p>
+				<p><strong>Usuará o Aplicativo?</strong> <%= @funcionario.use_app ? "Sim" : "Não" %></p>
+				<p><strong>Login Aplicativo:</strong> <%= @funcionario.email %></p>
+			</div>
+		</div>
+	</div>
+</div>

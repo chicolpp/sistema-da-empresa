@@ -1,0 +1,1 @@
+As coordenadas geográficas utilizadas pelo Google Maps são designadas de Coordenadas DD (Decimal Degrees). Ou seja, estas coordenadas estão no formato Graus Decimais (e.g. Lat 40.601203, Lng -8.668173)

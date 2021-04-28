@@ -1,0 +1,16 @@
+pt-BR:
+  ordem_servicos:
+    new:
+      titulo: "Adicionar Ordem"
+    create:
+      sucesso: "A Ordem foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Ordem, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Ordem"
+    update:
+      sucesso: "A Ordem foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Ordem, verifique os dados e tente novamente!"
+    index:
+      titulo: "Ordens"
+    destroy:
+      sucesso: "A Ordem foi apagada com Sucesso!"

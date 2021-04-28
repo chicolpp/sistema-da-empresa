@@ -1,0 +1,20 @@
+<% if flash[:warning] %>
+  <div class="notification warning">
+    <span class="title">!&nbsp;&nbsp;&nbsp;&nbsp;Alerta</span><%= flash[:warning] %><span class="close">X</span>
+  </div>
+<% end %>
+<% if flash[:notice] %>
+  <div class="notification success">
+    <span class="title">:)&nbsp;&nbsp;&nbsp;&nbsp;Sucesso</span><%= flash[:notice] %><span class="close">X</span>
+  </div>
+<% end %>
+<% if flash[:error] %>
+  <div class="notification error">
+    <span class="title">:(&nbsp;&nbsp;&nbsp;&nbsp;Erro</span><%= flash[:error] %><span class="close">X</span>
+  </div>
+<% end %>
+<% if content_for?(:help) %>
+  <div class="notification normal">
+    <span class="title">:)&nbsp;&nbsp;&nbsp;&nbsp;Aviso</span><%= yield :help %><span class="close">X</span>
+  </div>
+<% end %>

@@ -1,0 +1,16 @@
+pt-BR:
+  bombas:
+    new:
+      titulo: "Adicionar Bomba"
+    create:
+      sucesso: "A Bomba %{descricao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Bomba, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Bomba"
+    update:
+      sucesso: "A Bomba %{descricao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Bomba, verifique os dados e tente novamente!"
+    index:
+      titulo: "Bombas"
+    destroy:
+      sucesso: "A Bomba foi apagada com Sucesso!"

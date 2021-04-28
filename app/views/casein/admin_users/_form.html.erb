@@ -1,0 +1,66 @@
+<div class="row">
+	<div class="col-lg-6">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="input-group">
+			  	<span class="input-group-addon" id="addon-login">Nome de Usuário *</span>
+					<%= f.text_field :login, class: "form-control #{f.object.errors[:login].first ? 'input-error' : ''}", "aria-describedby" => "addon-login" %>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="input-group">
+				  	<span class="input-group-addon" id="addon-email">E-mail *</span>
+					<%= f.text_field :email, class: "form-control #{f.object.errors[:email].first ? 'input-error' : ''}", "aria-describedby" => "addon-email" %>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon" id="addon-pos-venda">Faz Pós Venda? *</span>
+					<%= f.select :pos_venda, [["Sim", true], ["Não", false]], {include_blank: true}, {class: "form-control #{f.object.errors[:pos_venda].first ? 'input-error' : ''}", "aria-describedby" => "addon-pos-venda"} %>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="input-group">
+				  	<span class="input-group-addon" id="addon-access-level">Perfil de Acesso *</span>
+					<%= f.select :access_level, [["Admin", 0], ["Usuário", 10]], {include_blank: true}, {class: "form-control #{f.object.errors[:access_level].first ? 'input-error' : ''}", "aria-describedby" => "addon-access-level"} %>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="input-group">
+				  	<span class="input-group-addon" id="addon-password">Senha *</span>
+					<%= f.password_field :password, class: "form-control #{f.object.errors[:password].first ? 'input-error' : ''}", "aria-describedby" => "addon-password" %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div id="dados_usuario_cidades">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2>
+						Cidades Autorizadas
+						<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Cidade".html_safe, f, :usuario_cidades, "pull-right", "Adicionar uma Cidade", "usuario_cidades" %>
+					</h2>
+				</div>
+			</div>
+			<div id="usuario_cidades">
+				<%= f.fields_for :usuario_cidades do |usuario_cidade| %>
+				  <%= render "casein/usuario_cidades/form", f: usuario_cidade %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--
+<script type="text/javascript">
+	$('#estado_id').change(function(){
+    $.ajax({
+      url: '<%= carregar_cidades_path %>',
+      data: {
+        estado_id: $(this).val(),
+        target: $(this).data("target")
+      }
+    });
+  });
+</script> -->

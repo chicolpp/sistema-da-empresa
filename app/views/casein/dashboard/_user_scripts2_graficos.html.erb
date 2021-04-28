@@ -1,0 +1,172 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<% unless pos_vendas.where(pergunta1: [0, 1, 2, 3, 4, 5, 10]).blank? %>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Internet',     <%= pos_vendas.where(pergunta1: 0).count %>],
+        ['Rádio',        <%= pos_vendas.where(pergunta1: 1).count %>],
+        ['Jornais',      <%= pos_vendas.where(pergunta1: 2).count %>],
+        ['TV',           <%= pos_vendas.where(pergunta1: 3).count %>],
+        ['Outdoor',      <%= pos_vendas.where(pergunta1: 4).count %>],
+        ['Indicação',    <%= pos_vendas.where(pergunta1: 5).count %>],
+        ['Outros',       <%= pos_vendas.where(pergunta1: 10).count %>]
+      ]);
+
+      var options = {
+        title: 'Como Conheceu?',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart1-<%= type %>'));
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>
+
+<% unless pos_vendas.where(pergunta2: [0, 1]).blank? %>
+  <script type="text/javascript">
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Sim',     <%= pos_vendas.where(pergunta2: 0).count %>],
+        ['Não',     <%= pos_vendas.where(pergunta2: 1).count %>]
+      ]);
+
+      var options = {
+        title: 'Satisfação',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart2-<%= type %>'));
+
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>
+
+<% unless pos_vendas.where(pergunta7: [0, 1]).blank? %>
+  <script type="text/javascript">
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Sim',     <%= pos_vendas.where(pergunta7: 0).count %>],
+        ['Não',     <%= pos_vendas.where(pergunta7: 1).count %>]
+      ]);
+
+      var options = {
+        title: 'Orientou sobre a próxima Manutenção?',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart6-<%= type %>'));
+
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>
+
+<% unless pos_vendas.where(pergunta4: [5, 4, 3, 2, 1]).blank? %>
+  <script type="text/javascript">
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Ótimo',     <%= pos_vendas.where(pergunta4: 5).count %>],
+        ['Bom',       <%= pos_vendas.where(pergunta4: 4).count %>],
+        ['Regular',   <%= pos_vendas.where(pergunta4: 3).count %>],
+        ['Ruim',      <%= pos_vendas.where(pergunta4: 2).count %>],
+        ['Péssimo',   <%= pos_vendas.where(pergunta4: 1).count %>]
+      ]);
+
+      var options = {
+        title: 'Atendimento na Obra',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart3-<%= type %>'));
+
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>
+
+<% unless pos_vendas.where(pergunta5: [5, 4, 3, 2, 1]).blank? %>
+  <script type="text/javascript">
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Ótimo',     <%= pos_vendas.where(pergunta5: 5).count %>],
+        ['Bom',       <%= pos_vendas.where(pergunta5: 4).count %>],
+        ['Regular',   <%= pos_vendas.where(pergunta5: 3).count %>],
+        ['Ruim',      <%= pos_vendas.where(pergunta5: 2).count %>],
+        ['Péssimo',   <%= pos_vendas.where(pergunta5: 1).count %>]
+      ]);
+
+      var options = {
+        title: 'Atendimento Vendedor',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart4-<%= type %>'));
+
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>
+
+<% unless pos_vendas.where(pergunta7: [0, 1]).blank? %>
+  <script type="text/javascript">
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Sim',     <%= pos_vendas.where(pergunta7: 0).count %>],
+        ['Não',     <%= pos_vendas.where(pergunta7: 1).count %>]
+      ]);
+
+      var options = {
+        title: 'Passou Nº da Assistência Técnica?',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart8-<%= type %>'));
+
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>
+
+<% unless pos_vendas.where(pergunta8: [0, 1]).blank? %>
+  <script type="text/javascript">
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Descrição', 'Quantidade'],
+        ['Sim',     <%= pos_vendas.where(pergunta8: 0).count %>],
+        ['Não',     <%= pos_vendas.where(pergunta8: 1).count %>]
+      ]);
+
+      var options = {
+        title: 'Contrataria Novamente?',
+        legend: 'none',
+        pieSliceText: 'label'
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart5-<%= type %>'));
+
+      chart.draw(data, options);
+    }
+  </script>
+<% end %>

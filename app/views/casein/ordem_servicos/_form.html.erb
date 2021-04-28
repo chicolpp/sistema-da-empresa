@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="<%= action_name == 'edit' ? 'col-lg-12' : 'col-lg-11' %>">
+    <div class="input-group">
+      <span class="input-group-addon" id="addon-cliente">Cliente *</span>
+      <%= f.collection_select :poco_id, Poco.select("pocos.id, CONCAT(pessoas.nome, '-', pocos.linha_endereco, '-', pocos.apelido_endereco) as nome").joins(cliente: [:pessoa]).order("CONCAT(pessoas.nome, '-', pocos.linha_endereco, '-', pocos.apelido_endereco)").all, :id, :nome, {include_blank: true, selected: @ordem_servico.poco_id || params[:poco]}, {class: "form-control #{f.object.errors[:poco_id].first ? 'input-error' : ''} select_padrao", "aria-describedby" => "addon-poco-id"} %>
+    </div>
+  </div>
+  <% if action_name != 'edit' %>
+    <div class="col-lg-1">
+      <%= button_tag "Novo", :type => 'button', :class => "btn btn-mini btn-success", id: 'btn-novo-cliente' %>
+    </div>
+  <% end %>
+  <div class="col-lg-4">
+    <div class="input-group">
+      <span class="input-group-addon" id="addon-funcionario">Funcionário Responsável *</span>
+      <%= f.collection_select :funcionario_id, Funcionario.select("funcionarios.id, pessoas.nome").joins(:pessoa).where(use_app: true), :id, :nome, {include_blank: true}, {class: "form-control #{f.object.errors[:funcionario_id].first ? 'input-error' : ''} select_funcionario_#{f.index}", "aria-describedby" => "addon-funcionario-id", "data-index" => f.index} %>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="input-group">
+      <span class="input-group-addon" id="addon-data-perfuracao-fim">Data Próxima Etapa *</span>
+      <% f.object.data_proxima_etapa = f.object.data_proxima_etapa.strftime('%d/%m/%Y') unless f.object.data_proxima_etapa.blank? %>
+      <%= f.text_field :data_proxima_etapa, class: "form-control #{f.object.errors[:data_proxima_etapa].first ? 'input-error' : ''}", "aria-describedby" => "addon-data-perfuracao-fim", data: {masker: true, type: :d} %>
+    </div>
+  </div>
+
+  <% if action_name == 'edit' %>
+    <div class="col-lg-4">
+      <div class="input-group">
+        <span class="input-group-addon" id="addon-sintoma">Status</span>
+        <%= f.select :status, ["Início", "Iniciado", "Em Andamento", "Finalização", "Finalizado"], {include_blank: false}, {class: "form-control #{f.object.errors[:status].first ? 'input-error' : ''}", "aria-describedby" => "addon-status"} %>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="input-group">
+        <span class="input-group-addon" id="addon-periodo-manutencao">Período de Manutenção</span>
+        <%= select_tag :periodo_manutencao_edit, options_for_select([["A cada 1 ano", 1], ["A cada 2 anos", 2], ["A cada 3 anos", 3], ["A cada 4 anos", 4], ["A cada 5 anos", 5]], f.object.poco.periodo_manutencao), {class: "form-control", "aria-describedby" => "addon-periodo-manutencao"} %>
+      </div>
+    </div>
+  <% end %>
+  <div class="<%= action_name == 'edit' ? 'col-lg-8' : 'col-lg-4' %>">
+    <div class="input-group">
+      <span class="input-group-addon" id="addon-sintoma">Sintoma</span>
+      <%= f.text_field :sintoma, class: "form-control", "aria-describedby" => "addon-sintoma" %>
+    </div>
+  </div>
+
+  <div class="col-lg-12">
+    <div id="form-cliente" hidden="true" style="margin-top: 30px">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-funcionario">Nome *</span>
+            <%= text_field_tag :nome, params[:nome], class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-funcionario">E-mail</span>
+            <%= text_field_tag :email, params[:email], class: "form-control" %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-funcionario">Telefone</span>
+            <%= text_field_tag :telefone, params[:telefone], class: "form-control masc-telefone" %>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-poco-produtivo">Poço Produtivo? *</span>
+            <%= select_tag :poco_produtivo, options_for_select([["Sim", true], ["Não", false]]), {class: "checkbox_poco_produtivo form-control", "aria-describedby" => "addon-poco-produtivo"} %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-perfuracao-leao">Perfurado pela Materiáguas? *</span>
+            <%= select_tag :perfuracao_leao, options_for_select([["Sim", true], ["Não", false]]), {class: "checkbox_perfuracao_leao form-control", "aria-describedby" => "addon-perfuracao-leao"} %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-linha-endereco">Local do Poço - Linha *</span>
+            <%= text_field_tag :linha_endereco,  params[:linha_endereco], class: "form-control", "aria-describedby" => "addon-linha-endereco" %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-cidade-id">Cidade *</span>
+            <%= select_tag :cidade_id, options_for_select(Cidade.all.collect{ |u| [u.get_nome_completo, u.id] }), class: "form-control input-sm select_padrao", "aria-describedby" => "addon-cidade-id" %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-apelido-endereco">Apelido *</span>
+            <%= select_tag :apelido_endereco, options_for_select(["Poço 1", "Poço 2", "Poço 3", "Poço 4", "Poço 5", "Poço 6", "Poço 7", "Poço 8", "Poço 9", "Poço 10"]), {class: "form-control", "aria-describedby" => "addon-apelido-endereco"} %>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="input-group">
+            <span class="input-group-addon" id="addon-periodo-manutencao">Período de Manutenção</span>
+            <%= select_tag :periodo_manutencao, options_for_select([["A cada 1 ano", 1], ["A cada 2 anos", 2], ["A cada 3 anos", 3], ["A cada 4 anos", 4], ["A cada 5 anos", 5]]), {class: "form-control", "aria-describedby" => "addon-periodo-manutencao"} %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script charset="utf-8">
+  $("#btn-novo-cliente").on('click', function(){
+    $('#form-cliente').show();
+  });
+</script>

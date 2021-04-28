@@ -1,0 +1,8 @@
+$("<%= @target %>").empty();
+$("<%= @target %>").append("<option>Selecione o Poço</option>");
+
+$("#poco").empty();
+
+<% @pocos.each_with_index do |item, i|  %>
+  $("<%= @target %>").append("<option value=<%= item.id %> > <%= item.id %> - <%= item.cidade.estado.sigla %>/<%= item.cidade.try(:nome) %> - <%= item.linha_endereco %> - <%= item.apelido_endereco %></option>");
+<% end %>

@@ -1,0 +1,16 @@
+pt-BR:
+  maquinas:
+    new:
+      titulo: "Adicionar Máquina"
+    create:
+      sucesso: "A Máquina %{descricao} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Máquina, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Máquina"
+    update:
+      sucesso: "A Máquina %{descricao} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Máquina, verifique os dados e tente novamente!"
+    index:
+      titulo: "Máquinas"
+    destroy:
+      sucesso: "A Máquina foi apagada com Sucesso!"

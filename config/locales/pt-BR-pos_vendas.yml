@@ -1,0 +1,16 @@
+pt-BR:
+  pos_vendas:
+    new:
+      titulo: "Pós-Venda"
+    create:
+      sucesso: "A Pós-Venda %{id} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Pós Venda, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Pós-Venda Metriáguas"
+    update:
+      sucesso: "A Pós-Venda %{id} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Pós Venda, verifique os dados e tente novamente!"
+    index:
+      titulo: "Pós Vendas"
+    destroy:
+      sucesso: "A Pós-Venda foi apagada com Sucesso!"

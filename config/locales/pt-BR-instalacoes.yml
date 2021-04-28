@@ -1,0 +1,16 @@
+pt-BR:
+  instalacoes:
+    new:
+      titulo: "Instalação de Poço"
+    create:
+      sucesso: "A Instalação %{id} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Instalação, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Instalação de Poço"
+    update:
+      sucesso: "A Instalação %{id} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Instalação, verifique os dados e tente novamente!"
+    index:
+      titulo: "Instalações de Poços"
+    destroy:
+      sucesso: "A Instalação foi apagada com Sucesso!"

@@ -1,0 +1,6 @@
+<h2>
+	<%= @casein_page_title %>
+	<%= link_to "#{casein_show_icon "plus-sign"}Nova Instalação".html_safe, new_casein_instalacao_path, class: "pull-right" %>
+</h2>
+
+<%= render :partial => 'casein/instalacoes/table' %>

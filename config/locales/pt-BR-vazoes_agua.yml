@@ -1,0 +1,17 @@
+pt-BR:
+  vazoes_agua:
+    new:
+      titulo: "Dados do Teste de Vazão"
+    create:
+      sucesso: "A Vazão de Água %{id} foi cadastrada com Sucesso!"
+      alerta: "Não foi possível adicionar esta Vazão de Água, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Dados do Teste de Vazão"
+    update:
+      titulo: "Vazão de Água"
+      sucesso: "A Vazão de Água %{id} foi atualizada com Sucesso!"
+      alerta: "Não foi possível atualizar esta Vazão de Água, verifique os dados e tente novamente!"
+    index:
+      titulo: "Testes de Vazão"
+    destroy:
+      sucesso: "A Vazão de Água foi apagada com Sucesso!"

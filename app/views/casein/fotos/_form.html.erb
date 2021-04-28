@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="col-lg-9">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon" id="addon-nome">Nome da Foto</span>
+					<%= f.text_field :nome, class: "form-control #{f.object.errors[:nome].first ? 'input-error' : ''}", "aria-describedby" => "addon-nome" %>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon" id="addon-cliente-id">Poço *</span>
+					<%= f.collection_select :poco_id, Poco.select("pocos.id, CONCAT(pessoas.nome, '-', pocos.linha_endereco, '-', pocos.apelido_endereco, ' - ', cidades.nome, ', ', estados.sigla) as nome").joins(cliente: [:pessoa]).joins(cidade: [:estado]).order("CONCAT(pessoas.nome, '-', pocos.linha_endereco, '-', pocos.apelido_endereco, ' - ', cidades.nome, ', ', estados.sigla)"), :id, :nome, {include_blank: true}, {class: "form-control #{f.object.errors[:poco_id].first ? 'input-error' : ''} select_padrao", "aria-describedby" => "addon-poco-id"} %>
+				</div>
+			</div>
+		</div>
+
+		<% if action_name != "show" && action_name != "edit" && action_name != "update" %>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="input-group">
+					  <span class="input-group-addon" id="addon-foto">Foto *</span>
+						<%= f.file_field :foto, class: "form-control #{f.object.errors[:foto].first ? 'input-error' : ''}", "aria-describedby" => "addon-foto", required: true, multiple: true, name: 'foto[foto][]' %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="input-group">
+				  <span class="input-group-addon" id="addon-observacao">Observação</span>
+					<%= f.text_field :observacao, class: "form-control #{f.object.errors[:observacao].first ? 'input-error' : ''}", "aria-describedby" => "addon-observacao" %>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="input-group">
+					<%= check_box_tag :multiplas, params[:multiplas], class: "form-control #{f.object.errors[:multiplas].first ? 'input-error' : ''}" %>&nbsp;
+					<%= label_tag(:multiplas, "Editar também o Poço de todas as fotos com o mesmo nome desta") %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% unless @foto.foto.blank? %>
+		<div class="col-lg-3">
+			<%= image_tag(@foto.foto.url(:media), class: "img-responsive") %>
+		</div>
+	<% end %>
+</div>

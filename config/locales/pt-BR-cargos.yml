@@ -1,0 +1,17 @@
+pt-BR:
+  cargos:
+    new:
+      titulo: "Adicionar Cargo"
+    create:
+      sucesso: "O Cargo %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Cargo, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Cargo"
+    update:
+      titulo: "Cargo"
+      sucesso: "O Cargo %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Cargo, verifique os dados e tente novamente!"
+    index:
+      titulo: "Cargos"
+    destroy:
+      sucesso: "O Cargo foi apagado com Sucesso!"

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+    <!-- TITULO DO SITE -->
+    <title><%= ENV['CLIENT_NAME'] %></title>
+
+    <!-- CSS -->
+	  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+
+	  <!-- Javascripts -->
+	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+    <!-- META TAGS -->
+    <%= render "layouts/application/metas" %>
+
+    <!-- GOOGLE ANALITYCS -->
+    <%= render "layouts/application/ga" if Rails.env == "production" %>
+
+	  <%= csrf_meta_tags %>
+	</head>
+	<body>
+		<!-- MENSAGENS DE ALERTA -->
+    <%= render "layouts/application/alertas" %>
+
+    <div class="container-fluid div-total-topo">
+      <!-- TOPO DO SITE -->
+       <%= render "layouts/application/topo" %>
+    </div>
+
+    <div class="container-fluid div-total-meio">
+      <!-- MEIO DO SITE -->
+      <%= yield %>
+    </div>
+
+    <div class="container-fluid div-total-rodape">
+      <!-- RODAPE DO SITE -->
+      <%= render "layouts/application/rodape" %>
+    </div>
+	</body>
+</html>

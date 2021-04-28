@@ -1,0 +1,17 @@
+pt-BR:
+  produtos:
+    new:
+      titulo: "Adicionar Produto"
+    create:
+      sucesso: "O Produto %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este Produto, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar Produto"
+    update:
+      titulo: "Produto"
+      sucesso: "O Produto %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este Produto, verifique os dados e tente novamente!"
+    index:
+      titulo: "Produtos"
+    destroy:
+      sucesso: "O Produto foi apagado com Sucesso!"

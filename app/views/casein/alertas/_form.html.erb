@@ -1,0 +1,44 @@
+<div class="row">
+	<div class="col-lg-6">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="input-group">
+					<span class="input-group-addon" id="addon-titulo">Título</span>
+					<%= f.text_field :titulo, class: "form-control #{f.object.errors[:titulo].first ? 'input-error' : ''}", placeholder: "Título", "aria-describedby" => "addon-titulo" %>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="form-group">
+					<%= f.cktext_area :descricao, class: "ckeditor form-control #{f.object.errors[:descricao].first ? 'input-error' : ''}", "aria-describedby" => "addon-descricao", rows: 5, :ckeditor => {:toolbar => 'mini'} %>
+				</div>
+			</div>
+			<div class="col-lg-12">
+				<div class="input-group">
+			  	<span class="input-group-addon" id="addon-data">Exibir Até *</span>
+			  	<% f.object.exibir_ate = f.object.exibir_ate.strftime('%d/%m/%Y %H:%M:%S') unless f.object.exibir_ate.blank? %>
+					<%= f.text_field :exibir_ate, class: "form-control #{f.object.errors[:exibir_ate].first ? 'input-error' : ''}", "aria-describedby" => "addon-data", data: {masker: true, type: :dh} %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6">
+
+		<div class="row">
+			<div id="dados_arquivos">
+				<div class="col-lg-12">
+					<h2>
+						Adicionar Fotos/Documentos
+						<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Arquivo".html_safe, f, :arquivos, "pull-right", "Adicionar um Novo Arquivo", "arquivos" %>
+					</h2>
+				</div>
+				<div class="col-lg-12">
+					<div id="arquivos">
+						<%= f.fields_for :arquivos do |arquivo|%>
+						  <%= render "casein/arquivos/form", f: arquivo %>
+						<% end %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

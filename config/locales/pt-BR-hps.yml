@@ -1,0 +1,17 @@
+pt-BR:
+  hps:
+    new:
+      titulo: "Adicionar HP"
+    create:
+      sucesso: "O HP %{descricao} foi cadastrado com Sucesso!"
+      alerta: "Não foi possível adicionar este HP, verifique os dados e tente novamente!"
+    show:
+      titulo: "Visualizar HP"
+    update:
+      titulo: "HP"
+      sucesso: "O HP %{descricao} foi atualizado com Sucesso!"
+      alerta: "Não foi possível atualizar este HP, verifique os dados e tente novamente!"
+    index:
+      titulo: "HPs"
+    destroy:
+      sucesso: "O HP foi apagado com Sucesso!"
