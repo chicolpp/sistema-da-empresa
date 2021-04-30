@@ -151,42 +151,6 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="row">
-		<div id="dados_instalacao_adutora_equipamentos">
-			<div class="col-lg-12">
-				<h2>
-					Equipamentos Utilizados na Instalação da Rede Adutora
-					<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Equipamento".html_safe, f, :instalacao_adutora_equipamentos, "pull-right", "Adicionar um Novo Equipamento", "instalacao_adutora_equipamentos" %>
-				</h2>
-			</div>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<div id="instalacao_adutora_equipamentos">
-					<%= f.fields_for :instalacao_adutora_equipamentos do |instalacao_adutora_equipamento| %>
-						<%= render "casein/instalacao_adutora_equipamentos/form", f: instalacao_adutora_equipamento %>
-					<% end %>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div id="dados_instalacao_distribuicao_equipamentos">
-			<div class="col-lg-12">
-				<h2>
-					Equipamentos Utilizados na Instalação da Rede de Distribuição
-					<%= link_to_add_fields "#{casein_show_icon "plus-sign"}Incluir Equipamento".html_safe, f, :instalacao_distribuicao_equipamentos, "pull-right", "Adicionar um Novo Equipamento", "instalacao_distribuicao_equipamentos" %>
-				</h2>
-			</div>
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<div id="instalacao_distribuicao_equipamentos">
-					<%= f.fields_for :instalacao_distribuicao_equipamentos do |instalacao_distribuicao_equipamento| %>
-						<%= render "casein/instalacao_distribuicao_equipamentos/form", f: instalacao_distribuicao_equipamento %>
-					<% end %>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 <div class="row">
@@ -215,7 +179,7 @@
 			$("#conteudo").hide();
 		}
 	});
-  	
+
   	$(".checkbox_possui_instalacao").change(function(){
 		if ($(this).val() == "true"){
 			$("#conteudo").show();
