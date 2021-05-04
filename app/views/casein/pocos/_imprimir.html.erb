@@ -48,6 +48,36 @@
     </div>
   </div>
 
+  <% @aprofundamento = Aprofundamento.where(poco_id: @poco.id).last %>
+  <% unless @aprofundamento.blank? %>
+    <div class="div-table col-xs-12" style="border-top:1px solid black;">
+      <div class="row">
+        <div class="col-xs-11">
+          <h3>Aprofundamentos</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-5">
+          <p><strong>Código do Poço:</strong> <%= @aprofundamento.poco_id %></p>
+          <p><strong>Poço:</strong> <%= @aprofundamento.poco.try(:nome_intuitivo) %></p>
+          <p><strong>Data de Início:</strong> <%= l(@aprofundamento.data_inicio) unless @aprofundamento.data_inicio.blank? %></p>
+          <p><strong>Data de Fim:</strong>  <%= l(@aprofundamento.data_fim) unless @aprofundamento.data_fim.blank? %></p>
+          <p><strong>Profundidade:</strong> <%= @aprofundamento.profundidade_nova %></p>
+        </div>
+        <div class="col-xs-6">
+          <p><strong>Máquina:</strong>  <%= @aprofundamento.maquina.try(:descricao) %></p>
+          <p><strong>Bitola:</strong> <%= @aprofundamento.bitola.try(:descricao) %></p>
+          <p><strong>Observação:</strong> <%= @aprofundamento.observacao %></p>
+          <p><strong>Equipe:</strong>
+            <% @aprofundamento.aprofundamento_funcionarios.each_with_index do |item, i| %>
+              <%= item.funcionario.pessoa.nome %><% if @aprofundamento.aprofundamento_funcionarios.count > i+1 %>, <% end %>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="div-table col-xs-12" style="border-top:1px solid black;">
     <div class="row">
       <div class="col-xs-11">
@@ -477,36 +507,6 @@
         </div>
       <% end %>
     <% end %>
-  <% end %>
-
-  <% @aprofundamento = Aprofundamento.where(poco_id: @poco.id).last %>
-  <% unless @aprofundamento.blank? %>
-    <div class="div-table col-xs-12" style="border-top:1px solid black;">
-      <div class="row">
-        <div class="col-xs-11">
-          <h3>Aprofundamentos</h3>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-5">
-          <p><strong>Código do Poço:</strong> <%= @aprofundamento.poco_id %></p>
-          <p><strong>Poço:</strong> <%= @aprofundamento.poco.try(:nome_intuitivo) %></p>
-          <p><strong>Data de Início:</strong> <%= l(@aprofundamento.data_inicio) unless @aprofundamento.data_inicio.blank? %></p>
-          <p><strong>Data de Fim:</strong>  <%= l(@aprofundamento.data_fim) unless @aprofundamento.data_fim.blank? %></p>
-          <p><strong>Profundidade:</strong> <%= @aprofundamento.profundidade_nova %></p>
-        </div>
-        <div class="col-xs-6">
-          <p><strong>Máquina:</strong>  <%= @aprofundamento.maquina.try(:descricao) %></p>
-          <p><strong>Bitola:</strong> <%= @aprofundamento.bitola.try(:descricao) %></p>
-          <p><strong>Observação:</strong> <%= @aprofundamento.observacao %></p>
-          <p><strong>Equipe:</strong>
-            <% @aprofundamento.aprofundamento_funcionarios.each_with_index do |item, i| %>
-              <%= item.funcionario.pessoa.nome %><% if @aprofundamento.aprofundamento_funcionarios.count > i+1 %>, <% end %>
-            <% end %>
-          </p>
-        </div>
-      </div>
-    </div>
   <% end %>
 
   <div class="col-xs-12" style="border-top: 1px solid black;" align="center">

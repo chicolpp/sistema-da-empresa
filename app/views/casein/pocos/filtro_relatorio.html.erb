@@ -137,7 +137,7 @@
 						<%= link_to(casein_show_row_icon("print"), casein_poco_filtro_relatorio_path(:format => :pdf, id: poco.id), class: "icon-table pull-left", target: "_blank") %>
 						<%= link_to casein_show_row_icon("zoom-in"), casein_poco_relatorio_detalhes_path(id: poco.id), class: "icon-table pull-left" %>
 						<% if poco.coordenada.try(:latitude) %>
-							<%= link_to casein_show_row_icon("road"), "https://www.google.com/maps/embed/v1/directions?key=#{ENV['GOOGLE_MAPS_KEY']}&origin=#{ENV['GOOGLE_MAPS_ORIGIN']}&destination=#{poco.coordenada.try(:latitude)},#{poco.coordenada.try(:longitude)}", class: "icon-table pull-left", target: :_blank %>
+							<%= link_to casein_show_row_icon("road"), "https://www.google.com/maps/dir/#{ENV['GOOGLE_MAPS_ORIGIN']}/#{poco.coordenada.try(:latitude)},#{poco.coordenada.try(:longitude)}", class: "icon-table pull-left", target: :_blank %>
 						<% end %>
 						<% fotos = poco.arquivos.where("upload_content_type LIKE '%image%'") %>
 						<% fotos1 = poco.instalacao.arquivos.where("upload_content_type LIKE '%image%'") if poco.instalacao.present? %>
