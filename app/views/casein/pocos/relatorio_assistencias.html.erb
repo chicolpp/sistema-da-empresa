@@ -21,7 +21,13 @@
     <tbody>
       <% @pocos.each do |poco| %>
         <tr>
-          <td><%= link_to("<i class='fa fa-user'></i> #{poco.nome_poco}".html_safe, casein_pessoa_path(poco.cliente.pessoa), target: :_blank) %></td>
+          <td>
+            <%- if poco.cliente.pessoa -%>
+              <%= link_to("<i class='fa fa-user'></i> #{poco.nome_poco}".html_safe, casein_pessoa_path(poco.cliente.pessoa), target: :_blank) %>
+            <%- else -%>
+              Não definido
+            <%- end -%>
+          </td>
           <td><%= poco.linha_endereco %></td>
           <td><%= poco.apelido_endereco %></td>
           <td><%= poco.cidade.try(:get_nome_completo) %></td>
