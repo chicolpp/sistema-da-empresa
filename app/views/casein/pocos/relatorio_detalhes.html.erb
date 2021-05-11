@@ -13,11 +13,13 @@
         <% if current_user.is_admin? %>
           <p><strong>Número do Processo:</strong> <%= @poco.numero_processo %></p>
         <% end %>
-        <p><b>Cliente:</b> <%= @poco.cliente.pessoa.nome %></p>
+        <p><b>Cliente:</b> <%= @poco.cliente.pessoa ? @poco.cliente.pessoa.nome : '' %></p>
         <p><b>Cidade/UF:</b> <%= @poco.cidade.get_nome_completo %></p>
-        <p><b>Telefone:</b> <%= @poco.cliente.pessoa.telefone_principal %></p>
-        <p><b>E-mail:</b> <%= @poco.cliente.pessoa.email_contato %></p>
-        <p><b><%= @poco.cliente.pessoa.tipo ? "CNPJ" : "CPF" %>:</b> <%= @poco.cliente.pessoa.tipo ? @poco.cliente.pessoa.try(:pessoa_juridica).try(:cnpj) : @poco.cliente.pessoa.try(:pessoa_fisica).try(:cpf) %></p>
+        <p><b>Telefone:</b> <%= @poco.cliente.pessoa ? @poco.cliente.pessoa.telefone_principal : '' %></p>
+        <p><b>E-mail:</b> <%= @poco.cliente.pessoa ? @poco.cliente.pessoa.email_contato : '' %></p>
+        <%- if @poco.cliente.pessoa -%>
+          <p><b><%= @poco.cliente.pessoa.tipo ? "CNPJ" : "CPF" %>:</b> <%= @poco.cliente.pessoa.tipo ? @poco.cliente.pessoa.try(:pessoa_juridica).try(:cnpj) : @poco.cliente.pessoa.try(:pessoa_fisica).try(:cpf) %></p>
+        <%- end -%>
       </div>
     </div>
   </div>
