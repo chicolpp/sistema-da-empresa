@@ -1,7 +1,7 @@
 #encoding: utf-8
 class Pessoa < ActiveRecord::Base
   audited
-  
+
   after_create :criar_cliente
 
   has_one :cliente
@@ -29,19 +29,11 @@ class Pessoa < ActiveRecord::Base
   private
 
   def valida_fisica
-    if self.tipo
-      return false
-    else
-      return true
-    end
+    !tipo?
   end
 
   def valida_juridica
-    if self.tipo
-      return true
-    else
-      return false
-    end
+    tipo?
   end
 
   def criar_cliente
