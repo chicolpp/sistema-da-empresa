@@ -34,13 +34,13 @@
 <div class="row">
 	<div class="col-lg-4">
 		<div class="input-group">
-			<span class="input-group-addon" id="addon-email-contato">E-mail *</span>
+			<span class="input-group-addon" id="addon-email-contato">E-mail</span>
 			<%= f.email_field :email_contato, class: "form-control #{f.object.errors[:email_contato].first ? 'input-error' : ''}", "aria-describedby" => "addon-email-contato", :required => true %>
 		</div>
 	</div>
 	<div class="col-lg-4">
 		<div class="input-group">
-			<span class="input-group-addon" id="addon-email-xml">E-mail XML <%= @pessoa.tipo ? "*" : "" %></span>
+			<span class="input-group-addon" id="addon-email-xml">E-mail XML</span>
 			<%= f.email_field :email_xml, class: "form-control #{f.object.errors[:email_xml].first ? 'input-error' : ''}", "aria-describedby" => "addon-email-xml" %>
 		</div>
 	</div>

@@ -15,13 +15,13 @@
 	</div>
 	<div class="col-lg-4">
 		<div class="input-group">
-			<span class="input-group-addon" id="addon-rg">RG *</span>
+			<span class="input-group-addon" id="addon-rg">RG</span>
 			<%= f.text_field :rg, class: "form-control #{f.object.errors[:rg].first ? 'input-error' : ''}", "aria-describedby" => "addon-rg" %>
 		</div>
 	</div>
 	<div class="col-lg-4">
 		<div class="input-group">
-			<span class="input-group-addon" id="addon-data-nascimento">Data de Nascimento *</span>
+			<span class="input-group-addon" id="addon-data-nascimento">Data de Nascimento</span>
 			<% f.object.data_nascimento = f.object.data_nascimento.strftime('%d/%m/%Y') unless f.object.data_nascimento.blank? %>
 			<%= f.text_field :data_nascimento, class: "form-control #{f.object.errors[:data_nascimento].first ? 'input-error' : ''}", data: {masker: true, type: :d}, "aria-describedby" => "addon-data-nascimento" %>
 		</div>

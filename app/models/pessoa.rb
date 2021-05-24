@@ -24,7 +24,7 @@ class Pessoa < ActiveRecord::Base
   scope :cnpj, -> cnpj { joins(:pessoa_juridica).where("cnpj = '#{cnpj}'") }
 
   validates :nome, presence: true
-  validates :email_xml, presence: true, :if => Proc.new { |a| a[:tipo] }
+  # validates :email_xml, presence: true, :if => Proc.new { |a| a[:tipo] }
 
   private
 
