@@ -35,7 +35,7 @@
 	<div class="col-lg-4">
 		<div class="input-group">
 			<span class="input-group-addon" id="addon-email-contato">E-mail</span>
-			<%= f.email_field :email_contato, class: "form-control #{f.object.errors[:email_contato].first ? 'input-error' : ''}", "aria-describedby" => "addon-email-contato", :required => true %>
+			<%= f.email_field :email_contato, class: "form-control #{f.object.errors[:email_contato].first ? 'input-error' : ''}", "aria-describedby" => "addon-email-contato" %>
 		</div>
 	</div>
 	<div class="col-lg-4">
