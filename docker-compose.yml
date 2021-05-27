@@ -1,15 +1,36 @@
 version: '3.6'
 services:
-  mysql:
+  db:
     image: mysql:8.0.24
-    container_name: materiaguas_mysql
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    container_name: materiaguas_mysql2
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_unicode_ci
     volumes:
-      - mysql-8.024:/var/lib/mysql
+      - mysql-8.024-1:/var/lib/mysql
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-    ports:
-      - 3306:3306
+      - MYSQL_ROOT_PASSWORD=password
+    network_mode: host
+
+  app:
+    image: materiaguassys
+    build:
+      context: .
+    container_name: materiaguassys
+    command: ['bundle', 'exec', 'rails', 's', '-b', "'0.0.0.0'", '-p', '3001']
+    env_file:
+      - .env
+    network_mode: host
+    volumes:
+      - bundle-cache-2.1.2:/bundle
+      - ".:/usr/src/app"
+      - "./root_user:/root"
+    depends_on:
+      - db
+
+networks:
+  default:
+    external: true
+    name: 'materiaguas'
 
 volumes:
-  mysql-8.024:
+  mysql-8.024-1:
+  bundle-cache-2.1.2:
