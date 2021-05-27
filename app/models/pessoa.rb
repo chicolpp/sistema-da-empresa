@@ -3,6 +3,7 @@ class Pessoa < ActiveRecord::Base
   audited
 
   after_create :criar_cliente
+  after_save :sync_crm!
 
   has_one :cliente
   has_one :funcionario
@@ -38,5 +39,60 @@ class Pessoa < ActiveRecord::Base
 
   def criar_cliente
     Cliente.create(pessoa_id: self.id)
+  end
+
+  def sync_crm!
+    body = {data: {
+      sys_id:      id,
+      individuals: !tipo?,
+      name:        nome,
+      email:       email_contato,
+      email_nfe:   email_xml,
+      phone:       telefone_principal,
+    }}
+
+    if tipo? && pessoa_juridica # Juridica
+      body[:data].merge!({
+        cpf_cnpj:               pessoa_juridica.cnpj,
+        state_registration:     pessoa_juridica.ie,
+        municipal_registration: pessoa_juridica.im,
+        birth_date:             pessoa_juridica.data_fundacao,
+        name:                   pessoa_juridica.nome_fantasia
+      })
+    elsif pessoa_fisica
+      body[:data].merge!({
+        cpf_cnpj:   pessoa_fisica.cpf,
+        rg:         pessoa_fisica.rg,
+        birth_date: pessoa_fisica.data_nascimento,
+        cell_phone: pessoa_fisica.telefone_auxiliar_1
+      })
+    end
+
+    if(pessoa_endereco)
+      body[:data][:address] = {
+        uf:          pessoa_endereco.try(:cidade).try(:estado).try(:sigla),
+        city_name:   pessoa_endereco.try(:cidade).try(:nome),
+        rua:         pessoa_endereco.endereco,
+        numero:      pessoa_endereco.numero,
+        bairro:      pessoa_endereco.bairro,
+        complemento: pessoa_endereco.complemento,
+        cep:         pessoa_endereco.cep,
+        description: pessoa_endereco.tipo_endereco,
+      }
+    end
+
+    sync_crm_request!(body)
+  end
+
+  def sync_crm_request!(body)
+     url = URI("#{ENV['CRM_SYNC_HOST']}/sync/people")
+
+    http = Net::HTTP.new(url.host, url.port);
+    request = Net::HTTP::Post.new(url)
+    request["Auth-Token"] = ENV['CRM_SYNC_TOKEN']
+    request["Content-Type"] = "application/json"
+    request.body = body.to_json
+
+    begin http.request(request) rescue nil end
   end
 end
