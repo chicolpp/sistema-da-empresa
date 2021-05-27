@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191218170630) do
+ActiveRecord::Schema.define(version: 20210527172950) do
 
   create_table "alertas", force: true do |t|
     t.text     "descricao"
@@ -517,6 +517,7 @@ ActiveRecord::Schema.define(version: 20191218170630) do
     t.string   "email_contato"
     t.string   "email_xml"
     t.string   "telefone_principal"
+    t.string   "uuid"
   end
 
   create_table "pessoas_classificacoes", force: true do |t|
@@ -622,6 +623,7 @@ ActiveRecord::Schema.define(version: 20191218170630) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "exibir_app"
+    t.string   "uuid"
   end
 
   create_table "revestimento_pocos", force: true do |t|
@@ -644,6 +646,7 @@ ActiveRecord::Schema.define(version: 20191218170630) do
     t.string   "descricao"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "uuid"
   end
 
   create_table "tipo_revestimentos", force: true do |t|

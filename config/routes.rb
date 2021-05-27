@@ -146,4 +146,10 @@ Rails.application.routes.draw do
 	get  'ajax/energia/adicionar' => "casein/energias#adicionar", as: :adicionar_energias
 	get  'ajax/motor/adicionar' => "casein/motores#adicionar", as: :adicionar_motores
 	get  'ajax/estagio/adicionar' => "casein/estagios#adicionar", as: :adicionar_estagios
+
+	scope 'sync' do
+		post 'products', to: 'sync_crm#products'
+		post 'services', to: 'sync_crm#services'
+		post 'people', to: 'sync_crm#people'
+	end
 end

@@ -2,8 +2,11 @@
 class Pessoa < ActiveRecord::Base
   audited
 
+  attr_accessor :auto_sync
+
+  before_save :set_uuid!
   after_create :criar_cliente
-  after_save :sync_crm!
+  after_save :sync_crm!, if: :auto_sync
 
   has_one :cliente
   has_one :funcionario
@@ -27,7 +30,16 @@ class Pessoa < ActiveRecord::Base
   validates :nome, presence: true
   # validates :email_xml, presence: true, :if => Proc.new { |a| a[:tipo] }
 
+  def auto_sync
+    @auto_sync = true if @auto_sync.nil?
+    @auto_sync
+  end
+
   private
+
+  def set_uuid!
+    self.uuid ||= SecureRandom.uuid
+  end
 
   def valida_fisica
     !tipo?
@@ -43,7 +55,7 @@ class Pessoa < ActiveRecord::Base
 
   def sync_crm!
     body = {data: {
-      sys_id:      id,
+      uuid:         uuid,
       individuals: !tipo?,
       name:        nome,
       email:       email_contato,
@@ -56,8 +68,7 @@ class Pessoa < ActiveRecord::Base
         cpf_cnpj:               pessoa_juridica.cnpj,
         state_registration:     pessoa_juridica.ie,
         municipal_registration: pessoa_juridica.im,
-        birth_date:             pessoa_juridica.data_fundacao,
-        name:                   pessoa_juridica.nome_fantasia
+        birth_date:             pessoa_juridica.data_fundacao
       })
     elsif pessoa_fisica
       body[:data].merge!({
