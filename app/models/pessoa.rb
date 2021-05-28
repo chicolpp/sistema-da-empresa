@@ -96,13 +96,15 @@ class Pessoa < ActiveRecord::Base
   end
 
   def sync_crm_request!(body)
-     url = URI("#{ENV['CRM_SYNC_HOST']}/sync/people")
+    url = URI("#{ENV['CRM_SYNC_HOST']}/sync/people")
 
     http = Net::HTTP.new(url.host, url.port);
     request = Net::HTTP::Post.new(url)
     request["Auth-Token"] = ENV['CRM_SYNC_TOKEN']
     request["Content-Type"] = "application/json"
     request.body = body.to_json
+
+    http.use_ssl = url.port == 443
 
     begin http.request(request) rescue nil end
   end

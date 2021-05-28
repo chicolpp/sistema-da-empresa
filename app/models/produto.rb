@@ -41,6 +41,8 @@ private
       uuid: uuid
     }}.to_json
 
+    http.use_ssl = url.port == 443
+
     begin http.request(request) rescue nil end
   end
 end
