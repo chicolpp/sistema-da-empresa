@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210527172950) do
+ActiveRecord::Schema.define(version: 20210618195245) do
 
   create_table "alertas", force: true do |t|
     t.text     "descricao"
@@ -598,6 +598,8 @@ ActiveRecord::Schema.define(version: 20210527172950) do
     t.string   "numero_processo"
     t.string   "profundidade"
     t.integer  "periodo_manutencao"
+    t.date     "schedule_maintenance_at"
+    t.boolean  "lock_schedule_maintenance"
   end
 
   create_table "pos_vendas", force: true do |t|

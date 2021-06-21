@@ -32,6 +32,8 @@ class Instalacao < ActiveRecord::Base
   validates :guincho, presence: true, :if => Proc.new { |a| a[:guincho].to_s == "" && a[:possui_instalacao].to_s == "true"}
   validates :acesso, :profundidade_bomba, :vazao_bomba, presence: true, :if => Proc.new { |a| a[:possui_instalacao].to_s == "true" }
 
+  after_commit :schedule_maintenance!, on: :create
+
   private
 
   def valida_instalacao
@@ -40,5 +42,10 @@ class Instalacao < ActiveRecord::Base
     else
       return true
     end
+  end
+
+  def schedule_maintenance!
+    return if poco.lock_schedule_maintenance
+    poco.update_schedule_maintenance_at!
   end
 end

@@ -19,15 +19,50 @@ module Casein
     # end
 
     def create
-      @manutencao_contato = ManutencaoContato.new manutencao_contato_params
-    
-      if @manutencao_contato.save
-        flash[:notice] = 'Cadastrado com sucesso!'
-        redirect_to casein_dashboard_path
-      else
-        flash[:warning] = 'Ocorreu um erro, verefique os dados e tente novamente!'
+      _params = manutencao_contato_params
+
+      poco = Poco.find_by(id: _params[:poco_id] )
+      pessoa = poco.cliente.pessoa
+
+      url_poco = casein_poco_url(poco)
+
+      body = {
+        uuid: pessoa.uuid,
+        cpf_cnpj: pessoa.cpf_cnpj,
+        name: pessoa.nome,
+        poco: poco.apelido_endereco,
+        description: "<p>#{_params[:observacao]}</p><p><b>Poço: </b><a href=\"#{url_poco}\" target=\"_blank\">#{url_poco}</a></p>"
+      }
+
+      url = URI("#{ENV['CRM_SYNC_HOST']}/sync/maintenances")
+      http = Net::HTTP.new(url.host, url.port);
+      request = Net::HTTP::Post.new(url)
+      request["Auth-Token"] = ENV['CRM_SYNC_TOKEN']
+      request["Content-Type"] = "application/json"
+      request.body = body.to_json
+      http.use_ssl = url.port == 443
+
+      begin
+        resp = http.request( request )
+
+        if resp.code.to_i < 300
+          flash[:notice] = 'Cadastrado com sucesso no CRM!'
+
+          poco.update(lock_schedule_maintenance: true, schedule_maintenance_at: nil)
+
+          redirect_to casein_dashboard_path
+        else
+          flash[:warning] = 'Ocorreu um erro ao integrar com o CRM, verefique os dados e tente novamente!'
+          redirect_to casein_dashboard_path
+        end
+      rescue
+        flash[:warning] = 'Ocorreu um erro ao integrar com o CRM, verefique os dados e tente novamente!'
         redirect_to casein_dashboard_path
       end
+
+      # if @manutencao_contato.save
+      # else
+      # end
     end
   
     def update

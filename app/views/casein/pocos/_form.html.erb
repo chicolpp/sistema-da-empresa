@@ -98,6 +98,15 @@
 			<%= f.text_area :observacao, class: "form-control #{f.object.errors[:observacao].first ? 'input-error' : ''}", "aria-describedby" => "addon-observacao" %>
 		</div>
 	</div>
+	<%- if @poco.persisted? && @poco.lock_schedule_maintenance -%>
+		<div class="col-lg-4">
+			<div class="input-group">
+			  <span class="input-group-addon" id="addon-schedule-maintenance-at">Data próxima manutenção</span>
+		  	<% f.object.schedule_maintenance_at = f.object.schedule_maintenance_at.strftime('%d/%m/%Y') unless f.object.schedule_maintenance_at.blank? %>
+				<%= f.text_field :schedule_maintenance_at, class: "form-control #{f.object.errors[:schedule_maintenance_at].first ? 'input-error' : ''}", "aria-describedby" => "addon-schedule-maintenance-at", data: {masker: true, type: :d} %>
+			</div>
+		</div>
+	<%- end -%>
 </div>
 
 <div class="row" style="margin-top:10px;">

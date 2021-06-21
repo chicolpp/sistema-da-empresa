@@ -46,6 +46,8 @@ class Poco < ActiveRecord::Base
   scope :numero_processo, -> numero_processo { where("pocos.numero_processo LIKE '#{numero_processo}%'") }
   scope :tipo_manutencao, -> tipo_manutencao { joins("INNER JOIN manutencaos ON pocos.id = manutencaos.poco_id").where("manutencaos.servico_id = #{tipo_manutencao}") }
 
+  before_save :handle_change_schedule_maintenance_at!, if: :periodo_manutencao_changed?
+
   def nome_poco
     if !cliente.blank?
       if !cliente.pessoa.blank?
@@ -70,6 +72,13 @@ class Poco < ActiveRecord::Base
     end
   end
 
+  def update_schedule_maintenance_at!
+    set_schedule_maintenance_at
+    self.lock_schedule_maintenance = false
+    save!
+  end
+
+
   private
 
   def valida_perfuracao_leao
@@ -85,6 +94,27 @@ class Poco < ActiveRecord::Base
       return false
     else
       return true
+    end
+  end
+
+  def handle_change_schedule_maintenance_at!
+    return if lock_schedule_maintenance?
+    set_schedule_maintenance_at
+  end
+
+  def set_schedule_maintenance_at
+    return unless periodo_manutencao.to_i > 0
+
+    ref_date = instalacao.try(:data_instalacao_inicio)
+    ref_date ||= perfuracao.try(:data_perfuracao_fim)
+
+    if last_maintenance = ManutencaoServico.joins(:manutencao).where(manutencaos: {poco_id: id}).where("data_servico IS NOT NULL").order(:data_servico).last
+      ref_date = last_maintenance.data_servico
+    end
+
+    if(ref_date)
+      new_date = ref_date.since( periodo_manutencao.to_i.years )
+      self.schedule_maintenance_at = new_date
     end
   end
 end

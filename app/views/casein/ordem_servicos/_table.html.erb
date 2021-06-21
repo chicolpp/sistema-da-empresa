@@ -15,8 +15,8 @@
 		<% ordem_servicos.each do |ordem_servico| %>
 			<tr>
 				<td><%= casein_table_cell_link ordem_servico.id, casein_ordem_servico_path(ordem_servico) %></td>
-				<td><%= casein_table_cell_link ordem_servico.poco.cliente.pessoa.nome, casein_ordem_servico_path(ordem_servico) %></td>
-				<td><%= casein_table_cell_link ordem_servico.funcionario.pessoa.nome, casein_ordem_servico_path(ordem_servico) %></td>
+				<td><%= casein_table_cell_link ordem_servico.poco.cliente.pessoa.nome, casein_ordem_servico_path(ordem_servico) if ordem_servico.poco %></td>
+				<td><%= casein_table_cell_link ordem_servico.funcionario.pessoa.nome, casein_ordem_servico_path(ordem_servico) if ordem_servico.funcionario %></td>
 				<td><%= casein_table_cell_link ordem_servico.status, casein_ordem_servico_path(ordem_servico) %></td>
 				<td>
 					<%= link_to(casein_show_row_icon("zoom-in"), casein_ordem_servico_path(ordem_servico), class: "icon-table") %>

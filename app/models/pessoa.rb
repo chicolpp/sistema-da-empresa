@@ -35,6 +35,15 @@ class Pessoa < ActiveRecord::Base
     @auto_sync
   end
 
+  def cpf_cnpj
+    if tipo? && pessoa_juridica
+      pessoa_juridica.cnpj
+    elsif pessoa_fisica
+      pessoa_fisica.cpf
+    end
+  end
+
+
   private
 
   def set_uuid!
@@ -52,6 +61,7 @@ class Pessoa < ActiveRecord::Base
   def criar_cliente
     Cliente.create(pessoa_id: self.id)
   end
+
 
   def sync_crm!
     body = {data: {

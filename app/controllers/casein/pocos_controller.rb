@@ -202,7 +202,27 @@ module Casein
     private
 
       def poco_params
-        params.require(:poco).permit(:poco_produtivo, :profundidade, :cliente_id, :linha_endereco, :apelido_endereco, :perfuracao_leao, :cidade_id, :observacao, :numero_processo, perfuracao_attributes: [:id, :poco_id, :data_perfuracao_inicio, :data_perfuracao_fim, :profundidade, :maquina_id, :bitola_id, :_destroy, perfuracao_funcionarios_attributes: [:id, :funcionario_id, :perfuracao_id, :_destroy]], coordenada_attributes: [:id, :longitude, :latitude, :zona, :poco_id, :_destroy], entradas_agua_attributes: [:id, :metragem, :vazao_aproximada, :poco_id, :aprofundamento_id, :_destroy], revestimento_pocos_attributes: [:id, :quantidade, :tipo_revestimento_id, :poco_id, :polegadas, :_destroy], arquivos_attributes: [:id, :owner_id, :owner_type, :upload, :_destroy])
+        params.require(:poco).permit(
+          :poco_produtivo, :profundidade, :cliente_id, :linha_endereco, :apelido_endereco, :perfuracao_leao,
+          :cidade_id, :observacao, :numero_processo, :schedule_maintenance_at,
+          perfuracao_attributes: [
+            :id, :poco_id, :data_perfuracao_inicio, :data_perfuracao_fim, :profundidade, :maquina_id, :bitola_id,
+            :_destroy,
+            perfuracao_funcionarios_attributes: [
+              :id, :funcionario_id, :perfuracao_id, :_destroy
+            ]
+          ],
+          coordenada_attributes: [
+            :id, :longitude, :latitude, :zona, :poco_id, :_destroy
+          ],
+          entradas_agua_attributes: [
+            :id, :metragem, :vazao_aproximada, :poco_id, :aprofundamento_id, :_destroy
+          ],
+          revestimento_pocos_attributes: [
+            :id, :quantidade, :tipo_revestimento_id, :poco_id, :polegadas, :_destroy
+          ],
+          arquivos_attributes: [:id, :owner_id, :owner_type, :upload, :_destroy]
+        )
       end
 
   end
