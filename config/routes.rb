@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 			get 'auth/validate_token', to: 'authentication#auth_token'
 			get 'ordem/:id', to: 'ordem#index'
 			get 'produtos', to: 'produtos#index'
+			get 'modelo_bombas', to: 'modelo_bombas#index'
 			get 'all/:data', to: 'users#all'
 			post 'sync', to: 'users#sync'
 			post 'sync/fotos', to: 'users#fotos'
