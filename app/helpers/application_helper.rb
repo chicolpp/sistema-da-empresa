@@ -9,8 +9,28 @@ module ApplicationHelper
 	  link_to name, "#", :onclick => h("add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\", \"#{target}\")"), class: cssClass, title: title, remote: true
 	end
 
-	def link_to_remove_fields(name, f)
+  def link_to_remove_fields(name, f)
     f.hidden_field(:_destroy) + link_to(name, "javascript:void(0);", :onclick => "remove_fields(this)")
+  end
+
+  def link_to_add_fields_v2(name=nil, f=nil, association=nil, options=nil, &block)
+    name, f, association, options = block, name, f, association if block_given?
+    options ||= {}
+    options[:class] = options[:class] ? options[:class]+" add_fields-v2" : "add_fields-v2"
+    options[:data] ||= {}
+    local_partial = options.delete(:local_partial)
+    params_partial = options.delete(:params_partial) || {}
+    new_object = f.object.send(association).klass.new
+    id = new_object.object_id
+    fields = f.fields_for(association, new_object, child_index: id.to_s) do |builder|
+      if local_partial
+        render(local_partial, {f: builder}.merge(params_partial))
+      else
+        render(association.to_s.singularize + "_fields", {f: builder}.merge(params_partial))
+      end
+    end
+    options[:data].merge!({id: id, fields: fields.gsub("\n", "")})
+    content_tag(:a, name, options.merge(href: 'javascript:;'), &block)
   end
 
   def get_idade(data_nascimento)

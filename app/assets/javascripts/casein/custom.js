@@ -38,6 +38,7 @@
 //= require ckeditor/init
 //= require lightbox
 //= require casein/datatables-neutralize
+//= require casein/add_fields
 
 jQuery(document).on('page:load', aplicationReady);
 jQuery(document).ready(function($) {aplicationReady();});
@@ -49,6 +50,8 @@ function aplicationReady(){
 
   handle_the_cep();
   turbolinkCkeditor();
+
+  bind_add_fields();
   
   
   TwMask.setup();

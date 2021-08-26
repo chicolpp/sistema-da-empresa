@@ -104,7 +104,12 @@ module Casein
     private
 
       def ordem_servico_params
-        params.require(:ordem_servico).permit(:observacoes, :abertura, :status, :funcionario_id, :poco_id, :sintoma, :data_servico_realizado, :data_proxima_etapa)
+        params.require(:ordem_servico).permit(
+          :observacoes, :abertura, :status, :funcionario_id, :poco_id, :sintoma, :data_servico_realizado, :data_proxima_etapa,
+          :other_services,
+          ordem_servico_servicos_attributes: [:id, :servico_id, :_destroy],
+          ordem_servico_produtos_attributes: [:id, :produto_id, :_destroy, :qtd, :todo],
+        )
       end
 
       def handle_notification

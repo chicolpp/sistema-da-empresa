@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210826130353) do
+ActiveRecord::Schema.define(version: 20210826143553) do
 
   create_table "alertas", force: true do |t|
     t.text     "descricao"
@@ -451,6 +451,27 @@ ActiveRecord::Schema.define(version: 20210826130353) do
     t.datetime "updated_at"
   end
 
+  create_table "ordem_servico_produtos", force: true do |t|
+    t.integer  "ordem_servico_id"
+    t.integer  "produto_id"
+    t.integer  "qtd",              default: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ordem_servico_produtos", ["ordem_servico_id"], name: "index_ordem_servico_produtos_on_ordem_servico_id", using: :btree
+  add_index "ordem_servico_produtos", ["produto_id"], name: "index_ordem_servico_produtos_on_produto_id", using: :btree
+
+  create_table "ordem_servico_servicos", force: true do |t|
+    t.integer  "ordem_servico_id"
+    t.integer  "servico_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ordem_servico_servicos", ["ordem_servico_id"], name: "index_ordem_servico_servicos_on_ordem_servico_id", using: :btree
+  add_index "ordem_servico_servicos", ["servico_id"], name: "index_ordem_servico_servicos_on_servico_id", using: :btree
+
   create_table "ordem_servicos", force: true do |t|
     t.date     "abertura"
     t.integer  "status"
@@ -462,6 +483,7 @@ ActiveRecord::Schema.define(version: 20210826130353) do
     t.text     "sintoma"
     t.date     "data_servico_realizado"
     t.date     "data_proxima_etapa"
+    t.text     "other_services"
   end
 
   add_index "ordem_servicos", ["funcionario_id"], name: "index_ordem_servicos_on_funcionario_id", using: :btree

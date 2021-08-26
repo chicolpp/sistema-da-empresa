@@ -1,0 +1,18 @@
+<%= f.hidden_field :_destroy, value: '1' %>
+<div class="row servico-attributes">
+  <div class="col-xs-12" style='margin-bottom: 5px;' >
+    <div class="row">
+      <div class="col-xs-10" >
+        <div class="form-group">
+          <%= f.collection_select :servico_id, Servico.select(:id, :descricao).visible_on_app.order(:descricao), :id, :descricao, {include_blank: f.object.new_record?}, {class: "form-control"} %>
+        </div>
+      </div>
+      <div class="col-xs-2 no-padding-left" >
+        <a hrefs="javascript:;" class="btn btn-link btn-sm remove_field col-xs-11" data-find='.servico-attributes'>
+          <span class="glyphicon glyphicon-trash"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <%= f.hidden_field :_destroy, value: '0' %>
+</div>
