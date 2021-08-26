@@ -60,7 +60,7 @@ module Casein
     private
       
       def servico_params
-        params.require(:servico).permit(:descricao)
+        params.require(:servico).permit(:descricao, :exibe_app)
       end
 
   end

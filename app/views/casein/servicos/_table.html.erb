@@ -4,6 +4,7 @@
 	<thead>
 		<tr>
 			<th>Descrição</th>
+			<th>Exibe APP</th>
 			<th data-orderable="false">&nbsp;</th>
 		</tr>
 	</thead>
@@ -12,6 +13,7 @@
 		<% servicos.each do |servico| %>
 			<tr>
 				<td><%= casein_table_cell_link servico.descricao, casein_servico_path(servico) %></td>
+				<td><%= casein_table_cell_link servico.exibe_app ? 'SIM' : 'NÃO', casein_servico_path(servico) %></td>
 				<td>
 					<%= link_to(casein_show_row_icon("zoom-in"), casein_servico_path(servico), class: "icon-table") %>
 					<%= link_to(casein_show_row_icon("edit"), edit_casein_servico_path(servico), class: "icon-table") %>

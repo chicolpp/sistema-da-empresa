@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210618195245) do
+ActiveRecord::Schema.define(version: 20210826130353) do
 
   create_table "alertas", force: true do |t|
     t.text     "descricao"
@@ -649,6 +649,7 @@ ActiveRecord::Schema.define(version: 20210618195245) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "uuid"
+    t.boolean  "exibe_app",  default: false
   end
 
   create_table "tipo_revestimentos", force: true do |t|

@@ -11,6 +11,8 @@ class Servico < ActiveRecord::Base
   before_save :set_uuid!
   after_save :sync_service!, if: :auto_sync
 
+  scope :visible_on_app, -> { where(exibe_app: true) }
+
   def auto_sync
     @auto_sync = true if @auto_sync.nil?
     @auto_sync

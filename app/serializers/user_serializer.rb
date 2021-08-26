@@ -1,17 +1,25 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :produtos, :ordens, :funcionarios, :cidades, :estados
+  attributes :id, :email, :produtos, :ordens, :funcionarios, :cidades, :estados, :servicos, :energias
 
 
   def estados
-    return Estado.all
+    Estado.all
   end
 
   def cidades
-    return Cidade.all
+    Cidade.all
   end
 
   def produtos
-    return Produto.all
+    Produto.all
+  end
+
+  def servicos
+    Servico.select(:id, :descricao, :exibe_app).order(:descricao)
+  end
+
+  def energias
+    Energia.select(:id, :descricao).order(:descricao)
   end
 
   def ordens
@@ -77,7 +85,7 @@ class UserSerializer < ActiveModel::Serializer
 
   def funcionarios
     funcionarios = []
-    Funcionario.where(use_app: true).where('id != ?', current_user.funcionarios_id).each do |funcionario|
+    Funcionario.includes(:cargo, :pessoa).where(use_app: true).where('id != ?', current_user.funcionarios_id).each do |funcionario|
       funcionarios.push({
         id: funcionario.id,
         nome: funcionario.pessoa.nome,

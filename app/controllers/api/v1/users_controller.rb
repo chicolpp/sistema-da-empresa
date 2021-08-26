@@ -23,11 +23,11 @@ module Api
                 album: infos['album']
               )
             else
-                manutencao.arquivos.create(
-                  upload: infos['upload'],
-                  nome: infos['name'],
-                  album: infos['album']
-                )
+              manutencao.arquivos.create(
+                upload: infos['upload'],
+                nome: infos['name'],
+                album: infos['album']
+              )
             end
           end
         end

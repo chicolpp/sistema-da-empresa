@@ -1,8 +1,16 @@
 class UpdateUserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :produtos, :ordens, :funcionarios
+  attributes :id, :email, :produtos, :ordens, :funcionarios, :servicos
 
   def produtos
-    return Produto.where('updated_at > ?', instance_options[:last_update])
+    Produto.where('updated_at > ?', instance_options[:last_update])
+  end
+
+  def servicos
+    Servico.select(:id, :descricao, :exibe_app).where('updated_at > ?', instance_options[:last_update]).order(:descricao)
+  end
+
+  def energias
+    Energia.select(:id, :descricao).where('updated_at > ?', instance_options[:last_update]).order(:descricao)
   end
 
   def ordens
@@ -68,7 +76,7 @@ class UpdateUserSerializer < ActiveModel::Serializer
 
   def funcionarios
     funcionarios = []
-    Funcionario.where(use_app: true).where('id != ?', current_user.funcionarios_id).where('updated_at > ?', instance_options[:last_update]).each do |funcionario|
+    Funcionario.includes(:cargo, :pessoa).where(use_app: true).where('id != ?', current_user.funcionarios_id).where('updated_at > ?', instance_options[:last_update]).each do |funcionario|
       funcionarios.push({
         id: funcionario.id,
         nome: funcionario.pessoa.nome,

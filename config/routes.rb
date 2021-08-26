@@ -2,13 +2,13 @@ Rails.application.routes.draw do
 
 	namespace :api do
 		namespace :v1 do
-			post 'authenticate', to: 'authentication#authenticate'
+			post 'authenticate',       to: 'authentication#authenticate'
 			get 'auth/validate_token', to: 'authentication#auth_token'
-			get 'ordem/:id', to: 'ordem#index'
-			get 'produtos', to: 'produtos#index'
-			get 'all/:data', to: 'users#all'
-			post 'sync', to: 'users#sync'
-			post 'sync/fotos', to: 'users#fotos'
+			get 'ordem/:id',           to: 'ordem#index'
+			get 'produtos',            to: 'produtos#index'
+			get 'all/:data',           to: 'users#all'
+			post 'sync',               to: 'users#sync'
+			post 'sync/fotos',         to: 'users#fotos'
 
 		end
 	end
