@@ -9,9 +9,10 @@ Rails.application.routes.draw do
 			get 'all/:data',           to: 'users#all'
 			post 'sync',               to: 'users#sync'
 			post 'sync/fotos',         to: 'users#fotos'
-
+			get 'modelo_bombas',       to: 'modelo_bombas#index'
 		end
 	end
+
 	mount Ckeditor::Engine => '/ckeditor'
 	#Casein routes
 	namespace :casein do
