@@ -12,6 +12,8 @@ class ManutencaoServico < ActiveRecord::Base
   after_commit :update_schedule_maintenance!, on: :create
   after_destroy :update_schedule_maintenance!
 
+  serialize :well_data,     Object
+  serialize :service_items, Array # [{id: 1, name: 'Lala'}]
 
   def update_schedule_maintenance!
     return unless manutencao && manutencao.poco

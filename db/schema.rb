@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210826143553) do
+ActiveRecord::Schema.define(version: 20210830125757) do
 
   create_table "alertas", force: true do |t|
     t.text     "descricao"
@@ -376,9 +376,12 @@ ActiveRecord::Schema.define(version: 20210826143553) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "tipo"
-    t.string   "descricao"
+    t.text     "descricao"
     t.date     "data_servico"
     t.integer  "horas_trabalhadas"
+    t.text     "well_data"
+    t.text     "service_items"
+    t.string   "well_acess"
   end
 
   create_table "manutencaos", force: true do |t|
