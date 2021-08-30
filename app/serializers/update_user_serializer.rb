@@ -15,7 +15,7 @@ class UpdateUserSerializer < ActiveModel::Serializer
 
   def ordens
     ordens = []
-    object.ordem_servicos.where('status = 1 or status = 4').where('updated_at > ?', instance_options[:last_update]).each do |ordem|
+    object.ordem_servicos.sync_includes.where('status = 1 or status = 4').where('updated_at > ?', instance_options[:last_update]).each do |ordem|
       manutencao = Manutencao.find_by(ordem_servico_id: ordem.id)
 
       if manutencao.present?
@@ -58,6 +58,26 @@ class UpdateUserSerializer < ActiveModel::Serializer
           revestimento_tipo: ordem.poco.revestimento_pocos.present? && ordem.poco.revestimento_pocos[0].tipo_revestimento.present? ? ordem.poco.revestimento_pocos[0].tipo_revestimento.descricao : nil,
           observacao_bomba: ordem.poco.instalacao.present? && ordem.poco.instalacao.bomba.present? ? ordem.poco.instalacao.bomba.observacao : nil,
         },
+        other_services: ordem.other_services,
+        servicos: ordem.ordem_servico_servicos.map do |ordem_servico|
+          {
+            id: ordem_servico.id,
+            servico: {
+              id:   ordem_servico.servico.id,
+              nome: ordem_servico.servico.descricao,
+            },
+          }
+        end,
+        produtos: ordem.ordem_servico_produtos.map do |ordem_produto|
+          {
+            id:  ordem_produto.id,
+            qtd: ordem_produto.qtd,
+            produto: {
+              id:   ordem_produto.produto.id,
+              nome: ordem_produto.produto.descricao,
+            },
+          }
+        end,
         manutencao: manutencao.present? ? {
             id: manutencao.id,
             poco_id: manutencao.poco_id,
