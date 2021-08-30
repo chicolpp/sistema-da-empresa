@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20210826143553) do
     t.string   "nome"
     t.text     "comentarios"
     t.string   "album"
+    t.string   "uuid"
   end
 
   create_table "assistencia_posvendas", force: true do |t|

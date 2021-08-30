@@ -18,6 +18,14 @@ class OrdemServico < ActiveRecord::Base
   accepts_nested_attributes_for :ordem_servico_produtos, :allow_destroy => true, reject_if: lambda { |n| n[:produto_id].blank? }
   accepts_nested_attributes_for :ordem_servico_servicos, :allow_destroy => true, reject_if: lambda { |n| n[:servico_id].blank? }
 
+  scope :sync_includes, -> {
+    includes(ordem_servico_servicos: :servico)
+    .includes(ordem_servico_produtos: :produto)
+    .includes({poco: {cliente: :pessoa}})
+    .includes({poco: :instalacao})
+    .includes(:funcionario)
+  }
+
 
   validates :poco_id, :funcionario_id, presence: true
 end

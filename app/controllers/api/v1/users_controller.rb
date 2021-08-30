@@ -10,28 +10,12 @@ module Api
       end
 
       def fotos
-        infos = params
-        if infos['_id'].present?
-          ordem = OrdemServico.find(infos['_id'])
-          if ordem.present?
-            manutencao = Manutencao.find_by(ordem_servico_id: ordem.id)
-            if infos['comentario'].present? && infos['comentario'] != "\"\""
-              manutencao.arquivos.create(
-                upload: infos['upload'],
-                nome: infos['name'],
-                comentarios: infos['comentario'],
-                album: infos['album']
-              )
-            else
-              manutencao.arquivos.create(
-                upload: infos['upload'],
-                nome: infos['name'],
-                album: infos['album']
-              )
-            end
-          end
+        archive = params['_id'].present? ? handle_picture! : nil
+        if archive
+          render json: {archive: archive.as_json}
+        else
+          render json: {archive: nil}
         end
-        render json: true
       end
 
       def sync
@@ -234,6 +218,32 @@ module Api
           end
         end
         render json: true
+      end
+
+      private
+
+      def handle_picture!
+        archive = Arquivo.where("uuid is not null and uuid != ''").find_by(uuid: params[:uuid], owner_id: params['_id'])
+        return archive if archive
+
+        if manutencao = Manutencao.find_by(ordem_servico_id: params['_id'])
+          if params['comentario'].present? && params['comentario'] != "\"\""
+            manutencao.arquivos.create(
+              upload: params['upload'],
+              nome: params['name'],
+              comentarios: params['comentario'],
+              album: params['album'],
+              uuid: params[:uuid]
+            )
+          else
+            manutencao.arquivos.create(
+              upload: params['upload'],
+              nome: params['name'],
+              album: params['album'],
+              uuid: params[:uuid]
+            )
+          end
+        end
       end
     end
   end
