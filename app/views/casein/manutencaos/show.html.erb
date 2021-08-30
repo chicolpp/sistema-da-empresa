@@ -70,69 +70,9 @@
       <div class="panel-heading">
         <h3 class="panel-title">Manutenção - Serviços Realizados</h3>
       </div>
-      <div class="panel-body">
-        <table class="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Descrição</th>
-              <th>Data</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @manutencao.manutencao_servicos.each do |item| %>
-              <tr>
-                <td style="padding:8px !important;"><%= get_tipo_manutencao_servico(item.tipo) %></td>
-                <td style="padding:8px !important;"><%= item.descricao.html_safe if item.descricao.present? %></td>
-                <td style="padding:8px !important;"><%= l(item.data_servico) unless item.data_servico.blank? %></td>
-              </tr>
-
-              <tr>
-                <td colspan="4">
-                  <div class="row">
-                    <div class="col-xs-12 col-sm-6">
-                      <div class="row">
-                        <div class="col-xs-10">
-                          <b>Produto Utilizado</b>
-                        </div>
-                        <div class="col-xs-2">
-                          <b>Qtd</b>
-                        </div>
-                      </div>
-                      <hr style="margin-top:5px;margin-bottom:5px;">
-                      <% item.manutencao_servico_itens.each do |subitem| %>
-                        <div class="row">
-                          <div class="col-xs-10">
-                            <%= subitem.produto.try(:descricao) %>
-                          </div>
-                          <div class="col-xs-2">
-                            <%= subitem.quantidade %>
-                          </div>
-                        </div>
-                      <% end %>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
-                      <div class="row">
-                        <div class="col-xs-12">
-                          <b>Funcionário</b>
-                        </div>
-                      </div>
-                      <hr style="margin-top:5px;margin-bottom:5px;">
-                      <% item.manutencao_funcionarios.each do |subitem| %>
-                        <div class="row">
-                          <div class="col-xs-12">
-                            <%= subitem.funcionario.try(:pessoa).try(:nome) %>
-                          </div>
-                        </div>
-                      <% end %>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+      <% @manutencao.manutencao_servicos.each do |item| %>
+        <%= render partial: 'casein/manutencao_servicos/show_data', locals: {manutencao_servico: item} %>
+      <% end %>
     </div>
   </div>
 

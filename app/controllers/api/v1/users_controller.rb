@@ -84,7 +84,7 @@ module Api
 
             if infos['acesso_poco_id'].present?
               acesso_poco_array = ['Ótimo', 'Bom', 'Satisfatório', 'Ruim', 'Péssimo']
-              acesso = '<b>Acesso ao Poço : </b>' + acesso_poco_array[infos['acesso_poco_id'].to_i]
+              acesso = acesso_poco_array[infos['acesso_poco_id'].to_i]
             end
 
             # acesso = 'Acesso ao Poço: ' + infos['acesso_poco_id'].to_i == 0 ? 'Ótimo' : infos['acesso_poco_id'].to_i == 1 ? 'Bom' : infos['acesso_poco_id'].to_i == 2 ? 'Satisfatório' : infos['acesso_poco_id'].to_i == 3 ? 'Ruim' : 'Péssimo'

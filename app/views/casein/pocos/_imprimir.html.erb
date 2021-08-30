@@ -455,7 +455,18 @@
                   <% manutencao.manutencao_servicos.each do |item| %>
                     <tr style="border-top:2px solid gray;border-bottom:2px solid gray;">
                       <td><%= get_tipo_manutencao_servico(item.tipo) %></td>
-                      <td><%= item.descricao %></td>
+                      <td>
+                        <div>
+                          <%- if item.service_items.present? -%>
+                            <ul>
+                              <%- item.service_items.each do |service| -%>
+                                <li><%= service['name'] %></li>
+                              <%- end -%>
+                            </ul>
+                          <%- end -%>
+                          <p><%= item.descricao.html_safe if item.descricao.present? %></p>
+                        </div>
+                      </td>
                       <td><%= l(item.data_servico) unless item.data_servico.blank? %></td>
                     </tr>
 
@@ -501,6 +512,27 @@
                         </div>
                       </td>
                     </tr>
+
+                    <%- if item.well_acess.present? || item.well_data.present? -%>
+                      <tr>
+                        <td colspan="3">
+                          <div style="margin-left: -15px; margin-right: -15px;">
+                            <%- if item.well_acess.present? -%>
+                              <div style="position: relative; min-height: 1px; padding-left: 15px; float: left; width: 30%; margin-top: 7px">
+                                <strong>Acesso ao poço</strong>
+                                <div><%= item.well_acess %></div>
+                              </div>
+                            <%- end -%>
+                            <%- item.well_data.keys.each do |well_data_key| -%>
+                              <div style="position: relative; min-height: 1px; padding-left: 15px; float: left; width: 30%; margin-top: 7px">
+                                <strong><%= ManutencaoServico.label_for_well_data( well_data_key ) %></strong>
+                                <div><%= item.well_data[well_data_key] %></div>
+                              </div>
+                            <%- end -%>
+                          </div>
+                        </td>
+                      </tr>
+                    <%- end -%>
                   <% end %>
                 </tbody>
               </table>
