@@ -1,5 +1,5 @@
 class UpdateUserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :produtos, :ordens, :funcionarios, :servicos
+  attributes :id, :email, :produtos, :ordens, :funcionarios, :servicos, :energias
 
   def produtos
     Produto.where('updated_at > ?', instance_options[:last_update])
