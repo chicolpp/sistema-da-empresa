@@ -1,0 +1,93 @@
+<div class="panel-body">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Descrição</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:8px !important;"><%= get_tipo_manutencao_servico(manutencao_servico.tipo) %></td>
+        <td style="padding:8px !important;">
+          <div>
+            <%- if manutencao_servico.service_items.present? -%>
+              <ul>
+                <%- manutencao_servico.service_items.each do |service| -%>
+                  <li><%= service['name'] %></li>
+                <%- end -%>
+              </ul>
+            <%- end -%>
+            <p><%= manutencao_servico.descricao.html_safe if manutencao_servico.descricao.present? %></p>
+          </div>
+        </td>
+        <td style="padding:8px !important;"><%= l(manutencao_servico.data_servico) unless manutencao_servico.data_servico.blank? %></td>
+      </tr>
+
+      <tr>
+        <td colspan="4">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="row">
+                <div class="col-xs-10">
+                  <b>Produto Utilizado</b>
+                </div>
+                <div class="col-xs-2">
+                  <b>Qtd</b>
+                </div>
+              </div>
+              <hr style="margin-top:5px;margin-bottom:5px;">
+              <% manutencao_servico.manutencao_servico_itens.each do |subitem| %>
+                <div class="row">
+                  <div class="col-xs-10">
+                    <%= subitem.produto.try(:descricao) %>
+                  </div>
+                  <div class="col-xs-2">
+                    <%= subitem.quantidade %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="row">
+                <div class="col-xs-12">
+                  <b>Funcionário</b>
+                </div>
+              </div>
+              <hr style="margin-top:5px;margin-bottom:5px;">
+              <% manutencao_servico.manutencao_funcionarios.each do |subitem| %>
+                <div class="row">
+                  <div class="col-xs-12">
+                    <%= subitem.funcionario.try(:pessoa).try(:nome) %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      <%- if manutencao_servico.well_acess.present? || manutencao_servico.well_data.present? -%>
+        <tr>
+          <td colspan="4">
+            <div class="row">
+              <%- if manutencao_servico.well_acess.present? -%>
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                  <strong>Acesso ao poço: </strong>
+                  <span class="label label-default"><%= manutencao_servico.well_acess %></span>
+                </div>
+              <%- end -%>
+              <%- manutencao_servico.well_data.keys.each do |well_data_key| -%>
+                <div class="col-xs-12 col-sm-4 col-md-3">
+                  <strong><%= ManutencaoServico.label_for_well_data( well_data_key ) %></strong>
+                  <span class="label label-default"><%= manutencao_servico.well_data[well_data_key] %></span>
+                </div>
+              <%- end -%>
+            </div>
+          </td>
+        </tr>
+      <%- end -%>
+    </tbody>
+  </table>
+</div>
