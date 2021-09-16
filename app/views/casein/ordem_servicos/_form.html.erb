@@ -151,7 +151,7 @@
         <div class="col-lg-4">
           <div class="input-group">
             <span class="input-group-addon" id="addon-cidade-id">Cidade *</span>
-            <%= select_tag :cidade_id, options_for_select(Cidade.all.collect{ |u| [u.get_nome_completo, u.id] }), class: "form-control input-sm select_padrao", "aria-describedby" => "addon-cidade-id" %>
+            <%= select_tag :cidade_id, options_for_select(Cidade.includes(:estado).collect{ |u| [u.get_nome_completo, u.id] }), class: "form-control input-sm select_padrao", "aria-describedby" => "addon-cidade-id" %>
           </div>
         </div>
         <div class="col-lg-4">
