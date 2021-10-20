@@ -18,6 +18,7 @@ class Funcionario < ActiveRecord::Base
 
   #Escopos para filtros de busca
   scope :nome, -> nome { joins(:pessoa).where("nome LIKE '%#{nome}%'") }
+  scope :with_app_access, -> { where(use_app: true).where("email IS NOT NULL AND email != ''") }
 
   validate  :validacao_nome_unico_funcionario
 

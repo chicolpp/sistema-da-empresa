@@ -13,7 +13,7 @@
   <div class="col-lg-4">
     <div class="input-group">
       <span class="input-group-addon" id="addon-funcionario">Funcionário Responsável *</span>
-      <%= f.collection_select :funcionario_id, Funcionario.select("funcionarios.id, pessoas.nome").joins(:pessoa).where(use_app: true), :id, :nome, {include_blank: true}, {class: "form-control #{f.object.errors[:funcionario_id].first ? 'input-error' : ''} select_funcionario_#{f.index}", "aria-describedby" => "addon-funcionario-id", "data-index" => f.index} %>
+      <%= f.collection_select :funcionario_id, Funcionario.with_app_access.select("funcionarios.id, pessoas.nome").joins(:pessoa), :id, :nome, {include_blank: true}, {class: "form-control #{f.object.errors[:funcionario_id].first ? 'input-error' : ''} select_funcionario_#{f.index}", "aria-describedby" => "addon-funcionario-id", "data-index" => f.index} %>
     </div>
   </div>
   <div class="col-lg-4">
