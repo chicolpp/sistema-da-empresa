@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210830125757) do
+ActiveRecord::Schema.define(version: 20211020182655) do
 
   create_table "alertas", force: true do |t|
     t.text     "descricao"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20210830125757) do
     t.text     "comentarios"
     t.string   "album"
     t.string   "uuid"
+    t.integer  "step"
   end
 
   create_table "assistencia_posvendas", force: true do |t|
@@ -336,6 +337,7 @@ ActiveRecord::Schema.define(version: 20210830125757) do
     t.integer  "manutencao_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.integer  "step"
   end
 
   create_table "manutencao_contatos", force: true do |t|
@@ -382,6 +384,7 @@ ActiveRecord::Schema.define(version: 20210830125757) do
     t.text     "well_data"
     t.text     "service_items"
     t.string   "well_acess"
+    t.integer  "step"
   end
 
   create_table "manutencaos", force: true do |t|

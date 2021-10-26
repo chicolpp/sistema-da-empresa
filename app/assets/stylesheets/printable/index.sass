@@ -1,0 +1,64 @@
+@import './_helpers'
+@import './_header'
+
+@media print
+  @page
+    margin: 0.5cm
+  *
+    background: #fff !important
+    color: #000 !important
+    text-shadow: none !important
+    filter: none !important
+    -ms-filter: none !important
+
+  // Com isso apenas o que possui a classe printable será impresso
+  body *
+    visibility: hidden
+  .printable
+    visibility: visible !important
+    *
+      visibility: visible !important
+
+  body
+    font-size: 10pt !important
+    margin: 0
+    padding: 0
+    line-height: 1.4em
+
+
+  nav, footer, video, audio, object, embed
+    display: none
+
+  aside
+    display: block
+    page-break-before: always
+
+  h1
+    font-size: 24pt
+  h2
+    font-size: 18pt
+  h3
+    font-size: 14pt
+  h4
+    font-size: 12pt
+
+  q:after
+    content: " (" attr(cite) ")"
+
+  p
+    widows: 3  // viúva
+    orphans: 3 //  orfã
+
+  a, a:visited
+    text-decoration: underline
+
+  p a
+    word-wrap: break-word
+
+  table
+    thead
+      tr th
+        word-wrap: break-word
+        word-break: break-word
+        white-space: normal
+        height: auto

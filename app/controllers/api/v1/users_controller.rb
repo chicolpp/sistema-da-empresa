@@ -77,7 +77,6 @@ module Api
             if ordem.poco.coordenada.present?
               ordem.poco.coordenada.update(longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
             else
-
               Coordenada.create(poco_id: ordem.poco.id, longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
             end
 
@@ -96,13 +95,18 @@ module Api
             manutencao = Manutencao.find_by(ordem_servico_id: ordem.id)
             if manutencao.present?
               manutencao.update(pessoa_contato: infos['nomeCompleto'], telefone: infos['celular'])
+
+              dado_poco = {}
+              dado_poco['produtosNaoListados'] = infos['produtosNaoListados'] if infos['produtosNaoListados'].present?
+
               serv = manutencao.manutencao_servicos.create(
-                tipo: 0,
                 descricao:         infos['descricaoServicos'],
                 data_servico:      infos['doneAt'].present? ? infos['doneAt'] : Time.current,
-                tipo:              infos['status'] == 'Finalização' ? 2 : infos['status'] == 'Início' ? 0 : 1,
+                tipo:              get_tipo_servico_code( ordem ),
                 horas_trabalhadas: infos['horasTrabalhadas'],
-                service_items:     infos[:serviceItems]
+                service_items:     infos[:serviceItems],
+                step:              ordem.status_code,
+                well_data:         dado_poco,
               )
 
               if infos['matUtilizados'].present?
@@ -116,12 +120,14 @@ module Api
                 end
               end
 
+              create_checklists!(ordem, manutencao, infos)
+
             else
               manut = Manutencao.create(
-                poco_id: ordem.poco.id,
-                pessoa_contato: infos['nomeCompleto'],
-                telefone: infos['celular'],
-                servico_id: infos['tipo'],
+                poco_id:          ordem.poco.id,
+                pessoa_contato:   infos['nomeCompleto'],
+                telefone:         infos['celular'],
+                servico_id:       infos['tipo'], # TODO: Verificar se o ID vem correto conforme o tipo selecionado pelo usuário
                 ordem_servico_id: ordem.id
               )
 
@@ -140,53 +146,15 @@ module Api
               dado_poco['bombaVolts']          = infos['bombaVolts']          if infos['bombaVolts'].present?
               dado_poco['produtosNaoListados'] = infos['produtosNaoListados'] if infos['produtosNaoListados'].present?
 
-              # if infos['profunDoPoco'] != ''
-              #   dado_poco << '<b>Profundidade : </b>' + infos['profunDoPoco'] + ' <br> '
-              # end
-              # if infos['profunDaBomba'] != ''
-              #   dado_poco <<  '<b>Profundidade da bomba : </b>' + infos['profunDaBomba'] + ' <br> '
-              # end
-              # if infos['desnivel'] != ''
-              #   dado_poco << '<b>Desnível : </b>' + infos['desnivel'] + ' <br> '
-              # end
-              # if infos['distPocoRes'] != ''
-              #   dado_poco << '<b>Distância do poço até o reservatório : </b>' + infos['distPocoRes'] + ' <br> '
-              # end
-              # if infos['ltsRes'] != ''
-              #   dado_poco << '<b>Capacidade do reservatório : </b>' + infos['ltsRes'] + 'litros' + ' <br> '
-              # end
-              # if infos['qntCaboSub'] != ''
-              #   dado_poco << '<b>Quantidade de cabos submersíveis : </b>' + infos['qntCaboSub'] + ' <br> '
-              # end
-              # if infos['bitola3x'] != ''
-              #   dado_poco << '<b>Quantidade de bitola 3x : </b>' + infos['bitola3x'] + ' <br> '
-              # end
-              # if infos['bitolaDoPoco'] != ''
-              #   dado_poco << '<b>Quantidade do poço : </b>' + infos['bitolaDoPoco'] + ' <br> '
-              # end
-              # if infos['qntTubo'] != ''
-              #   dado_poco << '<b>Quantidade de tubo : </b>' + infos['qntTubo'] + ' <br> '
-              # end
-              # if infos['tipoTubo'] != ''
-              #   dado_poco << '<b>Tipo do tubo : </b>' + infos['tipoTubo'] + ' <br> '
-              # end
-              # if infos['modeloBomba'] != ''
-              #   dado_poco << '<b>Modelo da bomba : </b>' + infos['modeloBomba'] + ' <br> '
-              # end
-
-              # if infos['produtosNaoListados'] != ''
-              #   dado_poco << '<b>Produtos não listados : </b>' + infos['produtosNaoListados'] + ' <br> '
-              # end
-
               serv = manut.manutencao_servicos.create(
-                tipo:              0,
                 descricao:         infos['descricaoServicos'],
                 data_servico:      infos['doneAt'].present? ? infos['doneAt'] : Time.current,
-                tipo:              infos['status'] == 'Finalização' ? 2 : infos['status'] == 'Início' ? 0 : 1,
+                tipo:              get_tipo_servico_code( ordem ),
                 horas_trabalhadas: infos['horasTrabalhadas'],
                 well_acess:        acesso,
                 well_data:         dado_poco,
-                service_items:     infos[:serviceItems]
+                service_items:     infos[:serviceItems],
+                step:              ordem.status_code
               )
 
               if infos['matUtilizados'].present?
@@ -201,54 +169,7 @@ module Api
                 end
               end
 
-              if infos['isBombaEmprestada'] == true
-                manut.manutencao_checklists.create(nome: 'Bomba Emprestada', descricao: infos['bombaEmprestada'], observacoes: infos['bombaEmprestadaInfo'])
-              end
-
-              if infos['isTrocaDeTubos'] == true
-                manut.manutencao_checklists.create(nome: 'Troca de Tubo', descricao: infos['trocaDeTubos'], observacoes: infos['trocaDeTubosInfo'])
-              end
-              if infos['isLimpezaDoPoco'] == true
-                manut.manutencao_checklists.create(nome: 'Fazer limpeza do Poço', descricao: 'SIM', observacoes: infos['limpezaDoPocoInfo'])
-              end
-              if infos['isTrocaCaboSubmersivel'] == true
-                manut.manutencao_checklists.create(nome: 'Troca Cabo Submersível', descricao: infos['trocaCaboSubmersivel'], observacoes: infos['trocaDoCaboSubmersivelInfo'])
-              end
-              if infos['manutDoQuadro'] == true
-                manut.manutencao_checklists.create(nome: 'Manutenção do Quadro', descricao: 'SIM', observacoes: infos['manutDoQuadroInfo'])
-              end
-              if infos['nesGuinchoManual'] == true
-
-                if infos['testeVazao'] == true
-                  manut.manutencao_checklists.create(
-                    nome: 'Fazer teste de Vazão',
-                    descricao: 'SIM',
-                    observacoes: infos['testeVazaoInfo'].present? ? infos['testeVazaoInfo'] : nil
-                  )
-                end
-
-                if infos['energiaCliente'] == true
-                  manut.manutencao_checklists.create(
-                    nome: 'Utilizei energia do Cliente',
-                    descricao: 'SIM',
-                    observacoes: infos['energiaClienteInfo'].present? ? infos['energiaClienteInfo'] : nil
-                  )
-                end
-
-                manut.manutencao_checklists.create(nome: 'Necessário guincho manual', descricao: 'SIM', observacoes: infos['nesGuinchoManualInfo'])
-              end
-
-              if infos['indicInfiltra'] == true
-                manut.manutencao_checklists.create(nome: 'Poço tem indício de infiltração', descricao: 'SIM', observacoes: infos['indicInfiltraInfo'])
-              end
-
-              if infos['limpezaReservatorio'] == true
-                manut.manutencao_checklists.create(nome: 'Fazer limpeza do Reservatório', descricao: 'SIM', observacoes: infos['limpezaReservatorioInfo'])
-              end
-
-              if infos['oferecerManutPreventiva'] == true
-                manut.manutencao_checklists.create(nome: 'Oferece manutenção preventiva', descricao: 'SIM', observacoes: infos['oferecerManutPreventivaInfo'])
-              end
+              create_checklists!(ordem, manut, infos)
             end
           end
         end
@@ -261,6 +182,8 @@ module Api
         archive = Arquivo.where("uuid is not null and uuid != ''").find_by(uuid: params[:uuid], owner_id: params['_id'])
         return archive if archive
 
+        ordem_servico = OrdemServico.find_by(id: params['_id'])
+
         if manutencao = Manutencao.find_by(ordem_servico_id: params['_id'])
           if params['comentario'].present? && params['comentario'] != "\"\""
             manutencao.arquivos.create(
@@ -268,18 +191,86 @@ module Api
               nome: params['name'],
               comentarios: params['comentario'],
               album: params['album'],
-              uuid: params[:uuid]
+              uuid: params[:uuid],
+              step: OrdemServico.statuses[ordem_servico.try(:status)]
             )
           else
             manutencao.arquivos.create(
               upload: params['upload'],
               nome: params['name'],
               album: params['album'],
-              uuid: params[:uuid]
+              uuid: params[:uuid],
+              step: OrdemServico.statuses[ordem_servico.try(:status)]
             )
           end
         end
       end
+
+      def create_checklists!(ordem, manut, infos)
+        if infos['isBombaEmprestada'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Bomba Emprestada', descricao: infos['bombaEmprestada'], observacoes: infos['bombaEmprestadaInfo'])
+        end
+
+        if infos['isTrocaDeTubos'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Troca de Tubo', descricao: infos['trocaDeTubos'], observacoes: infos['trocaDeTubosInfo'])
+        end
+        if infos['isLimpezaDoPoco'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Fazer limpeza do Poço', descricao: 'SIM', observacoes: infos['limpezaDoPocoInfo'])
+        end
+        if infos['isTrocaCaboSubmersivel'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Troca Cabo Submersível', descricao: infos['trocaCaboSubmersivel'], observacoes: infos['trocaDoCaboSubmersivelInfo'])
+        end
+        if infos['manutDoQuadro'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Manutenção do Quadro', descricao: 'SIM', observacoes: infos['manutDoQuadroInfo'])
+        end
+        if infos['nesGuinchoManual'] == true
+
+          if infos['testeVazao'] == true
+            manut.manutencao_checklists.create(
+              step: ordem.status_code,
+              nome: 'Fazer teste de Vazão',
+              descricao: 'SIM',
+              observacoes: infos['testeVazaoInfo'].present? ? infos['testeVazaoInfo'] : nil
+            )
+          end
+
+          if infos['energiaCliente'] == true
+            manut.manutencao_checklists.create(
+              step: ordem.status_code,
+              nome: 'Utilizei energia do Cliente',
+              descricao: 'SIM',
+              observacoes: infos['energiaClienteInfo'].present? ? infos['energiaClienteInfo'] : nil
+            )
+          end
+
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Necessário guincho manual', descricao: 'SIM', observacoes: infos['nesGuinchoManualInfo'])
+        end
+
+        if infos['indicInfiltra'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Poço tem indício de infiltração', descricao: 'SIM', observacoes: infos['indicInfiltraInfo'])
+        end
+
+        if infos['limpezaReservatorio'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Fazer limpeza do Reservatório', descricao: 'SIM', observacoes: infos['limpezaReservatorioInfo'])
+        end
+
+        if infos['oferecerManutPreventiva'] == true
+          manut.manutencao_checklists.create(step: ordem.status_code, nome: 'Oferece manutenção preventiva', descricao: 'SIM', observacoes: infos['oferecerManutPreventivaInfo'])
+        end
+      end
+
+
+      def get_tipo_servico_code(ordem_servico)
+        case OrdemServico.statuses[ordem_servico.status]
+        when 1, 2
+          0
+        when 3, 4
+          1
+        else
+          2
+        end
+      end
+
     end
   end
 end

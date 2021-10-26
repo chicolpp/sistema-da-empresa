@@ -1,0 +1,29 @@
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Documentos/Arquivos</h3>
+  </div>
+    <div class="panel-body">
+      <% archives.each_with_index do |item, i| %>
+        <p>
+          <% if item.upload_content_type.to_s == "image/png" || item.upload_content_type.to_s == "image/jpeg" || item.upload_content_type.to_s == "image/jpg" %>
+            <%= link_to item.nome.present? ? item.nome : item.upload_file_name, item.upload.url, data: {lightbox: "galeria-de-fotos-#{item.album.present? ? item.album.to_s : i}"}, class: "icon-table pull-left" %>
+          <% else %>
+            <%= link_to item.nome.present? ? item.nome : item.upload_file_name, item.upload.url, target: :_blank %>
+          <% end %>
+          <% if item.comentarios.present? && item.comentarios != "\"\"" %>
+            <strong>Comentários:</strong> <%= item.comentarios %>
+          <% end %>
+          &nbsp;
+          <%- if item.step.present? && status_name = OrdemServico.statuses.keys[item.step.to_i-1] -%>
+            <span class="label size-100 label-<%= bs_color_by_status(item.step.to_i-1) %>"><%= status_name %></span>
+          <%- end -%>
+        </p>
+      <% end %>
+
+      <% if archives.blank? %>
+        <p>Não existem arquivos ou documentos para este registro.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

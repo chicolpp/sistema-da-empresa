@@ -70,8 +70,13 @@
       <div class="panel-heading">
         <h3 class="panel-title">Manutenção - Serviços Realizados</h3>
       </div>
-      <% @manutencao.manutencao_servicos.each do |item| %>
-        <%= render partial: 'casein/manutencao_servicos/show_data', locals: {manutencao_servico: item} %>
+      <% @manutencao.manutencao_servicos.each_with_index do |item, idx| %>
+        <%- if idx > 0 -%>
+          <hr/>
+        <%- end -%>
+        <div class="panel-body">
+          <%= render partial: 'casein/manutencao_servicos/show_data', locals: {manutencao_servico: item} %>
+        </div>
       <% end %>
     </div>
   </div>

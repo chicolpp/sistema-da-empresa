@@ -12,6 +12,8 @@ class OrdemServico < ActiveRecord::Base
   belongs_to :poco
   belongs_to :funcionario
 
+  has_one :manutencao
+
   has_many :ordem_servico_produtos, class_name: 'OrdemServicoProduto', dependent: :destroy
   has_many :ordem_servico_servicos, class_name: 'OrdemServicoServico', dependent: :destroy
 
@@ -28,4 +30,8 @@ class OrdemServico < ActiveRecord::Base
 
 
   validates :poco_id, :funcionario_id, presence: true
+
+  def status_code
+    OrdemServico.statuses[status]
+  end
 end

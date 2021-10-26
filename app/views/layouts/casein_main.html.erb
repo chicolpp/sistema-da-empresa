@@ -6,7 +6,7 @@
 
   	<title><%= casein_generate_page_title %></title>
   	<% casein_config_stylesheet_includes.each do |stylesheet| %>
-  		<%= stylesheet_link_tag(stylesheet) %>
+  		<%= stylesheet_link_tag(stylesheet, media: :all ) %>
   	<% end %>
 
   	<% casein_config_javascript_includes.each do |javascript| %>
@@ -70,7 +70,7 @@
             </div>
           </div>
         <% end %>
-        <div class="row">
+        <div class="row printable">
           <% if content_for?(:sidebar) %>
              <div id="right-column" class="col-md-2">
                 <ul class="nav nav-pills nav-stacked content-bottom-padding">
