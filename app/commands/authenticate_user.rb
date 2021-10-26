@@ -7,6 +7,7 @@ class AuthenticateUser
   end
 
   def call
+    return unless user
     @Func = Funcionario.find(user.funcionarios_id)
     @Pessoa = Pessoa.find(@Func.pessoa_id)
     JsonWebToken.encode(user_id: user.id, user_name: @Pessoa.nome) if user
