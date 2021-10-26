@@ -13,8 +13,10 @@ module OrdemServicoHelper
       'info'
     when 4
       'warning'
-    else
+    when 5
       'danger'
+    else
+      'success'
     end
   end
 end

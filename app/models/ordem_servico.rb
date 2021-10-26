@@ -6,7 +6,8 @@ class OrdemServico < ActiveRecord::Base
    'Iniciado' => 2,
    'Em Andamento' => 3,
    'Finalização' => 4,
-   'Finalizado' => 5
+   'Finalizado' => 5,
+   'Concluído' => 6
   }
 
   belongs_to :poco

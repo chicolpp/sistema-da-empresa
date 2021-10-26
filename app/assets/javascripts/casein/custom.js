@@ -2,7 +2,6 @@
 // Use this file for your project-specific Casein JavaScript
 
 //= require jquery
-//= require jquery_ujs
 //= require jquery.ui.all
 //= require jquery-fileupload
 //= require turbolinks

@@ -17,11 +17,23 @@
 				<td><%= casein_table_cell_link ordem_servico.id, casein_ordem_servico_path(ordem_servico) %></td>
 				<td><%= casein_table_cell_link ordem_servico.poco.cliente.pessoa.nome, casein_ordem_servico_path(ordem_servico) if ordem_servico.poco %></td>
 				<td><%= casein_table_cell_link ordem_servico.funcionario.pessoa.nome, casein_ordem_servico_path(ordem_servico) if ordem_servico.funcionario %></td>
-				<td><%= casein_table_cell_link ordem_servico.status, casein_ordem_servico_path(ordem_servico) %></td>
+				<td>
+					<%= casein_table_cell_link content_tag( :span, ordem_servico.status, class: "label size-100 label-#{bs_color_by_status(ordem_servico.status_code)}"), casein_ordem_servico_path(ordem_servico) %>
+				</td>
 				<td>
 					<%= link_to(casein_show_row_icon("zoom-in"), casein_ordem_servico_path(ordem_servico), class: "icon-table") %>
 					<%= link_to(casein_show_row_icon("edit"), edit_casein_ordem_servico_path(ordem_servico), class: "icon-table") %>
 					<%= link_to(casein_show_row_icon("trash"), casein_ordem_servico_path(ordem_servico), class: "icon-table", :method => :delete, :data => { :confirm => "Você tem certeza que deseja apagar este registro?" }) %>
+					<%- if ordem_servico.status_code == 5 -%>
+						<%= link_to(
+							"Concluir",
+							casein_ordem_servico_path(ordem_servico, {ordem_servico: {status: 'Concluído'}}),
+							class: "btn btn-success btn-xs icon-table",
+							style: 'color: #fff',
+							:method => :put,
+							:data => { :confirm => "Tem certeza que deseja concluir este registro?" }
+						) %>
+					<%- end -%>
 				</td>
 			</tr>
 		<% end %>

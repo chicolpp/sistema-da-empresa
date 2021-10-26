@@ -29,7 +29,7 @@
           </a>
         </td>
         <td>
-          <%= link_to('Finalizar', casein_atualizar_status_path(manutencao_id: manutencao.id), class: "icon-table finish") %>
+          <%#= link_to('Finalizar', casein_atualizar_status_path(manutencao_id: manutencao.id), class: "icon-table finish") %>
           <%= link_to(casein_show_row_icon("zoom-in"), casein_manutencao_path(manutencao), class: "icon-table") %>
           <%= link_to(casein_show_row_icon("edit"), edit_casein_manutencao_path(manutencao), class: "icon-table") %>
           <%= link_to(casein_show_row_icon("trash"), casein_manutencao_path(manutencao), class: "icon-table", :method => :delete, :data => { :confirm => "Você tem certeza que deseja apagar este registro?" }) %>

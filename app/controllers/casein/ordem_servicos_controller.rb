@@ -21,6 +21,13 @@ module Casein
     def index
       @casein_page_title = t('ordem_servicos.index.titulo')
       @ordem_servicos = OrdemServico.order(id: :desc)
+
+      if params[:filter].blank?
+        @ordem_servicos = @ordem_servicos.where('status < 6')
+      elsif params[:filter] == 'done'
+        @ordem_servicos = @ordem_servicos.where('status >= 6')
+      end
+
       @manutencaos = Manutencao.order(updated_at: :desc).joins(poco: [cliente: [:pessoa]]).joins(:manutencao_servicos).joins(:servico).joins("LEFT JOIN ordem_servicos on ordem_servicos.id = manutencaos.ordem_servico_id").where('ordem_servico_id is not null and ordem_servicos.status != 5').group('manutencaos.id')
     end
 
