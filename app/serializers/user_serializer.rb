@@ -24,7 +24,7 @@ class UserSerializer < ActiveModel::Serializer
 
   def ordens
     ordens = []
-    object.ordem_servicos.sync_includes.where('status = 1 or status = 4').each do |ordem|
+    object.ordem_servicos.sync_includes.where('status = 1 or status = 3').each do |ordem|
       manutencao = Manutencao.find_by(ordem_servico_id: ordem.id)
 
       if manutencao.present?
