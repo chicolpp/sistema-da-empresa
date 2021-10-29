@@ -74,10 +74,12 @@ module Api
               )
             end
 
-            if ordem.poco.coordenada.present?
-              ordem.poco.coordenada.update(longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
-            else
-              Coordenada.create(poco_id: ordem.poco.id, longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
+            if infos['longitude'].present? && infos['latitude'].present?
+              if ordem.poco.coordenada.any?
+                ordem.poco.coordenada.update(longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
+              else
+                Coordenada.create(poco_id: ordem.poco.id, longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
+              end
             end
 
 
