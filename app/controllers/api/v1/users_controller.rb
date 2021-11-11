@@ -75,7 +75,7 @@ module Api
             end
 
             if infos['longitude'].present? && infos['latitude'].present?
-              if ordem.poco.coordenada.any?
+              if ordem.poco.coordenada
                 ordem.poco.coordenada.update(longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
               else
                 Coordenada.create(poco_id: ordem.poco.id, longitude: infos['longitude'].to_s, latitude: infos['latitude'].to_s)
