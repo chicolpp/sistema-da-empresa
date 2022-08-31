@@ -46,6 +46,10 @@ class Funcionario < ActiveRecord::Base
       @record = UserApp.find_by(funcionarios_id: funcionario)
       @record.email = email
       @record.active = active
+      if pass.present?
+         @record.password = pass
+         @record.password_confirmation = pass
+      end
       @record.save
     else
       newUser = UserApp.create!(funcionarios_id: funcionario, email: email, password: pass, password_confirmation: pass, active: active)
