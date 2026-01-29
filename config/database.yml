@@ -5,7 +5,8 @@ default: &default
   host: <%= ENV['DB_HOST'] %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%= ENV['DB_PASSWORD'] %>
-  port: <%= ENV['DB_PORT'] %>
+  port: <%= ENV.fetch('DB_PORT') { 3306 } %>
+  reconnect: true
 
 development:
   <<: *default
@@ -18,3 +19,4 @@ test:
 production:
   <<: *default
   database: <%= ENV.fetch("DB_NAME") { 'materiaguas_production' } %>
+  ssl_mode: :required
