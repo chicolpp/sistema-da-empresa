@@ -28,3 +28,8 @@ public/system/**
 
 *.sublime-*
 .env
+.env.local
+.env.production.local
+
+# Docker
+.docker/

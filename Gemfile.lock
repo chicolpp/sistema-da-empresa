@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/knapo/jquery-inputmask-rails.git
+  remote: https://github.com/knapo/jquery-inputmask-rails.git
   revision: 1239a1cd0f2296f0c4369db09e141fd91840a4d1
   specs:
     jquery-inputmask-rails (0.3.3)
@@ -320,7 +320,7 @@ DEPENDENCIES
   jwt
   lightbox2-rails (= 2.7.1)
   money-rails
-  mysql2
+  mysql2 (~> 0.3.20)
   nprogress-rails
   paperclip
   pry (~> 0.12.2)
@@ -336,3 +336,9 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   wicked_pdf (= 0.11.0)
   wkhtmltopdf-binary
+
+RUBY VERSION
+   ruby 2.3.8p459
+
+BUNDLED WITH
+   1.17.3

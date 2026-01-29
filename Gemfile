@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-ruby '2.1.2'
+ruby '2.3.8'
 
 gem 'rails', '4.1.16'
 # Use mysql as the database for Active Record
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.20'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -90,7 +90,7 @@ gem 'select2-rails', '3.5.9.3'
 gem 'has_scope'
 
 #Para máscaras
-gem 'jquery-inputmask-rails', github: 'knapo/jquery-inputmask-rails'
+gem 'jquery-inputmask-rails', git: 'https://github.com/knapo/jquery-inputmask-rails.git'
 
 #jquery UI
 gem 'jquery-ui-rails'

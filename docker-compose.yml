@@ -8,7 +8,10 @@ services:
       - mysql-8.024-1:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=password
-    network_mode: host
+    ports:
+      - "3306:3306"
+    networks:
+      - materiaguas
 
   app:
     image: materiaguassys
@@ -18,19 +21,21 @@ services:
     command: ['bundle', 'exec', 'rails', 's', '-b', '0.0.0.0']
     env_file:
       - .env
-    network_mode: host
+    ports:
+      - "3000:3000"
     volumes:
-      - bundle-cache-2.1.2:/bundle
+      - bundle-cache-2.3.8:/bundle
       - ".:/usr/src/app"
       - "./root_user:/root"
     depends_on:
       - db
+    networks:
+      - materiaguas
 
 networks:
-  default:
-    external: true
-    name: 'materiaguas'
+  materiaguas:
+    driver: bridge
 
 volumes:
   mysql-8.024-1:
-  bundle-cache-2.1.2:
+  bundle-cache-2.3.8:
