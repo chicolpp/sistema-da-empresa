@@ -18,5 +18,5 @@ test:
 
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: <%= ENV.fetch("DB_NAME") { 'materiaguas_production' } %>
-  ssl_mode: :required
