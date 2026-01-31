@@ -44,8 +44,5 @@ RUN mkdir -p tmp/pids tmp/cache tmp/sockets log public/uploads
 
 EXPOSE 3000
 
-# Dar permissão ao script
-RUN chmod +x bin/render-start.sh
-
 # Comando para iniciar
-CMD ["bin/render-start.sh"]
+CMD bundle exec rails server -b 0.0.0.0 -p 3000 -e production 2>&1
