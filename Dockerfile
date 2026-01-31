@@ -42,7 +42,7 @@ RUN gem install bundler -v 1.17.3
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile ./
 
 RUN bundle install --without development test --jobs 4 --retry 3
 
