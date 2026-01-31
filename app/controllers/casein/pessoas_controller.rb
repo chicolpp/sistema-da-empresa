@@ -109,7 +109,7 @@ module Casein
     def aniversariantes
       params[:mes] = Date.today.month unless params[:mes].present?
 
-      @pessoas = Pessoa.find_by_sql("SELECT pessoas.nome, pessoas.email_contato, pessoas_fisicas.data_nascimento FROM pessoas INNER JOIN pessoas_fisicas ON pessoas_fisicas.pessoa_id = pessoas.id WHERE (pessoas_fisicas.data_nascimento IS NOT NULL AND MONTH(pessoas_fisicas.data_nascimento) = '#{params[:mes]}') UNION ALL SELECT pessoas_contatos.nome_contato as nome, pessoas_contatos.email_contato, pessoas_contatos.data_nascimento_contato as data_nascimento FROM pessoas_contatos WHERE pessoas_contatos.data_nascimento_contato IS NOT NULL AND MONTH(pessoas_contatos.data_nascimento_contato) = '#{params[:mes]}' ORDER BY data_nascimento, nome ASC")
+      @pessoas = Pessoa.find_by_sql("SELECT pessoas.nome, pessoas.email_contato, pessoas_fisicas.data_nascimento FROM pessoas INNER JOIN pessoas_fisicas ON pessoas_fisicas.pessoa_id = pessoas.id WHERE (pessoas_fisicas.data_nascimento IS NOT NULL AND EXTRACT(MONTH FROM pessoas_fisicas.data_nascimento) = ?) UNION ALL SELECT pessoas_contatos.nome_contato as nome, pessoas_contatos.email_contato, pessoas_contatos.data_nascimento_contato as data_nascimento FROM pessoas_contatos WHERE pessoas_contatos.data_nascimento_contato IS NOT NULL AND EXTRACT(MONTH FROM pessoas_contatos.data_nascimento_contato) = ? ORDER BY data_nascimento, nome ASC", params[:mes].to_i, params[:mes].to_i)
     end
 
     private
