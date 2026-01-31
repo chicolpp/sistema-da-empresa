@@ -1,49 +1,55 @@
-FROM ruby:2.3.8
+FROM ubuntu:16.04
 
-# Fix archived Debian Stretch repositories
-RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-    sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
-    sed -i '/stretch-updates/d' /etc/apt/sources.list
-
-RUN apt-get update -qq && \
-    apt-get install -y --allow-unauthenticated \
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    curl \
+    gnupg2 \
+    ca-certificates && \
+    curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get install -y --no-install-recommends \
     build-essential \
+    git \
+    libmysqlclient-dev \
     libpq-dev \
     nodejs \
     imagemagick \
-    gnupg \
-    curl \
     locales \
-    libmariadb-dev && \
-    mkdir -p /usr/share/man/man1 /usr/share/man/man7
+    wget && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+# Install Ruby
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    software-properties-common && \
+    add-apt-repository ppa:brightbox/ruby-ng && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ruby2.3 \
+    ruby2.3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set locale
+RUN locale-gen en_US.UTF-8
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
+# Set Rails env
 ENV RAILS_ENV=production
 ENV RACK_ENV=production
-ENV INSTALL_PATH=/usr/src/app
 
-WORKDIR $INSTALL_PATH
+# Install bundler
+RUN gem install bundler -v 1.17.3
 
-COPY Gemfile ./
+WORKDIR /app
 
-ENV BUNDLE_PATH=/usr/local/bundle
-ENV BUNDLE_BIN=/usr/local/bundle/bin
-ENV GEM_HOME=/usr/local/bundle
-ENV PATH="${BUNDLE_BIN}:${PATH}"
+COPY Gemfile Gemfile.lock ./
 
-RUN bundle config set --global path vendor/bundle && \
-    bundle install --without development test --jobs 4 --retry 3
+RUN bundle install --without development test --jobs 4 --retry 3
 
 COPY . .
 
 RUN mkdir -p tmp/pids tmp/cache tmp/sockets log public/uploads
 
-# Skip asset precompile - it needs DB connection
-# RUN bundle exec rake assets:precompile RAILS_ENV=production --trace 2>/dev/null || echo "Assets precompile skipped"
-
 EXPOSE 3000
 
-# Start with explicit error output
-CMD ["bundle", "exec", "thin", "start", "-p", "3000", "-e", "production", "-V", "--trace"]
+CMD ["bundle", "exec", "thin", "start", "-p", "3000", "-e", "production", "--threaded"]
