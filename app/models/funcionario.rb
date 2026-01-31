@@ -17,8 +17,8 @@ class Funcionario < ActiveRecord::Base
   accepts_nested_attributes_for :pessoa, :reject_if => :all_blank, :allow_destroy => true
 
   #Escopos para filtros de busca
-  scope :nome, -> nome { joins(:pessoa).where("nome LIKE '%#{nome}%'") }
-  scope :with_app_access, -> { where(use_app: true).where("email IS NOT NULL AND email != ''") }
+  scope :nome, -> nome { joins(:pessoa).where("pessoas.nome ILIKE ?", "%#{nome}%") }
+  scope :with_app_access, -> { where(use_app: true).where.not(email: nil).where("email != ''") }
 
   validate  :validacao_nome_unico_funcionario
 
@@ -26,7 +26,7 @@ class Funcionario < ActiveRecord::Base
 
   def validacao_nome_unico_funcionario
     if !self.pessoa.nome.blank?
-      errors.add(:nome, "já está em uso por um funcionário") if Funcionario.joins(:pessoa).where("pessoas.nome = '#{self.pessoa.nome}'").where.not(id: self.id).exists?
+      errors.add(:nome, "já está em uso por um funcionário") if Funcionario.joins(:pessoa).where(pessoas: { nome: self.pessoa.nome }).where.not(id: self.id).exists?
     end
   end
 

@@ -10,8 +10,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
     git \
-    libmysqlclient-dev \
     libpq-dev \
+    postgresql-client \
     nodejs \
     imagemagick \
     locales \

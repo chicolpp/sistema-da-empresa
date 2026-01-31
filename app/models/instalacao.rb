@@ -19,13 +19,13 @@ class Instalacao < ActiveRecord::Base
   accepts_nested_attributes_for :instalacao_distribuicao_equipamentos, :reject_if => :valida_instalacao, :allow_destroy => true
 
   #Escopos para filtros de busca
-  scope :acesso, -> acesso { where("acesso = '#{acesso}'") }
-  scope :guincho, -> guincho { where("guincho = '#{guincho}'") }
-  scope :funcionario_id, -> funcionario_id { joins("JOIN instalacao_funcionarios ON instalacao_funcionarios.instalacao_id = instalacoes.id").where("instalacao_funcionarios.funcionario_id = #{funcionario_id}")}
-  scope :energia_id, -> energia_id { joins("JOIN bombas ON bombas.instalacao_id = instalacoes.id JOIN energias ON energias.id = bombas.energia_id").where("bombas.energia_id = #{energia_id}")}
+  scope :acesso, -> acesso { where(acesso: acesso) }
+  scope :guincho, -> guincho { where(guincho: guincho) }
+  scope :funcionario_id, -> funcionario_id { joins(:instalacao_funcionarios).where(instalacao_funcionarios: { funcionario_id: funcionario_id }) }
+  scope :energia_id, -> energia_id { joins(bomba: :energia).where(bombas: { energia_id: energia_id }) }
   scope :profundidade, ->(profundidade_inicial, profundidade_final) { where(profundidade_bomba: profundidade_inicial..profundidade_final) if (profundidade_inicial == nil && profundidade_final == nil) }
   scope :vazao, ->(vazao_inicial, vazao_final) { where(vazao_bomba: vazao_inicial..vazao_final) if (vazao_inicial == nil && vazao_final == nil)}
-  scope :cliente_id, -> cliente_id { joins("LEFT JOIN pocos po ON po.id = instalacoes.poco_id LEFT JOIN aprofundamentos ON aprofundamentos.id = instalacoes.aprofundamento_id LEFT JOIN pocos poa ON poa.id = aprofundamentos.poco_id").where("(po.id IS NOT NULL OR poa.id IS NOT NULL) AND (po.cliente_id = '#{cliente_id}' OR poa.cliente_id = '#{cliente_id}')")}
+  scope :cliente_id, -> cliente_id { where("pocos.cliente_id = ? OR aprofundamentos.poco_id IN (SELECT id FROM pocos WHERE cliente_id = ?)", cliente_id, cliente_id).joins("LEFT JOIN pocos ON pocos.id = instalacoes.poco_id LEFT JOIN aprofundamentos ON aprofundamentos.id = instalacoes.aprofundamento_id") }
 
   validates :poco_id, presence: true
   validates :possui_instalacao, presence: true, :if => Proc.new { |a| a[:possui_instalacao].to_s == "" }

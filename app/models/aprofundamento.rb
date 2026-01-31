@@ -14,7 +14,7 @@ class Aprofundamento < ActiveRecord::Base
   accepts_nested_attributes_for :aprofundamento_funcionarios, :allow_destroy => true
 
   #Escopos para filtros de busca
-  scope :cliente_id, -> cliente_id { joins("JOIN pocos po ON po.id = aprofundamentos.poco_id").where("po.cliente_id = '#{cliente_id}'")}
+  scope :cliente_id, -> cliente_id { joins(:poco).where(pocos: { cliente_id: cliente_id }) }
 
   validates :poco_id, :data_inicio, :data_fim, :profundidade_nova, :maquina_id, :bitola_id, presence: true
 end

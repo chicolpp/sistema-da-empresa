@@ -22,10 +22,10 @@ class Pessoa < ActiveRecord::Base
   accepts_nested_attributes_for :pessoas_contatos, :reject_if => :all_blank, :allow_destroy => true
 
   #Escopos para filtros de busca
-  scope :nome, -> nome { where("nome LIKE '%#{nome}%'") }
-  scope :tipo, -> tipo { where("tipo = '#{tipo}'") }
-  scope :cpf, -> cpf { joins(:pessoa_fisica).where("cpf = '#{cpf}'") }
-  scope :cnpj, -> cnpj { joins(:pessoa_juridica).where("cnpj = '#{cnpj}'") }
+  scope :nome, -> nome { where("nome ILIKE ?", "%#{nome}%") }
+  scope :tipo, -> tipo { where(tipo: tipo) }
+  scope :cpf, -> cpf { joins(:pessoa_fisica).where(pessoas_fisicas: { cpf: cpf }) }
+  scope :cnpj, -> cnpj { joins(:pessoa_juridica).where(pessoas_juridicas: { cnpj: cnpj }) }
 
   validates :nome, presence: true
   # validates :email_xml, presence: true, :if => Proc.new { |a| a[:tipo] }
