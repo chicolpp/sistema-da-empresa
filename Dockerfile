@@ -26,14 +26,14 @@ ENV INSTALL_PATH=/usr/src/app
 
 WORKDIR $INSTALL_PATH
 
-COPY Gemfile ./
+COPY Gemfile Gemfile.lock* ./
 
 ENV BUNDLE_PATH=/usr/local/bundle
 ENV BUNDLE_BIN=/usr/local/bundle/bin
 ENV GEM_HOME=/usr/local/bundle
 ENV PATH="${BUNDLE_BIN}:${PATH}"
 
-RUN bundle install --without development test --jobs 4 --retry 3 --no-deployment
+RUN bundle install --without development test --jobs 4 --retry 3
 
 COPY . .
 
