@@ -13,15 +13,25 @@ services:
       - key: SECRET_KEY_BASE
         generateValue: true
       - key: DB_HOST
-        sync: false
+        fromDatabase:
+          name: materiaguas_db
+          property: host
       - key: DB_USERNAME
-        sync: false
+        fromDatabase:
+          name: materiaguas_db
+          property: user
       - key: DB_PASSWORD
-        sync: false
+        fromDatabase:
+          name: materiaguas_db
+          property: password
       - key: DB_PORT
-        value: "5432"
+        fromDatabase:
+          name: materiaguas_db
+          property: port
       - key: DB_NAME
-        sync: false
+        fromDatabase:
+          name: materiaguas_db
+          property: database
       - key: RAILS_SERVE_STATIC_FILES
         value: "true"
       - key: RAILS_LOG_TO_STDOUT
