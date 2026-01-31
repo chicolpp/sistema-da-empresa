@@ -1,0 +1,41 @@
+version: '3.6'
+services:
+  db:
+    image: mysql:5.7
+    container_name: materiaguas_mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=SenhaForte123!
+      - MYSQL_DATABASE=materiaguas_production
+    restart: always
+    networks:
+      - materiaguas
+
+  app:
+    build: .
+    container_name: materiaguas_app
+    command: bash -c "bundle exec rake db:migrate && bundle exec thin start -p 3000 -e production --threaded"
+    environment:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - DB_HOST=db
+      - DB_USERNAME=root
+      - DB_PASSWORD=SenhaForte123!
+      - DB_PORT=3306
+      - DB_NAME=materiaguas_production
+    ports:
+      - "80:3000"
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - materiaguas
+
+networks:
+  materiaguas:
+    driver: bridge
+
+volumes:
+  mysql-data:

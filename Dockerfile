@@ -44,4 +44,4 @@ RUN bundle exec rake assets:precompile RAILS_ENV=production --trace 2>/dev/null 
 
 EXPOSE 3000
 
-CMD ["bundle", "exec", "thin", "start", "-p", "3000", "-e", "production", "--threaded"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000", "-e", "production"]

@@ -22,8 +22,8 @@ test:
 
 production:
   <<: *default
-  host: <%= ENV['MYSQLHOST'] || ENV['DB_HOST'] %>
-  username: <%= ENV['MYSQLUSER'] || ENV['DB_USERNAME'] %>
-  password: <%= ENV['MYSQLPASSWORD'] || ENV['DB_PASSWORD'] %>
-  port: <%= ENV['MYSQLPORT'] || ENV['DB_PORT'] || 3306 %>
-  database: <%= ENV['MYSQLDATABASE'] || ENV['DB_NAME'] || 'railway' %>
+  host: <%= ENV['DB_HOST'] || 'db' %>
+  username: <%= ENV['DB_USERNAME'] || 'root' %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  port: <%= ENV['DB_PORT'] || 3306 %>
+  database: <%= ENV['DB_NAME'] || 'materiaguas_production' %>
