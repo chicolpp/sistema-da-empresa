@@ -39,9 +39,10 @@ COPY . .
 
 RUN mkdir -p tmp/pids tmp/cache tmp/sockets log public/uploads
 
-# Precompilar assets ignorando erros de banco
-RUN bundle exec rake assets:precompile RAILS_ENV=production --trace 2>/dev/null || echo "Assets precompile skipped"
+# Skip asset precompile - it needs DB connection
+# RUN bundle exec rake assets:precompile RAILS_ENV=production --trace 2>/dev/null || echo "Assets precompile skipped"
 
 EXPOSE 3000
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000", "-e", "production"]
+# Start with explicit error output
+CMD ["bundle", "exec", "thin", "start", "-p", "3000", "-e", "production", "-V", "--trace"]
