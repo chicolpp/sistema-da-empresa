@@ -5,44 +5,43 @@ RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
     sed -i 's/security.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
     sed -i '/stretch-updates/d' /etc/apt/sources.list
 
-RUN apt-get update -qq
-RUN apt-get install -y --allow-unauthenticated build-essential libpq-dev nodejs imagemagick gnupg curl locales \
-  default-libmysqlclient-dev \
-  && mkdir -p /usr/share/man/man1 \
-  && mkdir -p /usr/share/man/man7
+RUN apt-get update -qq && \
+    apt-get install -y --allow-unauthenticated \
+    build-essential \
+    libpq-dev \
+    nodejs \
+    imagemagick \
+    gnupg \
+    curl \
+    locales \
+    default-libmysqlclient-dev && \
+    mkdir -p /usr/share/man/man1 /usr/share/man/man7
 
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    locale-gen
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
-ENV INSTALL_PATH /usr/src/app
-ENV RAILS_ENV production
-ENV RACK_ENV production
+ENV RAILS_ENV=production
+ENV RACK_ENV=production
+ENV INSTALL_PATH=/usr/src/app
 
 WORKDIR $INSTALL_PATH
 
-# Copiar Gemfile primeiro para cache de layers
 COPY Gemfile Gemfile.lock ./
 
-ENV BUNDLE_PATH=/usr/local/bundle \
-    BUNDLE_BIN=/usr/local/bundle/bin \
-    GEM_HOME=/usr/local/bundle
+ENV BUNDLE_PATH=/usr/local/bundle
+ENV BUNDLE_BIN=/usr/local/bundle/bin
+ENV GEM_HOME=/usr/local/bundle
 ENV PATH="${BUNDLE_BIN}:${PATH}"
 
-RUN bundle install --without development test --deployment --jobs 4
+RUN bundle install --without development test --jobs 4 --retry 3
 
-# Copiar todo o código
 COPY . .
 
-# Precompilar assets
-RUN bundle exec rake assets:precompile RAILS_ENV=production || true
-
-# Criar diretórios necessários
 RUN mkdir -p tmp/pids tmp/cache tmp/sockets log public/uploads
+
+# Precompilar assets ignorando erros de banco
+RUN bundle exec rake assets:precompile RAILS_ENV=production --trace 2>/dev/null || echo "Assets precompile skipped"
 
 EXPOSE 3000
 
-# Comando para iniciar
-CMD bundle exec rails server -b 0.0.0.0 -p 3000 -e production 2>&1
+CMD ["bundle", "exec", "thin", "start", "-p", "3000", "-e", "production", "--threaded"]

@@ -2,20 +2,28 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("DB_POOL") { 5 } %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  port: <%= ENV.fetch('DB_PORT') { 3306 } %>
   reconnect: true
 
 development:
   <<: *default
+  host: <%= ENV.fetch('DB_HOST') { '127.0.0.1' } %>
+  username: <%= ENV.fetch('DB_USERNAME') { 'root' } %>
+  password: <%= ENV.fetch('DB_PASSWORD') { 'password' } %>
+  port: <%= ENV.fetch('DB_PORT') { 3306 } %>
   database: <%= ENV.fetch("DB_NAME") { 'materiaguas_development' } %>
 
 test:
   <<: *default
+  host: <%= ENV.fetch('DB_HOST') { '127.0.0.1' } %>
+  username: <%= ENV.fetch('DB_USERNAME') { 'root' } %>
+  password: <%= ENV.fetch('DB_PASSWORD') { 'password' } %>
+  port: <%= ENV.fetch('DB_PORT') { 3306 } %>
   database: <%= ENV.fetch("DB_NAME") { 'materiaguas_test' } %>
 
 production:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") { 'materiaguas_production' } %>
+  host: <%= ENV['MYSQLHOST'] || ENV['DB_HOST'] %>
+  username: <%= ENV['MYSQLUSER'] || ENV['DB_USERNAME'] %>
+  password: <%= ENV['MYSQLPASSWORD'] || ENV['DB_PASSWORD'] %>
+  port: <%= ENV['MYSQLPORT'] || ENV['DB_PORT'] || 3306 %>
+  database: <%= ENV['MYSQLDATABASE'] || ENV['DB_NAME'] || 'railway' %>
