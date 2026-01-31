@@ -14,7 +14,7 @@ RUN apt-get update -qq && \
     gnupg \
     curl \
     locales \
-    default-libmysqlclient-dev && \
+    libmysqlclient-dev && \
     mkdir -p /usr/share/man/man1 /usr/share/man/man7
 
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
@@ -26,14 +26,15 @@ ENV INSTALL_PATH=/usr/src/app
 
 WORKDIR $INSTALL_PATH
 
-COPY Gemfile Gemfile.lock* ./
+COPY Gemfile ./
 
 ENV BUNDLE_PATH=/usr/local/bundle
 ENV BUNDLE_BIN=/usr/local/bundle/bin
 ENV GEM_HOME=/usr/local/bundle
 ENV PATH="${BUNDLE_BIN}:${PATH}"
 
-RUN bundle install --without development test --jobs 4 --retry 3
+RUN bundle config set --global path vendor/bundle && \
+    bundle install --without development test --jobs 4 --retry 3
 
 COPY . .
 
